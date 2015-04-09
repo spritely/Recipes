@@ -30,12 +30,15 @@ build:
 
 after_test:
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.Functional.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
-  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.nupkg"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%semantic_version%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.SecureString.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
-  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureString.nupkg"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureString.%semantic_version%.nupkg"
 
 deploy:
   - provider: NuGet
+    on:
+      branch: master
+      configuration: Release
     api_key:
       secure: dUMLXnYuqF7ORswtDCtj2XgKlpLMKrXZrq9m/FEN2xu0vTClejXqADyxMEawTs2W
     skip_symbols: true
