@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>Spritely.Recipes.SecureString</id>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
         <title>Spritely.Recipes.SecureString</title>
         <authors>Victor Robinson</authors>
         <owners>Victor Robinson</owners>
@@ -21,6 +21,6 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Functional.cs" target="content\net45\(Spritely.Recipes)\SecureString.cs" />
+        <file src="SecureString.cs" target="content\net45\(Spritely.Recipes)\SecureString.cs" />
     </files>
 </package>
