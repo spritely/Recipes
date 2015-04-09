@@ -4,6 +4,10 @@
 # second environment variable semantic_version.
 version: 0.1.0.{build}
 
+environment:
+  - version_functional: 0.1.0
+  - version_securestring: 0.1.1
+
 configuration:
   - Debug
   - Release
@@ -30,9 +34,9 @@ build:
 
 after_test:
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.Functional.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
-  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%semantic_version%.nupkg"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%version_functional%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.SecureString.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
-  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureString.%semantic_version%.nupkg"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureString.%version_securestring%.nupkg"
 
 deploy:
   - provider: NuGet
