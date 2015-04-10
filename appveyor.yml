@@ -28,11 +28,13 @@ assembly_info:
   assembly_informational_version: '$(semantic_version)'
 
 build:
-  publish_nuget: true
+  publish_nuget: false
   parallel: true
   verbosity: normal
 
 after_test:
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%semantic_version%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.%semantic_version%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs\Recipes.Functional.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_functional%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%version_functional%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs\Recipes.SecureString.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_securestring%" -OutputDirectory "%TEMP%"
