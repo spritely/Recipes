@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>Spritely.Recipes.Functional</id>
-        <version>0.1.0</version>
+        <version>$version$</version>
         <title>Spritely.Recipes.Functional</title>
         <authors>Victor Robinson</authors>
         <owners>Victor Robinson</owners>

@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>Spritely.Recipes.SecureString</id>
-        <version>0.1.1</version>
+        <version>$version$</version>
         <title>Spritely.Recipes.SecureString</title>
         <authors>Victor Robinson</authors>
         <owners>Victor Robinson</owners>
