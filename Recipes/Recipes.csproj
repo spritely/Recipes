@@ -42,8 +42,9 @@
     <Compile Include="SecureString.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Recipes.SecureString.nuspec" />
-    <None Include="Recipes.Functional.nuspec" />
+    <None Include="PackageSpecs\Recipes.Functional.nuspec" />
+    <None Include="Recipes.nuspec" />
+    <None Include="PackageSpecs\Recipes.SecureString.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

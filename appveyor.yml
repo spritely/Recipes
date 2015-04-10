@@ -33,9 +33,9 @@ build:
   verbosity: normal
 
 after_test:
-  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.Functional.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_functional%" -OutputDirectory "%TEMP%"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Packages\Recipes.Functional.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_functional%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%version_functional%.nupkg"
-  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.SecureString.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_securestring%" -OutputDirectory "%TEMP%"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Packages\Recipes.SecureString.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_securestring%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureString.%version_securestring%.nupkg"
 
 deploy:
