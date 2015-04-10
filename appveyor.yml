@@ -33,7 +33,7 @@ build:
   verbosity: normal
 
 after_test:
-  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.csproj" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.%semantic_version%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.Functional.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%version_functional%.nupkg"
