@@ -15,4 +15,8 @@
         <copyright>Copyright (C) 2015</copyright>
         <tags>Spritely Recipes ForEach functional SecureString</tags>
     </metadata>
+    <files>
+        <file src="*.dll" target="lib\net45\" />
+        <file src="*.pdb" target="lib\net45\" />
+    </files>
 </package>
