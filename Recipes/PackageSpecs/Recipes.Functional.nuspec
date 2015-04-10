@@ -16,6 +16,6 @@
         <tags>Spritely Recipes ForEach functional</tags>
     </metadata>
     <files>
-        <file src="..\Functional.cs" target="content\net45\(Spritely.Recipes)\Functional.cs" />
+        <file src="Functional.cs" target="content\net45\(Spritely.Recipes)\Functional.cs" />
     </files>
 </package>
