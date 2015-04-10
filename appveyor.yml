@@ -2,7 +2,7 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.1.0.{build}
+version: 0.1.1.{build}
 
 environment:
   version_functional: 0.1.0
@@ -33,6 +33,8 @@ build:
   verbosity: normal
 
 after_test:
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.csproj" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.%semantic_version%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.Functional.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%version_functional%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Recipes.SecureString.nuspec" -Properties "Configuration=%configuration%;Platform=%platform%" -OutputDirectory "%TEMP%"

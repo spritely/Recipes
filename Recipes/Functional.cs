@@ -21,7 +21,7 @@ namespace Spritely.Recipes
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 #endif
-    internal static partial class Functional
+    public static partial class Functional
     {
         /// <summary>
         ///     Turns an action into a function so actions can be used like Functions in LINQ code.

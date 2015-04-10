@@ -21,7 +21,7 @@ namespace Spritely.Recipes
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 #endif
-    internal static partial class SecureStringExtensions
+    public static partial class SecureStringExtensions
     {
         /// <summary>
         ///     Converts the source string into a secure string.

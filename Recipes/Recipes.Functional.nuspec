@@ -11,7 +11,7 @@
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>AsFunc and ForEach recipes.</summary>
-        <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. All packages come as source code and objects are marked internal so they aren't exposed from your build.</description>
+        <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2015</copyright>
         <tags>Spritely Recipes ForEach functional</tags>
     </metadata>
