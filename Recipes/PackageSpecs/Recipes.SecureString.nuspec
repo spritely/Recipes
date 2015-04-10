@@ -21,6 +21,6 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="SecureString.cs" target="content\net45\(Spritely.Recipes)\SecureString.cs" />
+        <file src="..\SecureString.cs" target="content\net45\(Spritely.Recipes)\SecureString.cs" />
     </files>
 </package>
