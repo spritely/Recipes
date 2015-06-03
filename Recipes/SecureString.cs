@@ -22,7 +22,7 @@ namespace Spritely.Recipes
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
-    public static partial class SecureStringExtensions
+    internal static partial class SecureStringExtensions
     {
         /// <summary>
         ///     Converts the source string into a secure string.

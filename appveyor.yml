@@ -2,11 +2,11 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.1.4.{build}
+version: 0.2.0.{build}
 
 environment:
-  version_functional: 0.1.1
-  version_securestring: 0.1.3
+  version_functional: 0.2.0
+  version_securestring: 0.2.0
 
 configuration:
   - Debug
