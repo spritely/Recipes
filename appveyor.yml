@@ -2,15 +2,20 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.2.0.{build}
+version: 0.3.0.{build}
 
 environment:
   version_functional: 0.2.0
-  version_securestring: 0.2.0
+  version_securestring: 0.2.1
+  version_securestringjsonconverter: 0.1.0
+  version_jsonconfiguration: 0.1.0
 
 configuration:
   - Debug
   - Release
+
+cache:
+  - packages -> **\packages.config
 
 install:
   - set semantic_version=%APPVEYOR_BUILD_VERSION:~0,5%
@@ -37,6 +42,11 @@ after_test:
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Functional.%version_functional%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs\Recipes.SecureString.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_securestring%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureString.%version_securestring%.nupkg"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs\Recipes.SecureStringJsonConverter.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_securestringjsonconverter%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureStringJsonConverter.%version_securestringjsonconverter%.nupkg"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs\Recipes.JsonConfiguration.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\PackageSpecs" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_jsonconfiguration%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.JsonConfiguration.%version_jsonconfiguration%.nupkg"
+
 
 deploy:
   - provider: NuGet

@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.SecureString</id>
+        <id>Spritely.Recipes.SecureStringJsonConverter</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.SecureString</title>
+        <title>Spritely.Recipes.SecureStringJsonConverter</title>
         <authors>Victor Robinson</authors>
         <owners>Victor Robinson</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>ToSecureString and ToInsecureString recipes.</summary>
+        <summary>Newtonsoft.Json JsonConvert that can convert to/from SecureString types.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2015</copyright>
-        <tags>Spritely Recipes SecureString</tags>
+        <tags>Spritely Recipes SecureString JsonConverter</tags>
         <dependencies>
             <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.Functional" version="0.2.0" />
+                <dependency id="Spritely.Recipes.SecureString" version="0.2.1" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="..\SecureString.cs" target="content\net45\(Spritely.Recipes)\SecureString.cs" />
+        <file src="..\SecureStringJsonConverter.cs" target="content\net45\(Spritely.Recipes)\SecureStringJsonConverter.cs" />
     </files>
 </package>
