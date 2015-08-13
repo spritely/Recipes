@@ -29,9 +29,9 @@ namespace Spritely.Recipes.Test
 
             var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
 
-            var serializedValue = @"{
-  ""testName"": ""Hello""
-}";
+            var serializedValue = "{" + Environment.NewLine +
+                                  "  \"testName\": \"Hello\"" + Environment.NewLine +
+                                  "}";
 
             Assert.That(result, Is.EqualTo(serializedValue));
         }
@@ -39,9 +39,9 @@ namespace Spritely.Recipes.Test
         [Test]
         public void Serializer_deserializes_camel_cased_properties()
         {
-            var serializedValue = @"{
-  ""testName"": ""there""
-}";
+            var serializedValue = "{" + Environment.NewLine +
+                                  "  \"testName\": \"there\"" + Environment.NewLine +
+                                  "}";
 
             var result = JsonConvert.DeserializeObject<CamelCasedPropertyTest>(serializedValue, JsonConfiguration.SerializerSettings);
 
@@ -58,18 +58,19 @@ namespace Spritely.Recipes.Test
 
             var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
 
-            var serializedValue = @"{
-  ""value"": ""firstOption""
-}";
+            var serializedValue = "{" + Environment.NewLine +
+                                  "  \"value\": \"firstOption\"" + Environment.NewLine +
+                                  "}";
+
             Assert.That(result, Is.EqualTo(serializedValue));
         }
 
         [Test]
         public void Serializer_deserializes_camel_cased_enumerations()
         {
-            var serializedValue = @"{
-  ""value"": ""secondOption""
-}";
+            var serializedValue = "{" + Environment.NewLine +
+                                  "  \"value\": \"secondOption\"" + Environment.NewLine +
+                                  "}";
 
             var result = JsonConvert.DeserializeObject<CamelCasedEnumTest>(serializedValue, JsonConfiguration.SerializerSettings);
 
@@ -82,6 +83,7 @@ namespace Spritely.Recipes.Test
             var serializedValue = "{" + Environment.NewLine +
                                   "  \"secure\": \"Password\"" + Environment.NewLine +
                                   "}";
+
             var deserialized = JsonConvert.DeserializeObject<SecureStringTest>(serializedValue, JsonConfiguration.SerializerSettings);
 
             var result = JsonConvert.SerializeObject(deserialized, JsonConfiguration.SerializerSettings);
@@ -108,16 +110,16 @@ namespace Spritely.Recipes.Test
 
             var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
 
-            var serializedValue = @"[
-  {
-    ""child1"": ""Child1"",
-    ""base"": ""Base""
-  },
-  {
-    ""child2"": ""my child 2"",
-    ""base"": ""my base""
-  }
-]";
+            var serializedValue = "[" + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"child1\": \"Child1\"," + Environment.NewLine +
+                                  "    \"base\": \"Base\"" + Environment.NewLine +
+                                  "  }," + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"child2\": \"my child 2\"," + Environment.NewLine +
+                                  "    \"base\": \"my base\"" + Environment.NewLine +
+                                  "  }" + Environment.NewLine +
+                                  "]";
 
             Assert.That(result, Is.EqualTo(serializedValue));
         }
@@ -125,16 +127,16 @@ namespace Spritely.Recipes.Test
         [Test]
         public void Serializer_deserializes_KnownTypes()
         {
-            var serializedValue = @"[
-  {
-    ""child1"": ""My child 1"",
-    ""base"": ""My base""
-  },
-  {
-    ""child2"": ""child 2"",
-    ""base"": ""base""
-  }
-]";
+            var serializedValue = "[" + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"child1\": \"My child 1\"," + Environment.NewLine +
+                                  "    \"base\": \"My base\"" + Environment.NewLine +
+                                  "  }," + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"child2\": \"child 2\"," + Environment.NewLine +
+                                  "    \"base\": \"base\"" + Environment.NewLine +
+                                  "  }" + Environment.NewLine +
+                                  "]";
 
             var result = JsonConvert.DeserializeObject<InheritedTypeBase[]>(serializedValue, JsonConfiguration.SerializerSettings);
 
