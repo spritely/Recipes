@@ -19,39 +19,65 @@ namespace Spritely.Recipes.Test
     [TestFixture]
     public class JsonConfigurationTest
     {
-        private enum TestEnum
+        [Test]
+        public void Serializer_serializes_camel_cased_properties()
         {
-            FirstType
+            var value = new CamelCasedPropertyTest()
+            {
+                TestName = "Hello"
+            };
+
+            var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
+
+            var serializedValue = @"{
+  ""testName"": ""Hello""
+}";
+
+            Assert.That(result, Is.EqualTo(serializedValue));
         }
 
         [Test]
-        public void Serializer_writes_camel_cased_properties()
+        public void Serializer_deserializes_camel_cased_properties()
         {
-            var result = JsonConvert.SerializeObject(new CamelCasedPropertyTest(), JsonConfiguration.SerializerSettings);
+            var serializedValue = @"{
+  ""testName"": ""there""
+}";
 
-            Assert.That(
-                result,
-                Is.EqualTo(
-                    "{" + Environment.NewLine +
-                    "  \"testName\": \"Hello\"" + Environment.NewLine +
-                    "}"));
+            var result = JsonConvert.DeserializeObject<CamelCasedPropertyTest>(serializedValue, JsonConfiguration.SerializerSettings);
+
+            Assert.That(result.TestName, Is.EqualTo("there"));
         }
 
         [Test]
-        public void Serializer_writes_camel_cased_enumerations()
+        public void Serializer_serializes_camel_cased_enumerations()
         {
-            var result = JsonConvert.SerializeObject(new CamelCasedEnumTest(), JsonConfiguration.SerializerSettings);
+            var value = new CamelCasedEnumTest()
+            {
+                Value = TestEnum.FirstOption
+            };
 
-            Assert.That(
-                result,
-                Is.EqualTo(
-                    "{" + Environment.NewLine +
-                    "  \"first\": \"firstType\"" + Environment.NewLine +
-                    "}"));
+            var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
+
+            var serializedValue = @"{
+  ""value"": ""firstOption""
+}";
+            Assert.That(result, Is.EqualTo(serializedValue));
         }
 
         [Test]
-        public void Serializer_reads_and_writes_SecureString_types()
+        public void Serializer_deserializes_camel_cased_enumerations()
+        {
+            var serializedValue = @"{
+  ""value"": ""secondOption""
+}";
+
+            var result = JsonConvert.DeserializeObject<CamelCasedEnumTest>(serializedValue, JsonConfiguration.SerializerSettings);
+
+            Assert.That(result.Value, Is.EqualTo(TestEnum.SecondOption));
+        }
+
+        [Test]
+        public void Serializer_serializes_and_deserializes_SecureString_types()
         {
             var serializedValue = "{" + Environment.NewLine +
                                   "  \"secure\": \"Password\"" + Environment.NewLine +
@@ -63,18 +89,72 @@ namespace Spritely.Recipes.Test
             Assert.That(result, Is.EqualTo(serializedValue));
         }
 
+        [Test]
+        public void Serializer_serializes_KnownTypes()
+        {
+            var value = new InheritedTypeBase[]
+            {
+                new InheritedTypeChild1
+                {
+                    Base = "Base",
+                    Child1 = "Child1"
+                },
+                new InheritedTypeChild2
+                {
+                    Base = "my base",
+                    Child2 = "my child 2"
+                }
+            };
+
+            var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
+
+            var serializedValue = @"[
+  {
+    ""child1"": ""Child1"",
+    ""base"": ""Base""
+  },
+  {
+    ""child2"": ""my child 2"",
+    ""base"": ""my base""
+  }
+]";
+
+            Assert.That(result, Is.EqualTo(serializedValue));
+        }
+
+        [Test]
+        public void Serializer_deserializes_KnownTypes()
+        {
+            var serializedValue = @"[
+  {
+    ""child1"": ""My child 1"",
+    ""base"": ""My base""
+  },
+  {
+    ""child2"": ""child 2"",
+    ""base"": ""base""
+  }
+]";
+
+            var result = JsonConvert.DeserializeObject<InheritedTypeBase[]>(serializedValue, JsonConfiguration.SerializerSettings);
+
+            Assert.That(result.Length, Is.EqualTo(2));
+            Assert.That(result[0].Base, Is.EqualTo("My base"));
+            Assert.That((result[0] as InheritedTypeChild1), Is.Not.Null);
+            Assert.That((result[0] as InheritedTypeChild1).Child1, Is.EqualTo("My child 1"));
+            Assert.That(result[1].Base, Is.EqualTo("base"));
+            Assert.That((result[1] as InheritedTypeChild2), Is.Not.Null);
+            Assert.That((result[1] as InheritedTypeChild2).Child2, Is.EqualTo("child 2"));
+        }
+
         private class CamelCasedPropertyTest
         {
-            [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields",
-                Justification = "Field is used by code external to test")]
-            public string TestName = "Hello";
+            public string TestName;
         }
 
         private class CamelCasedEnumTest
         {
-            [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields",
-                Justification = "Field is used by code external to test")]
-            public TestEnum First = TestEnum.FirstType;
+            public TestEnum Value;
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
@@ -82,10 +162,33 @@ namespace Spritely.Recipes.Test
         private class SecureStringTest
         {
 #pragma warning disable 649
+
             [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields",
                 Justification = "Field is used by code external to test")]
             public SecureString Secure;
+
 #pragma warning restore
+        }
+
+        private enum TestEnum
+        {
+            FirstOption,
+            SecondOption
+        }
+
+        public class InheritedTypeBase
+        {
+            public string Base;
+        }
+
+        public class InheritedTypeChild1 : InheritedTypeBase
+        {
+            public string Child1;
+        }
+
+        public class InheritedTypeChild2 : InheritedTypeBase
+        {
+            public string Child2;
         }
     }
 }

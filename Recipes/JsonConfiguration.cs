@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Json.cs">
+// <copyright file="JsonConfiguration.cs">
 //   Copyright (c) 2015. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -23,6 +23,7 @@ namespace Spritely.Recipes
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
+
     internal static partial class JsonConfiguration
     {
         /// <summary>
@@ -37,7 +38,8 @@ namespace Spritely.Recipes
                 Converters = new List<JsonConverter>
                 {
                     new StringEnumConverter { CamelCaseText = true },
-                    new SecureStringJsonConverter()
+                    new SecureStringJsonConverter(),
+                    new InheritedTypeJsonConverter()
                 }
             };
         }

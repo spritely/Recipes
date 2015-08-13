@@ -41,6 +41,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InheritedTypeJsonConverter.cs" />
     <Compile Include="JsonConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Functional.cs" />
@@ -50,6 +51,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PackageSpecs\Recipes.Functional.nuspec" />
+    <None Include="PackageSpecs\Recipes.InheritedTypeJsonConverter.nuspec" />
     <None Include="PackageSpecs\Recipes.JsonConfiguration.nuspec" />
     <None Include="PackageSpecs\Recipes.SecureStringJsonConverter.nuspec" />
     <None Include="PackageSpecs\Recipes.SecureString.nuspec" />
