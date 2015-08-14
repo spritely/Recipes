@@ -10,13 +10,14 @@
 
 namespace Spritely.Recipes
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     ///     Significantly rewritten from original source at: http://StackOverflow.com/a/17247339/1442829
@@ -31,7 +32,6 @@ namespace Spritely.Recipes
     [ExcludeFromCodeCoverage]
     [GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
-
     internal partial class InheritedTypeJsonConverter : JsonConverter
     {
         private readonly ConcurrentDictionary<Type, IReadOnlyCollection<Type>> allChildTypes =
@@ -42,10 +42,22 @@ namespace Spritely.Recipes
             if (!this.allChildTypes.ContainsKey(type))
             {
                 var childTypes = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(a => a.GetTypes())
+                    .SelectMany(
+                        a =>
+                        {
+                            try
+                            {
+                                return a.GetTypes();
+                            }
+                            catch (ReflectionTypeLoadException)
+                            {
+                                return new Type[] { };
+                            }
+                        })
                     .Where(
                         t =>
-                            t.IsClass && !t.IsAbstract && t != type && type.IsAssignableFrom(t) && t.GetConstructor(Type.EmptyTypes) != null)
+                            t != null && t.IsClass && !t.IsAbstract && t != type && type.IsAssignableFrom(t) &&
+                            t.GetConstructor(Type.EmptyTypes) != null)
                     .ToList();
 
                 this.allChildTypes.AddOrUpdate(type, t => childTypes, (t, cts) => childTypes);

@@ -17,7 +17,7 @@
         <dependencies>
             <group targetFramework="net450">
                 <dependency id="Spritely.Recipes.SecureStringJsonConverter" version="0.2.0" />
-                <dependency id="Spritely.Recipes.InheritedTypeJsonConverter" version="0.1.1" />
+                <dependency id="Spritely.Recipes.InheritedTypeJsonConverter" version="0.1.2" />
                 <dependency id="Newtonsoft.Json" version="7.0.1" />
             </group>
         </dependencies>
