@@ -2,14 +2,14 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.4.0.{build}
+version: 0.4.1.{build}
 
 environment:
   version_functional: 0.2.1
   version_securestring: 0.2.2
   version_securestringjsonconverter: 0.2.0
-  version_inheritedtypejsonconverter: 0.1.0
-  version_jsonconfiguration: 0.3.0
+  version_inheritedtypejsonconverter: 0.1.1
+  version_jsonconfiguration: 0.3.1
 
 configuration:
   - Debug

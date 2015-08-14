@@ -92,16 +92,16 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_serializes_KnownTypes()
+        public void Serializer_serializes_InheritedTypes()
         {
             var value = new InheritedTypeBase[]
             {
-                new InheritedTypeChild1
+                new InheritedType1
                 {
                     Base = "Base",
                     Child1 = "Child1"
                 },
-                new InheritedTypeChild2
+                new InheritedType2
                 {
                     Base = "my base",
                     Child2 = "my child 2"
@@ -125,7 +125,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_deserializes_KnownTypes()
+        public void Serializer_deserializes_InheritedTypes()
         {
             var serializedValue = "[" + Environment.NewLine +
                                   "  {" + Environment.NewLine +
@@ -142,11 +142,38 @@ namespace Spritely.Recipes.Test
 
             Assert.That(result.Length, Is.EqualTo(2));
             Assert.That(result[0].Base, Is.EqualTo("My base"));
-            Assert.That((result[0] as InheritedTypeChild1), Is.Not.Null);
-            Assert.That((result[0] as InheritedTypeChild1).Child1, Is.EqualTo("My child 1"));
+            Assert.That((result[0] as InheritedType1), Is.Not.Null);
+            Assert.That((result[0] as InheritedType1).Child1, Is.EqualTo("My child 1"));
             Assert.That(result[1].Base, Is.EqualTo("base"));
-            Assert.That((result[1] as InheritedTypeChild2), Is.Not.Null);
-            Assert.That((result[1] as InheritedTypeChild2).Child2, Is.EqualTo("child 2"));
+            Assert.That((result[1] as InheritedType2), Is.Not.Null);
+            Assert.That((result[1] as InheritedType2).Child2, Is.EqualTo("child 2"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_partial_InheritedTypes()
+        {
+            var serializedValue = "[" + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"string\": \"My string\"," + Environment.NewLine +
+                                  "    \"int32\": 5" + Environment.NewLine +
+                                  "  }," + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"int32\": 55," + Environment.NewLine +
+                                  "    \"float\": 3.56" + Environment.NewLine +
+                                  "  }" + Environment.NewLine +
+                                  "]";
+
+            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.SerializerSettings);
+
+            Assert.That(result.Length, Is.EqualTo(2));
+            Assert.That(result[0].String, Is.EqualTo("My string"));
+            Assert.That((result[0] as InheritedType3), Is.Not.Null);
+            Assert.That((result[0] as InheritedType3).Int32, Is.EqualTo(5));
+            Assert.That((result[0] as InheritedType3).Float, Is.EqualTo(default(float)));
+            Assert.That(result[1].String, Is.Null);
+            Assert.That((result[1] as InheritedType3), Is.Not.Null);
+            Assert.That((result[1] as InheritedType3).Int32, Is.EqualTo(55));
+            Assert.That(Math.Round((result[1] as InheritedType3).Float, 2), Is.EqualTo(Math.Round(3.56, 2)));
         }
 
         private class CamelCasedPropertyTest
@@ -183,14 +210,28 @@ namespace Spritely.Recipes.Test
             public string Base;
         }
 
-        public class InheritedTypeChild1 : InheritedTypeBase
+        public class InheritedType1 : InheritedTypeBase
         {
             public string Child1;
         }
 
-        public class InheritedTypeChild2 : InheritedTypeBase
+        public class InheritedType2 : InheritedTypeBase
         {
             public string Child2;
+        }
+
+        public interface IBaseInterface
+        {
+            string String { get; set; }
+        }
+
+        public class InheritedType3 : IBaseInterface
+        {
+            public string String { get; set; }
+
+            public int Int32 { get; set; }
+
+            public float Float { get; set; }
         }
     }
 }
