@@ -27,7 +27,7 @@ namespace Spritely.Recipes.Test
                 TestName = "Hello"
             };
 
-            var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.SerializeObject(value, JsonConfiguration.DefaultSerializerSettings);
 
             var serializedValue = "{" + Environment.NewLine +
                                   "  \"testName\": \"Hello\"" + Environment.NewLine +
@@ -43,7 +43,7 @@ namespace Spritely.Recipes.Test
                                   "  \"testName\": \"there\"" + Environment.NewLine +
                                   "}";
 
-            var result = JsonConvert.DeserializeObject<CamelCasedPropertyTest>(serializedValue, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.DeserializeObject<CamelCasedPropertyTest>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
 
             Assert.That(result.TestName, Is.EqualTo("there"));
         }
@@ -56,7 +56,7 @@ namespace Spritely.Recipes.Test
                 Value = TestEnum.FirstOption
             };
 
-            var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.SerializeObject(value, JsonConfiguration.DefaultSerializerSettings);
 
             var serializedValue = "{" + Environment.NewLine +
                                   "  \"value\": \"firstOption\"" + Environment.NewLine +
@@ -72,7 +72,7 @@ namespace Spritely.Recipes.Test
                                   "  \"value\": \"secondOption\"" + Environment.NewLine +
                                   "}";
 
-            var result = JsonConvert.DeserializeObject<CamelCasedEnumTest>(serializedValue, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.DeserializeObject<CamelCasedEnumTest>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
 
             Assert.That(result.Value, Is.EqualTo(TestEnum.SecondOption));
         }
@@ -84,9 +84,9 @@ namespace Spritely.Recipes.Test
                                   "  \"secure\": \"Password\"" + Environment.NewLine +
                                   "}";
 
-            var deserialized = JsonConvert.DeserializeObject<SecureStringTest>(serializedValue, JsonConfiguration.SerializerSettings);
+            var deserialized = JsonConvert.DeserializeObject<SecureStringTest>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
 
-            var result = JsonConvert.SerializeObject(deserialized, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.SerializeObject(deserialized, JsonConfiguration.DefaultSerializerSettings);
 
             Assert.That(result, Is.EqualTo(serializedValue));
         }
@@ -108,7 +108,7 @@ namespace Spritely.Recipes.Test
                 }
             };
 
-            var result = JsonConvert.SerializeObject(value, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.SerializeObject(value, JsonConfiguration.DefaultSerializerSettings);
 
             var serializedValue = "[" + Environment.NewLine +
                                   "  {" + Environment.NewLine +
@@ -138,7 +138,7 @@ namespace Spritely.Recipes.Test
                                   "  }" + Environment.NewLine +
                                   "]";
 
-            var result = JsonConvert.DeserializeObject<InheritedTypeBase[]>(serializedValue, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.DeserializeObject<InheritedTypeBase[]>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
 
             Assert.That(result.Length, Is.EqualTo(2));
             Assert.That(result[0].Base, Is.EqualTo("My base"));
@@ -163,7 +163,7 @@ namespace Spritely.Recipes.Test
                                   "  }" + Environment.NewLine +
                                   "]";
 
-            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.SerializerSettings);
+            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
 
             Assert.That(result.Length, Is.EqualTo(2));
             Assert.That(result[0].String, Is.EqualTo("My string"));
@@ -227,11 +227,11 @@ namespace Spritely.Recipes.Test
 
         public class InheritedType3 : IBaseInterface
         {
-            public string String { get; set; }
+            public float Float { get; set; }
 
             public int Int32 { get; set; }
 
-            public float Float { get; set; }
+            public string String { get; set; }
         }
     }
 }

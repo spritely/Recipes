@@ -107,11 +107,43 @@ namespace Spritely.Recipes
 
         private static JObject Serialize(JsonSerializer serializer, object instance)
         {
+            // Copy everything except NullValueHandling (need to make sure all keys are included in serialized json)
+            var jsonSerializer = new JsonSerializer
+            {
+                Binder = serializer.Binder,
+                CheckAdditionalContent = serializer.CheckAdditionalContent,
+                ConstructorHandling = serializer.ConstructorHandling,
+                Context = serializer.Context,
+                ContractResolver = serializer.ContractResolver,
+                Culture = serializer.Culture,
+                DateFormatHandling = serializer.DateFormatHandling,
+                DateFormatString = serializer.DateFormatString,
+                DateParseHandling = serializer.DateParseHandling,
+                DateTimeZoneHandling = serializer.DateTimeZoneHandling,
+                DefaultValueHandling = serializer.DefaultValueHandling,
+                EqualityComparer = serializer.EqualityComparer,
+                FloatFormatHandling = serializer.FloatFormatHandling,
+                FloatParseHandling = serializer.FloatParseHandling,
+                Formatting = serializer.Formatting,
+                MaxDepth = serializer.MaxDepth,
+                MetadataPropertyHandling = serializer.MetadataPropertyHandling,
+                MissingMemberHandling = serializer.MissingMemberHandling,
+                NullValueHandling = NullValueHandling.Include,
+                ObjectCreationHandling = serializer.ObjectCreationHandling,
+                PreserveReferencesHandling = serializer.PreserveReferencesHandling,
+                ReferenceLoopHandling = serializer.ReferenceLoopHandling,
+                ReferenceResolver = serializer.ReferenceResolver,
+                StringEscapeHandling = serializer.StringEscapeHandling,
+                TraceWriter = serializer.TraceWriter,
+                TypeNameAssemblyFormat = serializer.TypeNameAssemblyFormat,
+                TypeNameHandling = serializer.TypeNameHandling
+            };
+
+            serializer.Converters.ForEach(jsonSerializer.Converters.Add);
+
             using (var writer = new StringWriter())
             {
-                var jsonWriter = new JsonTextWriter(writer);
-
-                serializer.Serialize(jsonWriter, instance);
+                jsonSerializer.Serialize(writer, instance);
                 var json = writer.ToString();
                 var parsed = JObject.Parse(json);
                 return parsed;
