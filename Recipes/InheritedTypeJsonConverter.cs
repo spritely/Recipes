@@ -29,7 +29,7 @@ namespace Spritely.Recipes
     /// </summary>
 #if !RecipesProject
     [System.Diagnostics.DebuggerStepThrough]
-    [System.Diagnostics.ExcludeFromCodeCoverage]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
     internal partial class InheritedTypeJsonConverter : JsonConverter
