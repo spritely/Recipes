@@ -28,9 +28,9 @@ namespace Spritely.Recipes
     ///     Selected class will be the first class to match all properties in the json object.
     /// </summary>
 #if !RecipesProject
-    [DebuggerStepThrough]
-    [ExcludeFromCodeCoverage]
-    [GeneratedCode("Spritely.Recipes", "See package version number")]
+    [System.Diagnostics.DebuggerStepThrough]
+    [System.Diagnostics.ExcludeFromCodeCoverage]
+    [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
     internal partial class InheritedTypeJsonConverter : JsonConverter
     {
@@ -42,6 +42,7 @@ namespace Spritely.Recipes
             if (!this.allChildTypes.ContainsKey(type))
             {
                 var childTypes = AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(a => !a.FullName.Contains("Microsoft.GeneratedCode"))
                     .SelectMany(
                         a =>
                         {
