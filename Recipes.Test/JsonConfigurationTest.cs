@@ -11,6 +11,7 @@
 namespace Spritely.Recipes.Test
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Security;
     using Newtonsoft.Json;
@@ -205,7 +206,7 @@ namespace Spritely.Recipes.Test
             SecondOption
         }
 
-        [SerializeMostInheritedType]
+        [Bindable(false)]
         public class InheritedTypeBase
         {
             public string Base;
@@ -221,7 +222,7 @@ namespace Spritely.Recipes.Test
             public string Child2;
         }
 
-        [SerializeMostInheritedType]
+        [Bindable(true)]
         public interface IBaseInterface
         {
             string String { get; set; }
