@@ -205,6 +205,7 @@ namespace Spritely.Recipes.Test
             SecondOption
         }
 
+        [SerializeMostInheritedType]
         public class InheritedTypeBase
         {
             public string Base;
@@ -220,6 +221,7 @@ namespace Spritely.Recipes.Test
             public string Child2;
         }
 
+        [SerializeMostInheritedType]
         public interface IBaseInterface
         {
             string String { get; set; }
