@@ -34,7 +34,6 @@ namespace Spritely.Recipes
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
-    [Serializable]
     internal partial class InheritedTypeJsonConverter : JsonConverter
     {
         private readonly ConcurrentDictionary<Type, IReadOnlyCollection<Type>> allChildTypes =
