@@ -57,7 +57,7 @@ namespace Spritely.Recipes
                         })
                     .Where(
                         t =>
-                            t != null && t.IsClass && !t.IsAbstract && t != type && type.IsAssignableFrom(t) &&
+                            t != null && t.IsClass && !t.IsAbstract && !t.IsGenericTypeDefinition && t != type && type.IsAssignableFrom(t) &&
                             t.GetConstructor(Type.EmptyTypes) != null)
                     .ToList();
 
