@@ -4,6 +4,8 @@
         <id>Spritely.Recipes.FormattableString</id>
         <version>$version$</version>
         <title>Spritely.Recipes.FormattableString</title>
+        <authors>Victor Robinson (package and modified source), Microsoft (original source)</authors>
+        <owners>Victor Robinson (package and modified source), Microsoft (original source)</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/dotnet/coreclr/blob/master/LICENSE.TXT</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
