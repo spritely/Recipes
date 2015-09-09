@@ -22,6 +22,6 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="..\InheritedTypeJsonConverter.cs" target="content\net45\(Spritely.Recipes)\InheritedTypeJsonConverter.cs" />
+        <file src="..\InheritedTypeJsonConverter.cs" target="content\net45\.Spritely.Recipes\InheritedTypeJsonConverter.cs" />
     </files>
 </package>
