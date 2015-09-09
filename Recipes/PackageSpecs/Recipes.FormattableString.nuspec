@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Spritely.Recipes.FormattableString</id>
+        <version>$version$</version>
+        <title>Spritely.Recipes.FormattableString</title>
+        <language>en-US</language>
+        <licenseUrl>https://github.com/dotnet/coreclr/blob/master/LICENSE.TXT</licenseUrl>
+        <projectUrl>https://github.com/spritely/Recipes</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>FormattableString and FormattableStringFactory recipes.</summary>
+        <description>This file is duplicated here so that assemblies built for versions of the .NET framework earlier than 4.6 can run with C# 6 features - namely the FormattableString.</description>
+        <copyright>See original copyright in source.</copyright>
+        <tags>Spritely Recipes FormattableString FormattableStringFactory</tags>
+        <developmentDependency>true</developmentDependency>
+    </metadata>
+    <files>
+        <file src="..\FormattableString.cs" target="content\net45\.Spritely.Recipes\FormattableString.cs" />
+        <file src="..\FormattableStringFactory.cs" target="content\net45\.Spritely.Recipes\FormattableStringFactory.cs" />
+    </files>
+</package>

@@ -41,6 +41,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormattableString.cs" />
+    <Compile Include="FormattableStringFactory.cs" />
     <Compile Include="InheritedTypeJsonConverter.cs" />
     <Compile Include="JsonConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="PackageSpecs\Recipes.FormattableString.nuspec" />
     <None Include="PackageSpecs\Recipes.Functional.nuspec" />
     <None Include="PackageSpecs\Recipes.InheritedTypeJsonConverter.nuspec" />
     <None Include="PackageSpecs\Recipes.JsonConfiguration.nuspec" />
