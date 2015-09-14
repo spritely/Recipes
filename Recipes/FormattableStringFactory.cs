@@ -64,33 +64,33 @@ namespace System.Runtime.CompilerServices
 
             internal ConcreteFormattableString(string format, object[] arguments)
             {
-                this._format = format;
-                this._arguments = arguments;
+                _format = format;
+                _arguments = arguments;
             }
 
             public override int ArgumentCount
             {
-                get { return this._arguments.Length; }
+                get { return _arguments.Length; }
             }
 
             public override string Format
             {
-                get { return this._format; }
+                get { return _format; }
             }
 
             public override object[] GetArguments()
             {
-                return this._arguments;
+                return _arguments;
             }
 
             public override object GetArgument(int index)
             {
-                return this._arguments[index];
+                return _arguments[index];
             }
 
             public override string ToString(IFormatProvider formatProvider)
             {
-                return string.Format(formatProvider, this._format, this._arguments);
+                return string.Format(formatProvider, _format, _arguments);
             }
         }
     }

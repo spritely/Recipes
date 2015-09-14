@@ -91,12 +91,12 @@ namespace System
 
         public override string ToString()
         {
-            return this.ToString(CultureInfo.CurrentCulture);
+            return ToString(CultureInfo.CurrentCulture);
         }
 
         string IFormattable.ToString(string ignored, IFormatProvider formatProvider)
         {
-            return this.ToString(formatProvider);
+            return ToString(formatProvider);
         }
     }
 }
