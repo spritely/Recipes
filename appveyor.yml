@@ -4,6 +4,8 @@
 # second environment variable semantic_version.
 version: 0.9.3.{build}
 
+os: Visual Studio 2015
+
 environment:
   version_functional: 0.2.3
   version_securestring: 0.2.4
