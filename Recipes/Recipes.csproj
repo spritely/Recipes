@@ -41,23 +41,23 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormattableString.cs" />
-    <Compile Include="FormattableStringFactory.cs" />
-    <Compile Include="InheritedTypeJsonConverter.cs" />
-    <Compile Include="JsonConfiguration.cs" />
+    <Compile Include="FormattableString\FormattableString.cs" />
+    <Compile Include="FormattableString\FormattableStringFactory.cs" />
+    <Compile Include="InheritedTypeJsonConverter\InheritedTypeJsonConverter.cs" />
+    <Compile Include="JsonConfiguration\JsonConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Functional.cs" />
-    <Compile Include="SecureString.cs" />
-    <Compile Include="SecureStringJsonConverter.cs" />
+    <Compile Include="Functional\Functional.cs" />
+    <Compile Include="SecureString\SecureString.cs" />
+    <Compile Include="SecureStringJsonConverter\SecureStringJsonConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="PackageSpecs\Recipes.FormattableString.nuspec" />
-    <None Include="PackageSpecs\Recipes.Functional.nuspec" />
-    <None Include="PackageSpecs\Recipes.InheritedTypeJsonConverter.nuspec" />
-    <None Include="PackageSpecs\Recipes.JsonConfiguration.nuspec" />
-    <None Include="PackageSpecs\Recipes.SecureStringJsonConverter.nuspec" />
-    <None Include="PackageSpecs\Recipes.SecureString.nuspec" />
+    <None Include="FormattableString\FormattableString.nuspec" />
+    <None Include="Functional\Functional.nuspec" />
+    <None Include="InheritedTypeJsonConverter\InheritedTypeJsonConverter.nuspec" />
+    <None Include="JsonConfiguration\JsonConfiguration.nuspec" />
+    <None Include="SecureStringJsonConverter\SecureStringJsonConverter.nuspec" />
+    <None Include="SecureString\SecureString.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

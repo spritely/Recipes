@@ -42,9 +42,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FunctionalTest.cs" />
-    <Compile Include="JsonConfigurationTest.cs" />
-    <Compile Include="SecureStringTest.cs" />
+    <Compile Include="Functional\FunctionalTest.cs" />
+    <Compile Include="JsonConfiguration\JsonConfigurationTest.cs" />
+    <Compile Include="SecureString\SecureStringTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

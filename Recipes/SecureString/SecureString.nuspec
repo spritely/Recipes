@@ -1,22 +1,27 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.Functional</id>
+        <id>Spritely.Recipes.SecureString</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.Functional</title>
+        <title>Spritely.Recipes.SecureString</title>
         <authors>Victor Robinson</authors>
         <owners>Victor Robinson</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>AsFunc and ForEach recipes.</summary>
+        <summary>ToSecureString and ToInsecureString recipes.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2015</copyright>
-        <tags>Spritely Recipes ForEach functional</tags>
+        <tags>Spritely Recipes SecureString</tags>
+        <dependencies>
+            <group targetFramework="net450">
+                <dependency id="Spritely.Recipes.Functional" version="0.2.4" />
+            </group>
+        </dependencies>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="..\Functional.cs" target="content\net45\.Spritely.Recipes\Functional.cs" />
+        <file src="SecureString.cs" target="content\net45\.Spritely.Recipes\SecureString.cs" />
     </files>
 </package>

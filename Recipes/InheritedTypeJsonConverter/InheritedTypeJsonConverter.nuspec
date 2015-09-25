@@ -1,29 +1,27 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.JsonConfiguration</id>
+        <id>Spritely.Recipes.InheritedTypeJsonConverter</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.JsonConfiguration</title>
+        <title>Spritely.Recipes.InheritedTypeJsonConverter</title>
         <authors>Victor Robinson</authors>
         <owners>Victor Robinson</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Newtonsoft.Json common Json Configuration settings using camelCasing instead of PascalCasing and can convert to/from SecureString types.</summary>
+        <summary>Newtonsoft.Json JsonConvert that can serialize/deserialize inherited types.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2015</copyright>
-        <tags>Spritely Recipes SecureString Json Configuration Config</tags>
+        <tags>Spritely Recipes inherited type JsonConverter</tags>
         <dependencies>
             <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.SecureStringJsonConverter" version="0.2.2" />
-                <dependency id="Spritely.Recipes.InheritedTypeJsonConverter" version="0.4.2" />
                 <dependency id="Newtonsoft.Json" version="7.0.1" />
             </group>
         </dependencies>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="..\JsonConfiguration.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration.cs" />
+        <file src="InheritedTypeJsonConverter.cs" target="content\net45\.Spritely.Recipes\InheritedTypeJsonConverter.cs" />
     </files>
 </package>
