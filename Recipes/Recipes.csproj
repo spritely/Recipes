@@ -45,6 +45,8 @@
     <Compile Include="FormattableString\FormattableStringFactory.cs" />
     <Compile Include="InheritedTypeJsonConverter\InheritedTypeJsonConverter.cs" />
     <Compile Include="JsonConfiguration\JsonConfiguration.cs" />
+    <Compile Include="ProgressReporter\ProcessingStatus.cs" />
+    <Compile Include="ProgressReporter\ProgressReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Functional\Functional.cs" />
     <Compile Include="SecureString\SecureString.cs" />
@@ -56,6 +58,7 @@
     <None Include="Functional\Functional.nuspec" />
     <None Include="InheritedTypeJsonConverter\InheritedTypeJsonConverter.nuspec" />
     <None Include="JsonConfiguration\JsonConfiguration.nuspec" />
+    <None Include="ProgressReporter\ProgressReporter.nuspec" />
     <None Include="SecureStringJsonConverter\SecureStringJsonConverter.nuspec" />
     <None Include="SecureString\SecureString.nuspec" />
   </ItemGroup>
