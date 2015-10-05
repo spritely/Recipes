@@ -24,7 +24,7 @@ cache:
   - packages -> **\packages.config
 
 install:
-  - set semantic_version=%APPVEYOR_BUILD_VERSION:~0,5%
+  - set semantic_version=%APPVEYOR_BUILD_VERSION:~0,6%
   - echo Version - %semantic_version%
   - nuget restore
 
