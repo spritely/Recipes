@@ -57,7 +57,7 @@ after_test:
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\FormattableString\FormattableString.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\FormattableString" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_formattablestring%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.FormattableString.%version_formattablestring%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\ProgressReporter\ProgressReporter.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\ProgressReporter" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_progressreporter%" -OutputDirectory "%TEMP%"
-  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.ProgressReporter.%version_formattablestring%.nupkg"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.ProgressReporter.%version_progressreporter%.nupkg"
 
 deploy:
   - provider: NuGet
