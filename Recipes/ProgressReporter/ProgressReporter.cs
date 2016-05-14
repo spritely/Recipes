@@ -25,7 +25,7 @@ namespace Spritely.Recipes
     /// Object to report progress status on iterations through a loop.
     /// </summary>
     /// <typeparam name="T">The type of source item to report progress on.</typeparam>
-    internal class ProgressReporter<T>
+    public class ProgressReporter<T>
     {
         private readonly Action<ProcessingStatus<T>> reportProgress;
 

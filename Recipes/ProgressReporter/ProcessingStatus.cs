@@ -22,7 +22,7 @@ namespace Spritely.Recipes
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #endif
 
-    internal class ProcessingStatus<T>
+    public class ProcessingStatus<T>
     {
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="ProcessingStatus{T}" /> is success.
