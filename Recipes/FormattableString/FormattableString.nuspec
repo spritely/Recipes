@@ -4,8 +4,8 @@
         <id>Spritely.Recipes.FormattableString</id>
         <version>$version$</version>
         <title>Spritely.Recipes.FormattableString</title>
-        <authors>Victor Robinson (package and modified source), Microsoft (original source)</authors>
-        <owners>Victor Robinson (package and modified source), Microsoft (original source)</owners>
+        <authors>Spritely Developers (package and modified source), Microsoft (original source)</authors>
+        <owners>Spritely Developers (package and modified source), Microsoft (original source)</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/dotnet/coreclr/blob/master/LICENSE.TXT</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
@@ -17,7 +17,7 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="FormattableString.cs" target="content\net45\.Spritely.Recipes\FormattableString.cs" />
-        <file src="FormattableStringFactory.cs" target="content\net45\.Spritely.Recipes\FormattableStringFactory.cs" />
+        <file src="FormattableString.cs" target="content\net45\.Spritely.Recipes\FromattableString\FormattableString.cs" />
+        <file src="FormattableStringFactory.cs" target="content\net45\.Spritely.Recipes\FromattableString\FormattableStringFactory.cs" />
     </files>
 </package>

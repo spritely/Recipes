@@ -1,28 +1,22 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.SecureStringJsonConverter</id>
+        <id>Spritely.Recipes.Base64UrlExtensions</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.SecureStringJsonConverter</title>
+        <title>Spritely.Recipes.Base64UrlExtensions</title>
         <authors>Spritely Developers</authors>
         <owners>Spritely Developers</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Newtonsoft.Json JsonConvert that can convert to/from SecureString types.</summary>
+        <summary>Base64Url Encode and Decode recipe.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2016</copyright>
-        <tags>Spritely Recipes SecureString JsonConverter</tags>
-        <dependencies>
-            <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.SecureString" version="0.2.6" />
-                <dependency id="Newtonsoft.Json" version="8.0.3" />
-            </group>
-        </dependencies>
+        <tags>Spritely Recipes Base64Url encode decode</tags>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="SecureStringJsonConverter.cs" target="content\net45\.Spritely.Recipes\SecureStringJsonConverter\SecureStringJsonConverter.cs" />
+        <file src="Base64UrlExtensions.cs" target="content\net45\.Spritely.Recipes\Base64UrlExtensions\Base64UrlExtensions.cs" />
     </files>
 </package>

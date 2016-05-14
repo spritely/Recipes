@@ -8,7 +8,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Spritely.Recipes
+namespace $rootnamespace$
 {
     using System;
     using System.Collections.Generic;

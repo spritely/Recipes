@@ -16,14 +16,14 @@
         <tags>Spritely Recipes SecureString Json Configuration Config</tags>
         <dependencies>
             <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.SecureStringJsonConverter" version="0.3.0" />
-                <dependency id="Spritely.Recipes.InheritedTypeJsonConverter" version="0.5.0" />
+                <dependency id="Spritely.Recipes.SecureStringJsonConverter" version="0.3.1" />
+                <dependency id="Spritely.Recipes.InheritedTypeJsonConverter" version="0.5.1" />
                 <dependency id="Newtonsoft.Json" version="8.0.3" />
             </group>
         </dependencies>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="JsonConfiguration.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration.cs" />
+        <file src="JsonConfiguration.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration\JsonConfiguration.cs" />
     </files>
 </package>

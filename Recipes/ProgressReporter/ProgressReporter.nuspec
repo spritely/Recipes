@@ -4,20 +4,20 @@
         <id>Spritely.Recipes.ProgressReporter</id>
         <version>$version$</version>
         <title>Spritely.Recipes.ProgressReporter</title>
-        <authors>Victor Robinson</authors>
-        <owners>Victor Robinson</owners>
+        <authors>Spritely Developers</authors>
+        <owners>Spritely Developers</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>Recipe for looping over a set and reporting progress.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
-        <copyright>Copyright (C) 2015</copyright>
+        <copyright>Copyright (C) 2016</copyright>
         <tags>Spritely Recipes ProgressReporter progress status reporter reporting tracker tracking</tags>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="ProcessingStatus.cs" target="content\net45\.Spritely.Recipes\ProcessingStatus.cs" />
-        <file src="ProgressReporter.cs" target="content\net45\.Spritely.Recipes\ProgressReporter.cs" />
+        <file src="ProcessingStatus.cs" target="content\net45\.Spritely.Recipes\ProgressReporter\ProcessingStatus.cs" />
+        <file src="ProgressReporter.cs" target="content\net45\.Spritely.Recipes\ProgressReporter\ProgressReporter.cs" />
     </files>
 </package>

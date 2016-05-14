@@ -5,6 +5,7 @@
          <Word></Word>
       </Unrecognized>
       <Recognized>
+         <Word>Api</Word>
          <Word>Cqrs</Word>
          <Word>deserializes</Word>
       </Recognized>
