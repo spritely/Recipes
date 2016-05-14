@@ -17,7 +17,7 @@
         <dependencies>
             <group targetFramework="net450">
                 <dependency id="Spritely.Recipes.JsonWebToken" version="0.1.0" />
-                <dependency id="Spritely.Recipes.GoogleAuhorizer" version="0.1.0" />
+                <dependency id="Spritely.Recipes.GoogleAuthorizer" version="0.1.0" />
             </group>
         </dependencies>
         <developmentDependency>true</developmentDependency>
