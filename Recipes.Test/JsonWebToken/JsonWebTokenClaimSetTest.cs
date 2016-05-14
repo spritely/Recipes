@@ -18,6 +18,7 @@ namespace Spritely.Recipes.Test
     {
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "iss", Justification = "Name is designed to match name inside token.")]
         [Test]
         public void ToJavaScriptObject_sets_iss()
         {
@@ -30,6 +31,7 @@ namespace Spritely.Recipes.Test
             Assert.That(jsObject.iss, Is.EqualTo("My issuer"));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "aud", Justification = "Name is designed to match name inside token.")]
         [Test]
         public void ToJavaScriptObject_sets_aud()
         {
@@ -59,6 +61,7 @@ namespace Spritely.Recipes.Test
             Assert.That(jsObject.scope, Is.EqualTo("scope1 scope2 scope3"));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "iat", Justification = "Name is designed to match name inside token.")]
         [Test]
         public void ToJavaScriptObject_sets_iat()
         {
@@ -69,6 +72,7 @@ namespace Spritely.Recipes.Test
             Assert.That(jsObject.iat, Is.InRange(expectedSeconds - 2, expectedSeconds + 2));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "exp", Justification = "Name is designed to match name inside token.")]
         [Test]
         public void ToJavaScriptObject_sets_exp_for_1_hour_by_default()
         {
@@ -79,6 +83,7 @@ namespace Spritely.Recipes.Test
             Assert.That(jsObject.exp, Is.InRange(expectedSeconds - 2, expectedSeconds + 2));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "exp", Justification = "Name is designed to match name inside token.")]
         [Test]
         public void ToJavaScriptObject_sets_exp_for_specified_duration()
         {

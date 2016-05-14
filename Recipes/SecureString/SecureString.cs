@@ -26,10 +26,11 @@ namespace Spritely.Recipes
     internal static partial class SecureStringExtensions
     {
         /// <summary>
-        /// Converts the source string into a secure string.
+        /// Converts the source string into a secure string. Caller should dispose of the secure string appropriately.
         /// </summary>
         /// <param name="source">The source string.</param>
         /// <returns>A secure version of the source string.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Caller is expected to dispose of object.")]
         public static SecureString ToSecureString(this string source)
         {
             if (source == null)

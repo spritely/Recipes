@@ -25,7 +25,10 @@ namespace Spritely.Recipes.Test
             var accessToken = new JsonWebTokenAccessToken(token);
 
             Assert.Throws<ArgumentNullException>(() => ((null) as WebClient).AddAuthorizationHeader(accessToken));
-            Assert.Throws<ArgumentNullException>(() => (new WebClient()).AddAuthorizationHeader(null));
+            using (var webClient = new WebClient())
+            {
+                Assert.Throws<ArgumentNullException>(() => webClient.AddAuthorizationHeader(null));
+            }
         }
 
         [Test]
@@ -34,10 +37,14 @@ namespace Spritely.Recipes.Test
             var token = JsonConvert.DeserializeObject(@"{ ""access_token"": ""access_token"", ""token_type"": ""token_type"", ""expires_in"": 130.5 }");
             var accessToken = new JsonWebTokenAccessToken(token);
 
-            var webClient = new WebClient();
-            webClient.AddAuthorizationHeader(accessToken);
+            string authorizationHeader;
+            using (var webClient = new WebClient())
+            {
+                webClient.AddAuthorizationHeader(accessToken);
 
-            var authorizationHeader = webClient.Headers[HttpRequestHeader.Authorization];
+                authorizationHeader = webClient.Headers[HttpRequestHeader.Authorization];
+            }
+
             Assert.That(authorizationHeader, Is.Not.Null);
             Assert.That(authorizationHeader, Is.EqualTo("token_type access_token"));
         }

@@ -17,7 +17,7 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="ProcessingStatus.cs" target="content\net45\.Spritely.Recipes\ProgressReporter\ProcessingStatus.cs" />
-        <file src="ProgressReporter.cs" target="content\net45\.Spritely.Recipes\ProgressReporter\ProgressReporter.cs" />
+        <file src="ProcessingStatus.cs" target="content\net45\.Spritely.Recipes\ProgressReporter\ProcessingStatus.cs.pp" />
+        <file src="ProgressReporter.cs" target="content\net45\.Spritely.Recipes\ProgressReporter\ProgressReporter.cs.pp" />
     </files>
 </package>

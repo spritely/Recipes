@@ -16,12 +16,13 @@ namespace Spritely.Recipes.Test
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using NUnit.Framework;
-    
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Sha", Justification = "Name is designed to match algorithm name.")]
     [TestFixture]
     public class Sha256JsonWebTokenSignerTest
     {
         [Test]
-        public void Constructor_throws_on_null_agruments()
+        public void Constructor_throws_on_null_arguments()
         {
             Assert.Throws<ArgumentNullException>(() => new Sha256JsonWebTokenSigner(null));
         }
@@ -50,10 +51,12 @@ namespace Spritely.Recipes.Test
             var testSignData = Encoding.UTF8.GetBytes("Test sign me");
 
             var cspBlob = ((RSACryptoServiceProvider)certificate.PrivateKey).ExportCspBlob(true);
-            var cryptoServiceProvider = new RSACryptoServiceProvider();
-            cryptoServiceProvider.ImportCspBlob(cspBlob);
-            var expectedResults = cryptoServiceProvider.SignData(testSignData, "SHA256");
-
+            byte[] expectedResults;
+            using (var cryptoServiceProvider = new RSACryptoServiceProvider())
+            {
+                cryptoServiceProvider.ImportCspBlob(cspBlob);
+                expectedResults = cryptoServiceProvider.SignData(testSignData, "SHA256");
+            }
             var actualResults = signer.Sign(testSignData);
 
             Assert.That(actualResults, Is.EqualTo(expectedResults));

@@ -49,10 +49,12 @@ namespace Spritely.Recipes
         public byte[] Sign(byte[] data)
         {
             var cspBlob = ((RSACryptoServiceProvider)certificate.PrivateKey).ExportCspBlob(true);
-            var cryptoServiceProvider = new RSACryptoServiceProvider();
-            cryptoServiceProvider.ImportCspBlob(cspBlob);
-            var signatureBytes = cryptoServiceProvider.SignData(data, "SHA256");
-            return signatureBytes;
+            using (var cryptoServiceProvider = new RSACryptoServiceProvider())
+            {
+                cryptoServiceProvider.ImportCspBlob(cspBlob);
+                var signatureBytes = cryptoServiceProvider.SignData(data, "SHA256");
+                return signatureBytes;
+            }
         }
     }
 }
