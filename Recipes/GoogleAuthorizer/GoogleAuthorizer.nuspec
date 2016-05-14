@@ -14,13 +14,13 @@
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2016</copyright>
         <tags>Spritely Recipes JWT JSON web token Google client access</tags>
+        <dependencies>
+            <group targetFramework="net450">
+                <dependency id="Spritely.Recipes.JsonWebToken" version="0.1.0" />
+            </group>
+        </dependencies>
         <developmentDependency>true</developmentDependency>
     </metadata>
-    <dependencies>
-        <group targetFramework="net450">
-            <dependency id="Spritely.Recipes.JsonWebToken" version="0.1.0" />
-        </group>
-    </dependencies>
     <files>
         <file src="GoogleAuthorizer.cs" target="content\net45\.Spritely.Recipes\GoogleAuthorizer\GoogleAuthorizer.cs" />
         <file src="GoogleAuthorizerSettings.cs" target="content\net45\.Spritely.Recipes\GoogleAuthorizer\GoogleAuthorizerSettings.cs" />
