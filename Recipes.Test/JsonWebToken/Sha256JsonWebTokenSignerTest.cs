@@ -31,7 +31,7 @@ namespace Spritely.Recipes.Test
         public void Algorithm_is_set_to_RS256()
         {
             var certficateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestCertificate.pfx");
-            var certificate = new X509Certificate2(certficateFilePath);
+            var certificate = new X509Certificate2(certficateFilePath, "Test", X509KeyStorageFlags.Exportable);
             var signer = new Sha256JsonWebTokenSigner(certificate);
 
             Assert.That(signer.AlgorithmName, Is.EqualTo("RS256"));

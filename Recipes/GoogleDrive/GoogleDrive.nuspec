@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Spritely.Recipes.GoogleDrive</id>
+        <version>$version$</version>
+        <title>Spritely.Recipes.GoogleDrive</title>
+        <authors>Spritely Developers</authors>
+        <owners>Spritely Developers</owners>
+        <language>en-US</language>
+        <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/spritely/Recipes</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>GoogleDrive provides functionality to download csv files from spreadsheets to the local file system.</summary>
+        <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
+        <copyright>Copyright (C) 2016</copyright>
+        <tags>Spritely Recipes Google Drive client CSV downloader</tags>
+        <developmentDependency>true</developmentDependency>
+    </metadata>
+    <dependencies>
+        <group targetFramework="net450">
+            <dependency id="Spritely.Recipes.JsonWebToken" version="0.1.0" />
+            <dependency id="Spritely.Recipes.GoogleAuhorizer" version="0.1.0" />
+        </group>
+    </dependencies>
+    <files>
+        <file src="GoogleDrive.cs" target="content\net45\.Spritely.Recipes\GoogleDrive\GoogleDrive.cs" />
+    </files>
+</package>
