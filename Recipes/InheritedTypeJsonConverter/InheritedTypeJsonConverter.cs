@@ -25,7 +25,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// Significantly rewritten from original source at: http://StackOverflow.com/a/17247339/1442829
     /// --- This requires the base type it's used on to declare all of the types it might use... ---
-    /// Use KnownType Attribute to match a derived class based on the class given to the serializer
+    /// Use Bindable Attribute to match a derived class based on the class given to the serializer
     /// Selected class will be the first class to match all properties in the json object.
     /// </summary>
 #if !RecipesProject
