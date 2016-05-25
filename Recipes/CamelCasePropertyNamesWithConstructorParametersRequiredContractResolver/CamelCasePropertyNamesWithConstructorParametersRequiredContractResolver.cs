@@ -45,6 +45,14 @@ namespace Spritely.Recipes
         /// <inheritdoc />
         protected override JsonProperty CreatePropertyFromConstructorParameter(JsonProperty matchingMemberProperty, ParameterInfo parameterInfo)
         {
+            if (matchingMemberProperty == null)
+            {
+                string message = parameterInfo == null
+                                     ? "All constructor parameters are required; found one that is not specified in json"
+                                     : $"This constructor parameter is required, but not specified in json: {parameterInfo.Name}";
+                throw new JsonSerializationException(message);
+            }
+
             var property = base.CreatePropertyFromConstructorParameter(matchingMemberProperty, parameterInfo);
 
             if ((property != null) && (matchingMemberProperty != null))
