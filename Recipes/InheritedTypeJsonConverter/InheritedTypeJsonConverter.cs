@@ -95,6 +95,11 @@ namespace Spritely.Recipes
         /// </remarks>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                return null;
+            }
+
             var jsonObject = JObject.Load(reader);
             var childTypes = GetChildTypes(objectType).ToList();
 

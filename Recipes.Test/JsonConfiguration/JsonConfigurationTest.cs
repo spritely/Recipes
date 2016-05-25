@@ -300,6 +300,74 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Serializer_deserializes_type_with_no_constructor_that_has_a_property_that_is_an_inherited_type()
+        {
+            var dogDietJson = "{\"dog\":{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}, \"diet\":{}}";
+
+            var dogDiet = JsonConvert.DeserializeObject<DogDiet>(dogDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(dogDiet, Is.Not.Null);
+
+            Assert.That(dogDiet.Dog, Is.Not.Null);
+            Assert.That(dogDiet.Dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dogDiet.Dog.Age, Is.EqualTo(10));
+            Assert.That(dogDiet.Dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dogDiet.Dog.DogTag, Is.EqualTo("my name is Barney"));
+
+            Assert.That(dogDiet.Diet, Is.TypeOf<Atkins>());
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_no_constructor_that_has_a_property_that_is_an_inherited_type_and_is_null_in_json()
+        {
+            var dogDietJson = "{\"dog\":{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}, \"diet\":null}";
+
+            var dogDiet = JsonConvert.DeserializeObject<DogDiet>(dogDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(dogDiet, Is.Not.Null);
+
+            Assert.That(dogDiet.Dog, Is.Not.Null);
+            Assert.That(dogDiet.Dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dogDiet.Dog.Age, Is.EqualTo(10));
+            Assert.That(dogDiet.Dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dogDiet.Dog.DogTag, Is.EqualTo("my name is Barney"));
+
+            Assert.That(dogDiet.Diet, Is.Null);
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_constructor_that_has_a_property_that_is_an_inherited_type()
+        {
+            var catDietJson = "{\"cat\":{\"numberOfLives\":9,\"name\":\"Cleo\",\"age\":3}, \"diet\":{}}";
+            
+            var catDiet = JsonConvert.DeserializeObject<CatDiet>(catDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(catDiet, Is.Not.Null);
+            Assert.That(catDiet.Cat, Is.Not.Null);
+            Assert.That(catDiet.Cat.Name, Is.EqualTo("Cleo"));
+            Assert.That(catDiet.Cat.Age, Is.EqualTo(3));
+            Assert.That(catDiet.Cat.NumberOfLives, Is.EqualTo(9));
+
+            Assert.That(catDiet.Diet, Is.TypeOf<Atkins>());
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_constructor_that_has_a_property_that_is_an_inherited_type_and_is_null_in_json()
+        {
+            var catDietJson = "{\"cat\":{\"numberOfLives\":9,\"name\":\"Cleo\",\"age\":3}, \"diet\":null}";
+
+            var catDiet = JsonConvert.DeserializeObject<CatDiet>(catDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(catDiet, Is.Not.Null);
+            Assert.That(catDiet.Cat, Is.Not.Null);
+            Assert.That(catDiet.Cat.Name, Is.EqualTo("Cleo"));
+            Assert.That(catDiet.Cat.Age, Is.EqualTo(3));
+            Assert.That(catDiet.Cat.NumberOfLives, Is.EqualTo(9));
+
+            Assert.That(catDiet.Diet, Is.Null);
+        }
+
+        [Test]
         public void Serializer_deserializes_partial_InheritedTypes()
         {
             var serializedValue = "[" + Environment.NewLine +
@@ -501,6 +569,26 @@ namespace Spritely.Recipes.Test
             }
 
             public double MinOuncesOfFructose { get; }
+        }
+
+        private class DogDiet
+        {
+            public Dog Dog { get; set; }
+
+            public Diet Diet { get; set; }
+        }
+
+        private class CatDiet
+        {
+            public CatDiet(Cat cat, Diet diet)
+            {
+                this.Cat = cat;
+                this.Diet = diet;
+            }
+
+            public Cat Cat { get; }
+
+            public Diet Diet { get; }
         }
     }
 }
