@@ -13,7 +13,6 @@ namespace Spritely.Recipes
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
-    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     ///     Static container for common Json settings defaults.
@@ -38,7 +37,7 @@ namespace Spritely.Recipes
                 {
                     Formatting = Formatting.Indented,
                     NullValueHandling = NullValueHandling.Include,
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    ContractResolver = CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.Instance,
                     Converters = new List<JsonConverter>
                     {
                         new StringEnumConverter { CamelCaseText = true },
@@ -63,7 +62,7 @@ namespace Spritely.Recipes
                 {
                     Formatting = Formatting.None,
                     NullValueHandling = NullValueHandling.Ignore,
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    ContractResolver = CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.Instance,
                     Converters = new List<JsonConverter>
                     {
                         new StringEnumConverter { CamelCaseText = true },

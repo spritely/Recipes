@@ -151,6 +151,155 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Serializer_deserializes_inherited_types_with_constructors()
+        {
+            var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10,\"dogTag\":\"my name is Barney\"}";
+            var catJson = "{\"numberOfLives\":9,\"name\":\"Cleo\",\"age\":3}";
+            var tigerJson = "{\"tailLength\":2,\"name\":\"Ronny\",\"numberOfTeeth\":50,\"age\":5}";
+            var mouseJson = "{\"tailLength\":8,\"name\":\"Missy\",\"furColor\":\"black\",\"age\":7}";
+
+            var dog = JsonConvert.DeserializeObject<Animal>(dogJson, JsonConfiguration.DefaultSerializerSettings) as Dog;
+            var cat = JsonConvert.DeserializeObject<Animal>(catJson, JsonConfiguration.DefaultSerializerSettings) as Cat;
+            var tiger = JsonConvert.DeserializeObject<Animal>(tigerJson, JsonConfiguration.DefaultSerializerSettings) as Tiger;
+            var mouse = JsonConvert.DeserializeObject<Animal>(mouseJson, JsonConfiguration.DefaultSerializerSettings) as Mouse;
+
+            Assert.That(dog, Is.Not.Null);
+            Assert.That(dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dog.Age, Is.EqualTo(10));
+            Assert.That(dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dog.DogTag, Is.EqualTo("my name is Barney"));
+
+            Assert.That(cat, Is.Not.Null);
+            Assert.That(cat.Name, Is.EqualTo("Cleo"));
+            Assert.That(cat.Age, Is.EqualTo(3));
+            Assert.That(cat.NumberOfLives, Is.EqualTo(9));
+
+            Assert.That(tiger, Is.Not.Null);
+            Assert.That(tiger.Name, Is.EqualTo("Ronny"));
+            Assert.That(tiger.Age, Is.EqualTo(5));
+            Assert.That(tiger.TailLength, Is.EqualTo(2));
+            Assert.That(tiger.NumberOfTeeth, Is.EqualTo(50));
+
+            Assert.That(mouse, Is.Not.Null);
+            Assert.That(mouse.Name, Is.EqualTo("Missy"));
+            Assert.That(mouse.Age, Is.EqualTo(7));
+            Assert.That(mouse.TailLength, Is.EqualTo(8));
+            Assert.That(mouse.FurColor, Is.EqualTo(FurColor.Black));
+        }
+
+        [Test]
+        public void Serializer_deserializes_to_type_having_all_constructor_parameters_in_json_when_another_types_constructor_has_all_the_same_parameters_but_one_additional_one_which_is_not_in_the_json()
+        {
+            var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}";
+
+            var dog = JsonConvert.DeserializeObject<Animal>(dogJson, JsonConfiguration.DefaultSerializerSettings) as Dog;
+
+            Assert.That(dog, Is.Not.Null);
+            Assert.That(dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dog.Age, Is.EqualTo(10));
+            Assert.That(dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dog.DogTag, Is.EqualTo("my name is Barney"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types()
+        {
+            var json = "{\"base\":\"my base string\"}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<InheritedTypeBase>(json, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("InheritedType1"));
+            Assert.That(ex.Message, Does.Contain("InheritedType2"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_cannot_be_deserialized_into_any_child_types()
+        {
+            var json = "{\"none\":\"none\"}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(json, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_inherited_types_when_null_property_is_not_included_in_json()
+        {
+            var json = "{\"float\":.2,\"int32\":50}";
+
+            var inheritedType3 = JsonConvert.DeserializeObject<IBaseInterface>(json, JsonConfiguration.DefaultSerializerSettings) as InheritedType3;
+
+            Assert.That(inheritedType3, Is.Not.Null);
+            Assert.That(inheritedType3.Int32, Is.EqualTo(50));
+            Assert.That(inheritedType3.Float, Is.EqualTo(.2f));
+            Assert.That(inheritedType3.String, Is.Null);
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_property_has_been_removed_from_child_type()
+        {
+            var tigerJson = "{\"tailLength\":2,\"name\":\"Ronny\",\"numberOfTeeth\":50,\"age\":5, \"newProperty\":66}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(tigerJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_candidate_child_type_cannot_be_deserialized_because_property_type_in_json_does_not_match_childs_property_type()
+        {
+            // name was changed from string to object
+            var tigerJson = "{\"tailLength\":2,\"name\":{ \"first\":\"Ronny\",\"last\":\"Ronnerson\" },\"numberOfTeeth\":50,\"age\":5}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(tigerJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_empty_json_into_the_only_child_type_that_has_a_default_constructor()
+        {
+            var atkinsJson = "{}";
+
+            var atkins = JsonConvert.DeserializeObject<Diet>(atkinsJson, JsonConfiguration.DefaultSerializerSettings) as Atkins;
+
+            Assert.That(atkins, Is.Not.Null);
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_a_constructor_parameter_is_missing_in_json_and_that_parameter_is_a_property_on_the_child_type()
+        {
+            var catJson1 = "{\"numberOfLives\":9,\"name\":\"Cleo\"}";
+            var catJson2 = "{\"numberOfLives\":9,\"age\":3}";
+
+            var ex1 = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(catJson1, JsonConfiguration.DefaultSerializerSettings));
+            var ex2 = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(catJson2, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex1.Message, Does.Contain("Unable to deserialize"));
+            Assert.That(ex2.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_a_constructor_parameter_is_missing_in_json_and_that_parameter_is_not_a_property_on_the_child_type()
+        {
+            var fructoseJson = "{\"minOuncesOfFructose\":5}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Diet>(fructoseJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_constructor_parameter_is_in_json_but_type_has_no_corresponding_property()
+        {
+            var fructoseJson = "{\"minGramsOfFructose\":5}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Diet>(fructoseJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
         public void Serializer_deserializes_partial_InheritedTypes()
         {
             var serializedValue = "[" + Environment.NewLine +
@@ -237,6 +386,121 @@ namespace Spritely.Recipes.Test
             public int Int32 { get; set; }
 
             public string String { get; set; }
+        }
+
+        [Bindable(true)]
+        private class Animal
+        {
+            protected Animal(int age, string name)
+            {
+                this.Age = age;
+                this.Name = name;
+            }
+
+            public string Name;
+
+            public int Age { get; }
+        }
+
+        private enum FurColor
+        {
+            Black,
+
+            Brindle,
+
+            Golden
+        }
+
+        private class Dog : Animal
+        {
+            public Dog(int age, string name, FurColor furColor)
+                : base(age, name)
+            {
+                this.FurColor = furColor;
+                this.DogTag = "my name is " + name;
+            }
+
+            public FurColor FurColor { get; }
+
+            public string DogTag { get; }
+        }
+
+        private class Cat : Animal
+        {
+            public Cat(int age, string name, int numberOfLives)
+                : base(age, name)
+            {
+                this.NumberOfLives = numberOfLives;
+            }
+
+            public int NumberOfLives;
+        }
+
+        private class Mouse : Animal
+        {
+            public Mouse(int age, string name, FurColor furColor, int tailLength)
+                : base(age, name)
+            {
+                this.FurColor = furColor;
+                this.TailLength = tailLength;
+            }
+
+            public FurColor FurColor { get; }
+
+            public int TailLength;
+        }
+
+        private class Tiger : Animal
+        {
+            public Tiger(int age, string name, int numberOfTeeth, int tailLength)
+                : base(age, name)
+            {
+                this.NumberOfTeeth = numberOfTeeth;
+                this.TailLength = tailLength;
+            }
+
+            public int NumberOfTeeth { get; }
+
+            public int TailLength;
+        }
+
+        [Bindable(true)]
+        private class Diet
+        {
+        }
+
+        private class Atkins : Diet
+        {
+        }
+
+        private class LowCalorie : Diet
+        {
+            public LowCalorie(int maxCalories)
+            {
+                this.MaxCalories = maxCalories;
+            }
+
+            public int MaxCalories { get; }
+        }
+
+        private class Vegan : Diet
+        {
+            public Vegan(bool isHoneyAllowed)
+            {
+                this.IsHoneyAllowed = isHoneyAllowed;
+            }
+
+            public bool IsHoneyAllowed { get; }
+        }
+
+        private class HighFructose : Diet
+        {
+            public HighFructose(int minGramsOfFructose)
+            {
+                this.MinOuncesOfFructose = minGramsOfFructose * .035;
+            }
+
+            public double MinOuncesOfFructose { get; }
         }
     }
 }
