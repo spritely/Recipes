@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Spritely.Recipes.CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver</id>
+        <version>$version$</version>
+        <title>Spritely.Recipes.CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver</title>
+        <authors>Spritely Developers</authors>
+        <owners>Spritely Developers</owners>
+        <language>en-US</language>
+        <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/spritely/Recipes</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>Newtonsoft.Json ContractResolver that uses camel casing for property names and makes constructor parameters required.</summary>
+        <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
+        <copyright>Copyright (C) 2016</copyright>
+        <tags>Spritely Recipes contract resolver</tags>
+        <dependencies>
+            <group targetFramework="net450">
+                <dependency id="Newtonsoft.Json" version="8.0.3" />
+            </group>
+        </dependencies>
+        <developmentDependency>true</developmentDependency>
+    </metadata>
+    <files>
+        <file src="CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.cs" target="content\net45\.Spritely.Recipes\CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver\CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.cs" />
+    </files>
+</package>
