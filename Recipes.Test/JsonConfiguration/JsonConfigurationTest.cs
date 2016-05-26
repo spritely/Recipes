@@ -236,7 +236,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_throws_JsonSerializationException_when_property_has_been_removed_from_child_type()
+        public void Serializer_throws_JsonSerializationException_when_json_has_extra_properties_not_available_on_any_child_type()
         {
             var tigerJson = "{\"tailLength\":2,\"name\":\"Ronny\",\"numberOfTeeth\":50,\"age\":5, \"newProperty\":66}";
 

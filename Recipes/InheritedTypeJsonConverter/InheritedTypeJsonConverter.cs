@@ -64,19 +64,19 @@ namespace Spritely.Recipes
         ///     ignore exceptions when attempting to deserialize.
         ///   - If more than one candidate successfully deserializes, then throw.
         /// - Using the serializer to deserialize enables the method to support types with constructors,
-        ///   which JSON.net does well out-of-the-box and which would be consumbersome to emulate.
+        ///   which JSON.net does well out-of-the-box and which would be cumbersome to emulate.
         /// - This method does not consider > 1st level JSON properties to determine candidates.  In other words,
         ///   it is not matching on the fields/properties of the child's fields/properties (e.g. the match is done 
         ///   on Dog.Owner, not Dog.Owner.OwnersAddress).  The issue is that that kind of matching would require
         ///   complex logic.  For example, Strings have properties such as Length which would need to be ignored 
-        ///   when reflecting.  Similarly, all fields/properites of value-types would need to be ignored.  There 
+        ///   when reflecting.  Similarly, all fields/properties of value-types would need to be ignored.  There 
         ///   are likely other corner-cases.  To keep things simple, if the 1st level properties match the type's
         ///   properties and fields, by name, we hand-off the problem to the serializer and let it throw if
         ///   there is some incompatability deep in the field/property hierarchy.
         /// - This method does not consider the type of objects containted within JSON arrays to determine
         ///   candidates.  This is difficult because JSON arrays can contain a mix of types (just likes .net 
         ///   objects) and every element would have to be deserialized and matched against the child's IEnumerable
-        ///   type and undoubtedly complexity would arrise from dealing with generics and the vast implementations
+        ///   type and undoubtedly complexity would arise from dealing with generics and the vast implementations
         ///   of IEnumerable.  Like the bullet above, we simply hand-off the problem to the serializer.
         /// - If properties or fields are removed from a child type after it has been serialized, then the JSON
         ///   will not deserialize properly because that child type will no longer be a candidate.  If, however,
@@ -84,9 +84,9 @@ namespace Spritely.Recipes
         ///   candidate for the serialized JSON.
         /// - If the user serializes private or internal fields/properties, then this method will not work because
         ///   it only looks for public fields/properties.  We cannot bank on the JSON having been serialized by
-        ///   the same serialized passed to this method.  Even if we could, the serializer is so highly 
+        ///   the same serializer passed to this method.  Even if we could, the serializer is so highly 
         ///   configurable that it would be difficult to determine whether or which internal or private fields
-        ///   or properites are serialized.
+        ///   or properties are serialized.
         /// - It's OK if the JSON is serialized with NullValueHandling.Ignore because the candidate filter tries
         ///   to find all JSON properties in child type's properties/fields, and not vice-versa.  However, depending
         ///   on how permissive the serializer's Contract Resolver is, those candidates may or may not be able to
@@ -101,7 +101,7 @@ namespace Spritely.Recipes
             }
 
             var jsonObject = JObject.Load(reader);
-            var childTypes = GetChildTypes(objectType).ToList();
+            var childTypes = GetChildTypes(objectType);
 
             var jsonProperties = GetProperties(jsonObject);
             var candidateChildTypes = new List<Type>();
@@ -118,7 +118,7 @@ namespace Spritely.Recipes
                 }
             }
 
-            var deserizliedObjects = new List<object>();
+            var deserializedObjects = new List<object>();
             foreach (var candidateChildType in candidateChildTypes)
             {
                 try
@@ -126,7 +126,7 @@ namespace Spritely.Recipes
                     var deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType);
                     if (deserializedObject != null)
                     {
-                        deserizliedObjects.Add(deserializedObject);
+                        deserializedObjects.Add(deserializedObject);
                     }
                 }
                 catch (JsonException)
@@ -134,22 +134,22 @@ namespace Spritely.Recipes
                 }
             }
 
-            if (deserizliedObjects.Count == 0)
+            if (deserializedObjects.Count == 0)
             {
                 throw new JsonSerializationException(
                     string.Format(CultureInfo.InvariantCulture, "Unable to deserialize to type {0}, value: {1}", objectType, jsonObject));
             }
 
-            if (deserizliedObjects.Count > 1)
+            if (deserializedObjects.Count > 1)
             {
                 var matchingTypes =
-                    deserizliedObjects.Select(_ => _.GetType().Name)
+                    deserializedObjects.Select(_ => _.GetType().FullName)
                         .Aggregate((running, current) => running + " | " + current);
                 throw new JsonSerializationException(
                     string.Format(CultureInfo.InvariantCulture, "The json string can be deserialized into multiple types: {0}, value: {1}", matchingTypes, jsonObject));
             }
 
-            return deserizliedObjects.Single();
+            return deserializedObjects.Single();
         }
 
         /// <inheritdoc />
@@ -159,7 +159,7 @@ namespace Spritely.Recipes
             jsonObject.WriteTo(writer);
         }
 
-        private static List<string> GetProperties(JToken node)
+        private static IReadOnlyCollection<string> GetProperties(JToken node)
         {
             var result = new List<string>();
 

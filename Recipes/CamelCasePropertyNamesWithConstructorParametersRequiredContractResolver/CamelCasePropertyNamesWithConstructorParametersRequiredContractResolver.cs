@@ -11,6 +11,7 @@
 namespace Spritely.Recipes
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
 
     using Newtonsoft.Json;
@@ -32,6 +33,9 @@ namespace Spritely.Recipes
     public class CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver
         : CamelCasePropertyNamesContractResolver
     {
+        private static readonly CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver ContractResolverInstance
+            = new CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver();
+
         /// <summary>
         /// As of 7.0.1, Json.NET suggests using a static instance for "stateless" contract resolvers, for performance reasons.
         /// <a href="http://www.newtonsoft.com/json/help/html/ContractResolver.htm"/>
@@ -40,7 +44,12 @@ namespace Spritely.Recipes
         /// Also, <a href="https://stackoverflow.com/questions/33557737/does-json-net-cache-types-serialization-information"/>
         /// </summary>
         public static CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver Instance
-            => new CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver();
+        {
+            get
+            {
+                return ContractResolverInstance;
+            }
+        }
 
         /// <inheritdoc />
         protected override JsonProperty CreatePropertyFromConstructorParameter(JsonProperty matchingMemberProperty, ParameterInfo parameterInfo)
@@ -49,20 +58,23 @@ namespace Spritely.Recipes
             {
                 string message = parameterInfo == null
                                      ? "All constructor parameters are required; found one that is not specified in json"
-                                     : $"This constructor parameter is required, but not specified in json: {parameterInfo.Name}";
+                                     : string.Format(
+                                         CultureInfo.InvariantCulture,
+                                         "This constructor parameter is required, but not specified in json: {0}",
+                                         parameterInfo.Name);
                 throw new JsonSerializationException(message);
             }
 
             var property = base.CreatePropertyFromConstructorParameter(matchingMemberProperty, parameterInfo);
 
-            if ((property != null) && (matchingMemberProperty != null))
+            if ((property != null)
             {
                 var required = matchingMemberProperty.Required;
                 if (required == Required.Default)
                 {
-                    if ((matchingMemberProperty.PropertyType != null) &&
+                    if (matchingMemberProperty.PropertyType != null &&
                         matchingMemberProperty.PropertyType.IsValueType &&
-                        (Nullable.GetUnderlyingType(matchingMemberProperty.PropertyType) == null))
+                        Nullable.GetUnderlyingType(matchingMemberProperty.PropertyType) == null)
                     {
                         required = Required.Always;
                     }

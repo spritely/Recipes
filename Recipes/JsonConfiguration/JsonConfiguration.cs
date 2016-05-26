@@ -13,6 +13,7 @@ namespace Spritely.Recipes
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     ///     Static container for common Json settings defaults.
@@ -61,8 +62,33 @@ namespace Spritely.Recipes
                 return new JsonSerializerSettings
                 {
                     Formatting = Formatting.None,
-                    NullValueHandling = NullValueHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Include,
                     ContractResolver = CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.Instance,
+                    Converters = new List<JsonConverter>
+                    {
+                        new StringEnumConverter { CamelCaseText = true },
+                        new SecureStringJsonConverter(),
+                        new InheritedTypeJsonConverter()
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the minimal JSON serialization settings.
+        /// </summary>
+        /// <value>
+        ///     The JSON serialization settings.
+        /// </value>
+        public static JsonSerializerSettings MinimalSerializerSettings
+        {
+            get
+            {
+                return new JsonSerializerSettings
+                {
+                    Formatting = Formatting.None,
+                    NullValueHandling = NullValueHandling.Ignore,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                     Converters = new List<JsonConverter>
                     {
                         new StringEnumConverter { CamelCaseText = true },
