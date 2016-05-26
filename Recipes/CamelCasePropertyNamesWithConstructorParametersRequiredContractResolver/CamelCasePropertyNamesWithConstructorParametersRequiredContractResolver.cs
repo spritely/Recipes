@@ -67,7 +67,7 @@ namespace Spritely.Recipes
 
             var property = base.CreatePropertyFromConstructorParameter(matchingMemberProperty, parameterInfo);
 
-            if ((property != null)
+            if (property != null)
             {
                 var required = matchingMemberProperty.Required;
                 if (required == Required.Default)
