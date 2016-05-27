@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver</id>
+        <id>Spritely.Recipes.CamelCaseNamesStrictConstructorContractResolver</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver</title>
+        <title>Spritely.Recipes.CamelCaseNamesStrictConstructorContractResolver</title>
         <authors>Spritely Developers</authors>
         <owners>Spritely Developers</owners>
         <language>en-US</language>
@@ -22,6 +22,6 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.cs" target="content\net45\.Spritely.Recipes\CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver\CamelCasePropertyNamesWithConstructorParametersRequiredContractResolver.cs" />
+        <file src="CamelCaseNamesStrictConstructorContractResolver.cs" target="content\net45\.Spritely.Recipes\CamelCaseNamesStrictConstructorContractResolver\CamelCaseNamesStrictConstructorContractResolver.cs" />
     </files>
 </package>

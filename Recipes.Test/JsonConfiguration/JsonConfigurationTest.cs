@@ -446,7 +446,7 @@ namespace Spritely.Recipes.Test
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
-            Justification = "Class is used, but is constructed via reflection and code analysis cannot detect that.")]
+            Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class InheritedType3 : IBaseInterface
         {
             public float Float { get; set; }
@@ -459,10 +459,11 @@ namespace Spritely.Recipes.Test
         [Bindable(true)]
         private class Animal
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Called during JSON deserialization but code analysis cannot detect that.")]
             protected Animal(int age, string name)
             {
-                this.Age = age;
-                this.Name = name;
+                Age = age;
+                Name = name;
             }
 
             public string Name;
@@ -479,13 +480,14 @@ namespace Spritely.Recipes.Test
             Golden
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Dog : Animal
         {
             public Dog(int age, string name, FurColor furColor)
                 : base(age, name)
             {
-                this.FurColor = furColor;
-                this.DogTag = "my name is " + name;
+                FurColor = furColor;
+                DogTag = "my name is " + name;
             }
 
             public FurColor FurColor { get; }
@@ -493,24 +495,26 @@ namespace Spritely.Recipes.Test
             public string DogTag { get; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Cat : Animal
         {
             public Cat(int age, string name, int numberOfLives)
                 : base(age, name)
             {
-                this.NumberOfLives = numberOfLives;
+                NumberOfLives = numberOfLives;
             }
 
             public int NumberOfLives;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Mouse : Animal
         {
             public Mouse(int age, string name, FurColor furColor, int tailLength)
                 : base(age, name)
             {
-                this.FurColor = furColor;
-                this.TailLength = tailLength;
+                FurColor = furColor;
+                TailLength = tailLength;
             }
 
             public FurColor FurColor { get; }
@@ -518,13 +522,14 @@ namespace Spritely.Recipes.Test
             public int TailLength;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Tiger : Animal
         {
             public Tiger(int age, string name, int numberOfTeeth, int tailLength)
                 : base(age, name)
             {
-                this.NumberOfTeeth = numberOfTeeth;
-                this.TailLength = tailLength;
+                NumberOfTeeth = numberOfTeeth;
+                TailLength = tailLength;
             }
 
             public int NumberOfTeeth { get; }
@@ -537,40 +542,45 @@ namespace Spritely.Recipes.Test
         {
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Atkins : Diet
         {
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class LowCalorie : Diet
         {
             public LowCalorie(int maxCalories)
             {
-                this.MaxCalories = maxCalories;
+                MaxCalories = maxCalories;
             }
 
             public int MaxCalories { get; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Vegan : Diet
         {
             public Vegan(bool isHoneyAllowed)
             {
-                this.IsHoneyAllowed = isHoneyAllowed;
+                IsHoneyAllowed = isHoneyAllowed;
             }
 
             public bool IsHoneyAllowed { get; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class HighFructose : Diet
         {
             public HighFructose(int minGramsOfFructose)
             {
-                this.MinOuncesOfFructose = minGramsOfFructose * .035;
+                MinOuncesOfFructose = minGramsOfFructose * .035;
             }
 
             public double MinOuncesOfFructose { get; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class DogDiet
         {
             public Dog Dog { get; set; }
@@ -578,12 +588,13 @@ namespace Spritely.Recipes.Test
             public Diet Diet { get; set; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class CatDiet
         {
             public CatDiet(Cat cat, Diet diet)
             {
-                this.Cat = cat;
-                this.Diet = diet;
+                Cat = cat;
+                Diet = diet;
             }
 
             public Cat Cat { get; }
