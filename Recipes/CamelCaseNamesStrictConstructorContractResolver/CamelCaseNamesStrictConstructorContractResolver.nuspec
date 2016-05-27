@@ -1,30 +1,27 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.JsonConfiguration</id>
+        <id>Spritely.Recipes.CamelCaseNamesStrictConstructorContractResolver</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.JsonConfiguration</title>
+        <title>Spritely.Recipes.CamelCaseNamesStrictConstructorContractResolver</title>
         <authors>Spritely Developers</authors>
         <owners>Spritely Developers</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Newtonsoft.Json common Json Configuration settings using camelCasing instead of PascalCasing and can convert to/from SecureString types.</summary>
+        <summary>Newtonsoft.Json ContractResolver that uses camel casing for property names and makes constructor parameters required.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2016</copyright>
-        <tags>Spritely Recipes SecureString Json Configuration Config</tags>
+        <tags>Spritely Recipes contract resolver</tags>
         <dependencies>
             <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.SecureStringJsonConverter" version="0.3.1" />
-                <dependency id="Spritely.Recipes.InheritedTypeJsonConverter" version="0.5.1" />
-                <dependency id="Spritely.Recipes.CamelCaseNamesStrictConstructorContractResolver" version="0.1.0" />
                 <dependency id="Newtonsoft.Json" version="8.0.3" />
             </group>
         </dependencies>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="JsonConfiguration.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration\JsonConfiguration.cs" />
+        <file src="CamelCaseNamesStrictConstructorContractResolver.cs" target="content\net45\.Spritely.Recipes\CamelCaseNamesStrictConstructorContractResolver\CamelCaseNamesStrictConstructorContractResolver.cs" />
     </files>
 </package>

@@ -2,7 +2,7 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.13.0.{build}
+version: 0.14.0.{build}
 
 os: Visual Studio 2015
 
@@ -11,8 +11,9 @@ environment:
   version_functional: 0.2.5
   version_securestring: 0.2.6
   version_securestringjsonconverter: 0.3.1
-  version_inheritedtypejsonconverter: 0.5.1
-  version_jsonconfiguration: 0.9.0
+  version_inheritedtypejsonconverter: 0.6.0
+  version_camelcasenamesstrictconstructorresolver: 0.1.0
+  version_jsonconfiguration: 0.10.0
   version_formattablestring: 0.1.4
   version_progressreporter: 0.2.0
   version_base64urlextensions: 0.1.0
@@ -56,6 +57,8 @@ after_test:
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.SecureStringJsonConverter.%version_securestringjsonconverter%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\InheritedTypeJsonConverter\InheritedTypeJsonConverter.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\InheritedTypeJsonConverter" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_inheritedtypejsonconverter%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.InheritedTypeJsonConverter.%version_inheritedtypejsonconverter%.nupkg"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\CamelCaseNamesStrictConstructorContractResolver\CamelCaseNamesStrictConstructorContractResolver.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\CamelCaseNamesStrictConstructorContractResolver" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_camelcasenamesstrictconstructorresolver%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.CamelCaseNamesStrictConstructorContractResolver.%version_camelcasenamesstrictconstructorresolver%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\JsonConfiguration\JsonConfiguration.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\JsonConfiguration" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_jsonconfiguration%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.JsonConfiguration.%version_jsonconfiguration%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\FormattableString\FormattableString.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\FormattableString" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_formattablestring%" -OutputDirectory "%TEMP%"

@@ -151,6 +151,223 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Serializer_deserializes_inherited_types_with_constructors()
+        {
+            var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10,\"dogTag\":\"my name is Barney\"}";
+            var catJson = "{\"numberOfLives\":9,\"name\":\"Cleo\",\"age\":3}";
+            var tigerJson = "{\"tailLength\":2,\"name\":\"Ronny\",\"numberOfTeeth\":50,\"age\":5}";
+            var mouseJson = "{\"tailLength\":8,\"name\":\"Missy\",\"furColor\":\"black\",\"age\":7}";
+
+            var dog = JsonConvert.DeserializeObject<Animal>(dogJson, JsonConfiguration.DefaultSerializerSettings) as Dog;
+            var cat = JsonConvert.DeserializeObject<Animal>(catJson, JsonConfiguration.DefaultSerializerSettings) as Cat;
+            var tiger = JsonConvert.DeserializeObject<Animal>(tigerJson, JsonConfiguration.DefaultSerializerSettings) as Tiger;
+            var mouse = JsonConvert.DeserializeObject<Animal>(mouseJson, JsonConfiguration.DefaultSerializerSettings) as Mouse;
+
+            Assert.That(dog, Is.Not.Null);
+            Assert.That(dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dog.Age, Is.EqualTo(10));
+            Assert.That(dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dog.DogTag, Is.EqualTo("my name is Barney"));
+
+            Assert.That(cat, Is.Not.Null);
+            Assert.That(cat.Name, Is.EqualTo("Cleo"));
+            Assert.That(cat.Age, Is.EqualTo(3));
+            Assert.That(cat.NumberOfLives, Is.EqualTo(9));
+
+            Assert.That(tiger, Is.Not.Null);
+            Assert.That(tiger.Name, Is.EqualTo("Ronny"));
+            Assert.That(tiger.Age, Is.EqualTo(5));
+            Assert.That(tiger.TailLength, Is.EqualTo(2));
+            Assert.That(tiger.NumberOfTeeth, Is.EqualTo(50));
+
+            Assert.That(mouse, Is.Not.Null);
+            Assert.That(mouse.Name, Is.EqualTo("Missy"));
+            Assert.That(mouse.Age, Is.EqualTo(7));
+            Assert.That(mouse.TailLength, Is.EqualTo(8));
+            Assert.That(mouse.FurColor, Is.EqualTo(FurColor.Black));
+        }
+
+        [Test]
+        public void Serializer_deserializes_to_type_having_all_constructor_parameters_in_json_when_another_types_constructor_has_all_the_same_parameters_but_one_additional_one_which_is_not_in_the_json()
+        {
+            var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}";
+
+            var dog = JsonConvert.DeserializeObject<Animal>(dogJson, JsonConfiguration.DefaultSerializerSettings) as Dog;
+
+            Assert.That(dog, Is.Not.Null);
+            Assert.That(dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dog.Age, Is.EqualTo(10));
+            Assert.That(dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dog.DogTag, Is.EqualTo("my name is Barney"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types()
+        {
+            var json = "{\"base\":\"my base string\"}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<InheritedTypeBase>(json, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("InheritedType1"));
+            Assert.That(ex.Message, Does.Contain("InheritedType2"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_cannot_be_deserialized_into_any_child_types()
+        {
+            var json = "{\"none\":\"none\"}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(json, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_inherited_types_when_null_property_is_not_included_in_json()
+        {
+            var json = "{\"float\":.2,\"int32\":50}";
+
+            var inheritedType3 = JsonConvert.DeserializeObject<IBaseInterface>(json, JsonConfiguration.DefaultSerializerSettings) as InheritedType3;
+
+            Assert.That(inheritedType3, Is.Not.Null);
+            Assert.That(inheritedType3.Int32, Is.EqualTo(50));
+            Assert.That(inheritedType3.Float, Is.EqualTo(.2f));
+            Assert.That(inheritedType3.String, Is.Null);
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_has_extra_properties_not_available_on_any_child_type()
+        {
+            var tigerJson = "{\"tailLength\":2,\"name\":\"Ronny\",\"numberOfTeeth\":50,\"age\":5, \"newProperty\":66}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(tigerJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_candidate_child_type_cannot_be_deserialized_because_property_type_in_json_does_not_match_childs_property_type()
+        {
+            // name was changed from string to object
+            var tigerJson = "{\"tailLength\":2,\"name\":{ \"first\":\"Ronny\",\"last\":\"Ronnerson\" },\"numberOfTeeth\":50,\"age\":5}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(tigerJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_empty_json_into_the_only_child_type_that_has_a_default_constructor()
+        {
+            var atkinsJson = "{}";
+
+            var atkins = JsonConvert.DeserializeObject<Diet>(atkinsJson, JsonConfiguration.DefaultSerializerSettings) as Atkins;
+
+            Assert.That(atkins, Is.Not.Null);
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_a_constructor_parameter_is_missing_in_json_and_that_parameter_is_a_property_on_the_child_type()
+        {
+            var catJson1 = "{\"numberOfLives\":9,\"name\":\"Cleo\"}";
+            var catJson2 = "{\"numberOfLives\":9,\"age\":3}";
+
+            var ex1 = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(catJson1, JsonConfiguration.DefaultSerializerSettings));
+            var ex2 = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Animal>(catJson2, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex1.Message, Does.Contain("Unable to deserialize"));
+            Assert.That(ex2.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_a_constructor_parameter_is_missing_in_json_and_that_parameter_is_not_a_property_on_the_child_type()
+        {
+            var fructoseJson = "{\"minOuncesOfFructose\":5}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Diet>(fructoseJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_constructor_parameter_is_in_json_but_type_has_no_corresponding_property()
+        {
+            var fructoseJson = "{\"minGramsOfFructose\":5}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Diet>(fructoseJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("Unable to deserialize"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_no_constructor_that_has_a_property_that_is_an_inherited_type()
+        {
+            var dogDietJson = "{\"dog\":{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}, \"diet\":{}}";
+
+            var dogDiet = JsonConvert.DeserializeObject<DogDiet>(dogDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(dogDiet, Is.Not.Null);
+
+            Assert.That(dogDiet.Dog, Is.Not.Null);
+            Assert.That(dogDiet.Dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dogDiet.Dog.Age, Is.EqualTo(10));
+            Assert.That(dogDiet.Dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dogDiet.Dog.DogTag, Is.EqualTo("my name is Barney"));
+
+            Assert.That(dogDiet.Diet, Is.TypeOf<Atkins>());
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_no_constructor_that_has_a_property_that_is_an_inherited_type_and_is_null_in_json()
+        {
+            var dogDietJson = "{\"dog\":{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}, \"diet\":null}";
+
+            var dogDiet = JsonConvert.DeserializeObject<DogDiet>(dogDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(dogDiet, Is.Not.Null);
+
+            Assert.That(dogDiet.Dog, Is.Not.Null);
+            Assert.That(dogDiet.Dog.Name, Is.EqualTo("Barney"));
+            Assert.That(dogDiet.Dog.Age, Is.EqualTo(10));
+            Assert.That(dogDiet.Dog.FurColor, Is.EqualTo(FurColor.Brindle));
+            Assert.That(dogDiet.Dog.DogTag, Is.EqualTo("my name is Barney"));
+
+            Assert.That(dogDiet.Diet, Is.Null);
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_constructor_that_has_a_property_that_is_an_inherited_type()
+        {
+            var catDietJson = "{\"cat\":{\"numberOfLives\":9,\"name\":\"Cleo\",\"age\":3}, \"diet\":{}}";
+            
+            var catDiet = JsonConvert.DeserializeObject<CatDiet>(catDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(catDiet, Is.Not.Null);
+            Assert.That(catDiet.Cat, Is.Not.Null);
+            Assert.That(catDiet.Cat.Name, Is.EqualTo("Cleo"));
+            Assert.That(catDiet.Cat.Age, Is.EqualTo(3));
+            Assert.That(catDiet.Cat.NumberOfLives, Is.EqualTo(9));
+
+            Assert.That(catDiet.Diet, Is.TypeOf<Atkins>());
+        }
+
+        [Test]
+        public void Serializer_deserializes_type_with_constructor_that_has_a_property_that_is_an_inherited_type_and_is_null_in_json()
+        {
+            var catDietJson = "{\"cat\":{\"numberOfLives\":9,\"name\":\"Cleo\",\"age\":3}, \"diet\":null}";
+
+            var catDiet = JsonConvert.DeserializeObject<CatDiet>(catDietJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(catDiet, Is.Not.Null);
+            Assert.That(catDiet.Cat, Is.Not.Null);
+            Assert.That(catDiet.Cat.Name, Is.EqualTo("Cleo"));
+            Assert.That(catDiet.Cat.Age, Is.EqualTo(3));
+            Assert.That(catDiet.Cat.NumberOfLives, Is.EqualTo(9));
+
+            Assert.That(catDiet.Diet, Is.Null);
+        }
+
+        [Test]
         public void Serializer_deserializes_partial_InheritedTypes()
         {
             var serializedValue = "[" + Environment.NewLine +
@@ -229,7 +446,7 @@ namespace Spritely.Recipes.Test
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
-            Justification = "Class is used, but is constructed via reflection and code analysis cannot detect that.")]
+            Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class InheritedType3 : IBaseInterface
         {
             public float Float { get; set; }
@@ -237,6 +454,152 @@ namespace Spritely.Recipes.Test
             public int Int32 { get; set; }
 
             public string String { get; set; }
+        }
+
+        [Bindable(true)]
+        private class Animal
+        {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Called during JSON deserialization but code analysis cannot detect that.")]
+            protected Animal(int age, string name)
+            {
+                Age = age;
+                Name = name;
+            }
+
+            public string Name;
+
+            public int Age { get; }
+        }
+
+        private enum FurColor
+        {
+            Black,
+
+            Brindle,
+
+            Golden
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Dog : Animal
+        {
+            public Dog(int age, string name, FurColor furColor)
+                : base(age, name)
+            {
+                FurColor = furColor;
+                DogTag = "my name is " + name;
+            }
+
+            public FurColor FurColor { get; }
+
+            public string DogTag { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Cat : Animal
+        {
+            public Cat(int age, string name, int numberOfLives)
+                : base(age, name)
+            {
+                NumberOfLives = numberOfLives;
+            }
+
+            public int NumberOfLives;
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Mouse : Animal
+        {
+            public Mouse(int age, string name, FurColor furColor, int tailLength)
+                : base(age, name)
+            {
+                FurColor = furColor;
+                TailLength = tailLength;
+            }
+
+            public FurColor FurColor { get; }
+
+            public int TailLength;
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Tiger : Animal
+        {
+            public Tiger(int age, string name, int numberOfTeeth, int tailLength)
+                : base(age, name)
+            {
+                NumberOfTeeth = numberOfTeeth;
+                TailLength = tailLength;
+            }
+
+            public int NumberOfTeeth { get; }
+
+            public int TailLength;
+        }
+
+        [Bindable(true)]
+        private class Diet
+        {
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Atkins : Diet
+        {
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class LowCalorie : Diet
+        {
+            public LowCalorie(int maxCalories)
+            {
+                MaxCalories = maxCalories;
+            }
+
+            public int MaxCalories { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Vegan : Diet
+        {
+            public Vegan(bool isHoneyAllowed)
+            {
+                IsHoneyAllowed = isHoneyAllowed;
+            }
+
+            public bool IsHoneyAllowed { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class HighFructose : Diet
+        {
+            public HighFructose(int minGramsOfFructose)
+            {
+                MinOuncesOfFructose = minGramsOfFructose * .035;
+            }
+
+            public double MinOuncesOfFructose { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class DogDiet
+        {
+            public Dog Dog { get; set; }
+
+            public Diet Diet { get; set; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class CatDiet
+        {
+            public CatDiet(Cat cat, Diet diet)
+            {
+                Cat = cat;
+                Diet = diet;
+            }
+
+            public Cat Cat { get; }
+
+            public Diet Diet { get; }
         }
     }
 }
