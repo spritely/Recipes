@@ -151,6 +151,33 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Serializer_deserializes_partial_InheritedTypes()
+        {
+            var serializedValue = "[" + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"string\": \"My string\"," + Environment.NewLine +
+                                  "    \"int32\": 5" + Environment.NewLine +
+                                  "  }," + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"int32\": 55," + Environment.NewLine +
+                                  "    \"float\": 3.56" + Environment.NewLine +
+                                  "  }" + Environment.NewLine +
+                                  "]";
+
+            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(result.Length, Is.EqualTo(2));
+            Assert.That(result[0].String, Is.EqualTo("My string"));
+            Assert.That((result[0] as InheritedType3), Is.Not.Null);
+            Assert.That((result[0] as InheritedType3).Int32, Is.EqualTo(5));
+            Assert.That((result[0] as InheritedType3).Float, Is.EqualTo(default(float)));
+            Assert.That(result[1].String, Is.Null);
+            Assert.That((result[1] as InheritedType3), Is.Not.Null);
+            Assert.That((result[1] as InheritedType3).Int32, Is.EqualTo(55));
+            Assert.That(Math.Round((result[1] as InheritedType3).Float, 2), Is.EqualTo(Math.Round(3.56, 2)));
+        }
+
+        [Test]
         public void Serializer_deserializes_inherited_types_with_constructors()
         {
             var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10,\"dogTag\":\"my name is Barney\"}";
@@ -365,33 +392,6 @@ namespace Spritely.Recipes.Test
             Assert.That(catDiet.Cat.NumberOfLives, Is.EqualTo(9));
 
             Assert.That(catDiet.Diet, Is.Null);
-        }
-
-        [Test]
-        public void Serializer_deserializes_partial_InheritedTypes()
-        {
-            var serializedValue = "[" + Environment.NewLine +
-                                  "  {" + Environment.NewLine +
-                                  "    \"string\": \"My string\"," + Environment.NewLine +
-                                  "    \"int32\": 5" + Environment.NewLine +
-                                  "  }," + Environment.NewLine +
-                                  "  {" + Environment.NewLine +
-                                  "    \"int32\": 55," + Environment.NewLine +
-                                  "    \"float\": 3.56" + Environment.NewLine +
-                                  "  }" + Environment.NewLine +
-                                  "]";
-
-            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
-
-            Assert.That(result.Length, Is.EqualTo(2));
-            Assert.That(result[0].String, Is.EqualTo("My string"));
-            Assert.That((result[0] as InheritedType3), Is.Not.Null);
-            Assert.That((result[0] as InheritedType3).Int32, Is.EqualTo(5));
-            Assert.That((result[0] as InheritedType3).Float, Is.EqualTo(default(float)));
-            Assert.That(result[1].String, Is.Null);
-            Assert.That((result[1] as InheritedType3), Is.Not.Null);
-            Assert.That((result[1] as InheritedType3).Int32, Is.EqualTo(55));
-            Assert.That(Math.Round((result[1] as InheritedType3).Float, 2), Is.EqualTo(Math.Round(3.56, 2)));
         }
 
         private class CamelCasedPropertyTest
