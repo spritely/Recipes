@@ -113,8 +113,8 @@ namespace Spritely.Recipes
             var jsonObject = JObject.Load(reader);
             var childTypes = GetChildTypes(objectType);
 
-            var jsonProperties = GetProperties(jsonObject);
-            var candidateChildTypes = new List<Type>();
+            var jsonProperties = new HashSet<string>(GetProperties(jsonObject), StringComparer.OrdinalIgnoreCase);
+            var candidateChildTypes = new List<CandidateChildType>();
             foreach (var childType in childTypes)
             {
                 var childTypeProperties = childType.GetProperties().Select(t => t.Name).ToList();
@@ -124,19 +124,23 @@ namespace Spritely.Recipes
                     StringComparer.OrdinalIgnoreCase);
                 if (jsonProperties.All(p => childTypePropertiesAndFields.Contains(p)))
                 {
-                    candidateChildTypes.Add(childType);
+                    var candidateChildType = new CandidateChildType
+                    {
+                        Type = childType,
+                        PropertiesAndFields = childTypePropertiesAndFields
+                    };
+                    candidateChildTypes.Add(candidateChildType);
                 }
             }
 
-            var deserializedObjects = new List<object>();
             foreach (var candidateChildType in candidateChildTypes)
             {
                 try
                 {
-                    var deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType);
+                    var deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType.Type);
                     if (deserializedObject != null)
                     {
-                        deserializedObjects.Add(deserializedObject);
+                        candidateChildType.DeserializedObject = deserializedObject;
                     }
                 }
                 catch (JsonException)
@@ -144,22 +148,39 @@ namespace Spritely.Recipes
                 }
             }
 
-            if (deserializedObjects.Count == 0)
+            candidateChildTypes = candidateChildTypes.Where(c => c.DeserializedObject != null).ToList();
+            if (candidateChildTypes.Count == 0)
             {
                 throw new JsonSerializationException(
                     string.Format(CultureInfo.InvariantCulture, "Unable to deserialize to type {0}, value: {1}", objectType, jsonObject));
             }
 
-            if (deserializedObjects.Count > 1)
+            if (candidateChildTypes.Count > 1)
             {
-                var matchingTypes =
-                    deserializedObjects.Select(_ => _.GetType().FullName)
-                        .Aggregate((running, current) => running + " | " + current);
-                throw new JsonSerializationException(
-                    string.Format(CultureInfo.InvariantCulture, "The json string can be deserialized into multiple types: {0}, value: {1}", matchingTypes, jsonObject));
+                var strictCandidates =
+                    candidateChildTypes.Where(cct => cct.PropertiesAndFields.All(pf => jsonProperties.Contains(pf)))
+                        .ToList();
+
+                if (strictCandidates.Count == 1)
+                {
+                    candidateChildTypes = strictCandidates;
+                }
+                else
+                {
+                    if (strictCandidates.Count > 1)
+                    {
+                        candidateChildTypes = strictCandidates;
+                    }
+
+                    var matchingTypes =
+                        candidateChildTypes.Select(_ => _.Type.FullName)
+                            .Aggregate((running, current) => running + " | " + current);
+                    throw new JsonSerializationException(
+                        string.Format(CultureInfo.InvariantCulture, "The json string can be deserialized into multiple types: {0}, value: {1}", matchingTypes, jsonObject));
+                }                
             }
 
-            return deserializedObjects.Single();
+            return candidateChildTypes.Single().DeserializedObject;
         }
 
         /// <inheritdoc />
@@ -167,6 +188,15 @@ namespace Spritely.Recipes
         {
             var jsonObject = JObject.FromObject(value, serializer);
             jsonObject.WriteTo(writer);
+        }
+
+        private class CandidateChildType
+        {
+            public Type Type { get; set; }
+
+            public HashSet<string> PropertiesAndFields { get; set; }
+
+            public object DeserializedObject { get; set; }
         }
 
         private static IReadOnlyCollection<string> GetProperties(JToken node)

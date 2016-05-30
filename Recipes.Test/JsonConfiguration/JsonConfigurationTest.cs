@@ -229,14 +229,41 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types()
+        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types_and_lists_all_possible_child_types_when_none_strictly_match()
         {
-            var json = "{\"base\":\"my base string\"}";
+            var inheritedTypeJson = "{\"base\":\"my base string\"}";
 
-            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<InheritedTypeBase>(json, JsonConfiguration.DefaultSerializerSettings));
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<InheritedTypeBase>(inheritedTypeJson, JsonConfiguration.DefaultSerializerSettings));
 
             Assert.That(ex.Message, Does.Contain("InheritedType1"));
             Assert.That(ex.Message, Does.Contain("InheritedType2"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types_and_lists_only_strictly_matching_child_types_when_there_are_some_that_strictly_match()
+        {
+            var lightingJson = "{\"watts\":10, \"wattageEquivalent\":60}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Lighting>(lightingJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("CompactFluorescent"));
+            Assert.That(ex.Message, Does.Contain("Led"));
+            Assert.That(ex.Message, Does.Not.Contain("SmartLed"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_to_only_child_type_that_strictly_matches_json_when_json_can_deserialize_into_multiple_child_types()
+        {
+            var noLightingJson = "{}";
+            var incandescentJson = "{\"watts\":60}";
+
+            var noLighting = JsonConvert.DeserializeObject<Lighting>(noLightingJson, JsonConfiguration.DefaultSerializerSettings) as NoLighting;
+            var incandescent = JsonConvert.DeserializeObject<Lighting>(incandescentJson, JsonConfiguration.DefaultSerializerSettings) as Incandescent;
+
+            Assert.That(noLighting, Is.Not.Null);
+
+            Assert.That(incandescent, Is.Not.Null);
+            Assert.That(incandescent.Watts, Is.EqualTo(60));
         }
 
         [Test]
@@ -454,6 +481,43 @@ namespace Spritely.Recipes.Test
             public int Int32 { get; set; }
 
             public string String { get; set; }
+        }
+
+        [Bindable(true)]
+        private class Lighting
+        {
+        }
+
+        private class NoLighting : Lighting
+        {
+        }
+
+        private class Incandescent : Lighting
+        {
+            public int Watts { get; set; }
+        }
+
+        private class Led : Lighting
+        {
+            public int Watts { get; set; }
+
+            public int WattageEquivalent { get; set; }
+        }
+
+        private class SmartLed : Lighting
+        {
+            public int Watts { get; set; }
+
+            public int WattageEquivalent { get; set; }
+
+            public string Features { get; set; }
+        }
+
+        private class CompactFluorescent : Lighting
+        {
+            public int Watts { get; set; }
+
+            public int WattageEquivalent { get; set; }
         }
 
         [Bindable(true)]
