@@ -166,6 +166,45 @@ namespace Spritely.Recipes
             return result;
         }
 
+        private static void DeserializeCandidates(JsonSerializer serializer, JObject jsonObject, IEnumerable<CandidateChildType> candidateChildTypes)
+        {
+            candidateChildTypes = candidateChildTypes.ToList();
+            foreach (var candidateChildType in candidateChildTypes)
+            {
+                try
+                {
+                    var deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType.Type);
+                    if (deserializedObject != null)
+                    {
+                        candidateChildType.DeserializedObject = deserializedObject;
+                    }
+                }
+                catch (JsonException)
+                {
+                }
+            }
+        }
+
+        private static CandidateChildType SelectBestChildUsingStrictPropertyMatching(IEnumerable<CandidateChildType> candidateChildTypes, JObject jsonObject, HashSet<string> jsonProperties)
+        {
+            candidateChildTypes = candidateChildTypes.ToList();
+            var strictCandidates =
+                    candidateChildTypes.Where(cct => cct.PropertiesAndFields.All(pf => jsonProperties.Contains(pf)))
+                        .ToList();
+
+            if (strictCandidates.Count != 1)
+            {
+                var typesToReportInException = strictCandidates.Count == 0 ? candidateChildTypes : strictCandidates;
+                var matchingTypes =
+                    typesToReportInException.Select(_ => _.Type.FullName)
+                        .Aggregate((running, current) => running + " | " + current);
+                throw new JsonSerializationException(
+                    string.Format(CultureInfo.InvariantCulture, "The json string can be deserialized into multiple types: {0}, value: {1}", matchingTypes, jsonObject));
+            }
+
+            return strictCandidates.Single();
+        }
+
         private IEnumerable<Type> GetChildTypes(Type type)
         {
             if (!allChildTypes.ContainsKey(type))
@@ -218,45 +257,6 @@ namespace Spritely.Recipes
             }
 
             return candidateChildTypes;
-        }
-
-        private void DeserializeCandidates(JsonSerializer serializer, JObject jsonObject, IEnumerable<CandidateChildType> candidateChildTypes)
-        {
-            candidateChildTypes = candidateChildTypes.ToList();
-            foreach (var candidateChildType in candidateChildTypes)
-            {
-                try
-                {
-                    var deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType.Type);
-                    if (deserializedObject != null)
-                    {
-                        candidateChildType.DeserializedObject = deserializedObject;
-                    }
-                }
-                catch (JsonException)
-                {
-                }
-            }
-        }
-
-        private CandidateChildType SelectBestChildUsingStrictPropertyMatching(IEnumerable<CandidateChildType> candidateChildTypes, JObject jsonObject, HashSet<string> jsonProperties)
-        {
-            candidateChildTypes = candidateChildTypes.ToList();
-            var strictCandidates =
-                    candidateChildTypes.Where(cct => cct.PropertiesAndFields.All(pf => jsonProperties.Contains(pf)))
-                        .ToList();
-
-            if (strictCandidates.Count != 1)
-            {
-                var typesToReportInException = strictCandidates.Count == 0 ? candidateChildTypes : strictCandidates;
-                var matchingTypes =
-                    typesToReportInException.Select(_ => _.Type.FullName)
-                        .Aggregate((running, current) => running + " | " + current);
-                throw new JsonSerializationException(
-                    string.Format(CultureInfo.InvariantCulture, "The json string can be deserialized into multiple types: {0}, value: {1}", matchingTypes, jsonObject));
-            }
-
-            return strictCandidates.Single();
         }
     }
 }
