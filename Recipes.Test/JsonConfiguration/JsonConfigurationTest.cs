@@ -151,6 +151,33 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Serializer_deserializes_partial_InheritedTypes()
+        {
+            var serializedValue = "[" + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"string\": \"My string\"," + Environment.NewLine +
+                                  "    \"int32\": 5" + Environment.NewLine +
+                                  "  }," + Environment.NewLine +
+                                  "  {" + Environment.NewLine +
+                                  "    \"int32\": 55," + Environment.NewLine +
+                                  "    \"float\": 3.56" + Environment.NewLine +
+                                  "  }" + Environment.NewLine +
+                                  "]";
+
+            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(result.Length, Is.EqualTo(2));
+            Assert.That(result[0].String, Is.EqualTo("My string"));
+            Assert.That((result[0] as InheritedType3), Is.Not.Null);
+            Assert.That((result[0] as InheritedType3).Int32, Is.EqualTo(5));
+            Assert.That((result[0] as InheritedType3).Float, Is.EqualTo(default(float)));
+            Assert.That(result[1].String, Is.Null);
+            Assert.That((result[1] as InheritedType3), Is.Not.Null);
+            Assert.That((result[1] as InheritedType3).Int32, Is.EqualTo(55));
+            Assert.That(Math.Round((result[1] as InheritedType3).Float, 2), Is.EqualTo(Math.Round(3.56, 2)));
+        }
+
+        [Test]
         public void Serializer_deserializes_inherited_types_with_constructors()
         {
             var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10,\"dogTag\":\"my name is Barney\"}";
@@ -202,14 +229,41 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types()
+        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types_and_lists_all_possible_child_types_when_none_strictly_match()
         {
-            var json = "{\"base\":\"my base string\"}";
+            var inheritedTypeJson = "{\"base\":\"my base string\"}";
 
-            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<InheritedTypeBase>(json, JsonConfiguration.DefaultSerializerSettings));
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<InheritedTypeBase>(inheritedTypeJson, JsonConfiguration.DefaultSerializerSettings));
 
             Assert.That(ex.Message, Does.Contain("InheritedType1"));
             Assert.That(ex.Message, Does.Contain("InheritedType2"));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_json_deserializes_to_multiple_child_types_and_lists_only_strictly_matching_child_types_when_there_are_some_that_strictly_match()
+        {
+            var lightingJson = "{\"watts\":10, \"wattageEquivalent\":60}";
+
+            var ex = Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Lighting>(lightingJson, JsonConfiguration.DefaultSerializerSettings));
+
+            Assert.That(ex.Message, Does.Contain("CompactFluorescent"));
+            Assert.That(ex.Message, Does.Contain("Led"));
+            Assert.That(ex.Message, Does.Not.Contain("SmartLed"));
+        }
+
+        [Test]
+        public void Serializer_deserializes_to_only_child_type_that_strictly_matches_json_when_json_can_deserialize_into_multiple_child_types()
+        {
+            var noLightingJson = "{}";
+            var incandescentJson = "{\"watts\":60}";
+
+            var noLighting = JsonConvert.DeserializeObject<Lighting>(noLightingJson, JsonConfiguration.DefaultSerializerSettings) as NoLighting;
+            var incandescent = JsonConvert.DeserializeObject<Lighting>(incandescentJson, JsonConfiguration.DefaultSerializerSettings) as Incandescent;
+
+            Assert.That(noLighting, Is.Not.Null);
+
+            Assert.That(incandescent, Is.Not.Null);
+            Assert.That(incandescent.Watts, Is.EqualTo(60));
         }
 
         [Test]
@@ -367,33 +421,6 @@ namespace Spritely.Recipes.Test
             Assert.That(catDiet.Diet, Is.Null);
         }
 
-        [Test]
-        public void Serializer_deserializes_partial_InheritedTypes()
-        {
-            var serializedValue = "[" + Environment.NewLine +
-                                  "  {" + Environment.NewLine +
-                                  "    \"string\": \"My string\"," + Environment.NewLine +
-                                  "    \"int32\": 5" + Environment.NewLine +
-                                  "  }," + Environment.NewLine +
-                                  "  {" + Environment.NewLine +
-                                  "    \"int32\": 55," + Environment.NewLine +
-                                  "    \"float\": 3.56" + Environment.NewLine +
-                                  "  }" + Environment.NewLine +
-                                  "]";
-
-            var result = JsonConvert.DeserializeObject<IBaseInterface[]>(serializedValue, JsonConfiguration.DefaultSerializerSettings);
-
-            Assert.That(result.Length, Is.EqualTo(2));
-            Assert.That(result[0].String, Is.EqualTo("My string"));
-            Assert.That((result[0] as InheritedType3), Is.Not.Null);
-            Assert.That((result[0] as InheritedType3).Int32, Is.EqualTo(5));
-            Assert.That((result[0] as InheritedType3).Float, Is.EqualTo(default(float)));
-            Assert.That(result[1].String, Is.Null);
-            Assert.That((result[1] as InheritedType3), Is.Not.Null);
-            Assert.That((result[1] as InheritedType3).Int32, Is.EqualTo(55));
-            Assert.That(Math.Round((result[1] as InheritedType3).Float, 2), Is.EqualTo(Math.Round(3.56, 2)));
-        }
-
         private class CamelCasedPropertyTest
         {
             public string TestName;
@@ -446,7 +473,7 @@ namespace Spritely.Recipes.Test
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
-            Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class InheritedType3 : IBaseInterface
         {
             public float Float { get; set; }
@@ -454,6 +481,53 @@ namespace Spritely.Recipes.Test
             public int Int32 { get; set; }
 
             public string String { get; set; }
+        }
+
+        [Bindable(true)]
+        private class Lighting
+        {
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
+        private class NoLighting : Lighting
+        {
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
+        private class Incandescent : Lighting
+        {
+            public int Watts { get; set; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
+        private class Led : Lighting
+        {
+            public int Watts { get; set; }
+
+            public int WattageEquivalent { get; set; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
+        private class SmartLed : Lighting
+        {
+            public int Watts { get; set; }
+
+            public int WattageEquivalent { get; set; }
+
+            public string Features { get; set; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
+        private class CompactFluorescent : Lighting
+        {
+            public int Watts { get; set; }
+
+            public int WattageEquivalent { get; set; }
         }
 
         [Bindable(true)]
