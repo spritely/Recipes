@@ -61,8 +61,12 @@ namespace Spritely.Recipes
         ///     this filter are called 'candidates'.
         ///   - If there are no candidates, then throw.
         ///   - For all candidates, ask the serializer to deserialize the JSON as the candidate type.  Catch and 
-        ///     ignore exceptions when attempting to deserialize.
-        ///   - If more than one candidate successfully deserializes, then throw.
+        ///     ignore exceptions when attempting to deserialize.  If only one candidate successfully deserializes
+        ///     then return the deserialized object.
+        ///   - If more than one candidate successfully deserializes, then filter to candidates whose public 
+        ///     properites and fields are all 1st level JSON properties, using case-insensitive matching. We call
+        ///     this "strict matching."  If only one candidate has a strict match, return the corresponding
+        ///     deserialized object.  Otherwise, throw.
         /// - Using the serializer to deserialize enables the method to support types with constructors,
         ///   which JSON.net does well out-of-the-box and which would be cumbersome to emulate.
         /// - This method does not consider > 1st level JSON properties to determine candidates.  In other words,
