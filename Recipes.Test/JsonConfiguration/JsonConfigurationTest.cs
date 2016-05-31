@@ -473,7 +473,7 @@ namespace Spritely.Recipes.Test
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
-            Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class InheritedType3 : IBaseInterface
         {
             public float Float { get; set; }
@@ -488,15 +488,21 @@ namespace Spritely.Recipes.Test
         {
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class NoLighting : Lighting
         {
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class Incandescent : Lighting
         {
             public int Watts { get; set; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class Led : Lighting
         {
             public int Watts { get; set; }
@@ -504,6 +510,8 @@ namespace Spritely.Recipes.Test
             public int WattageEquivalent { get; set; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class SmartLed : Lighting
         {
             public int Watts { get; set; }
@@ -513,6 +521,8 @@ namespace Spritely.Recipes.Test
             public string Features { get; set; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Class is used via reflection and code analysis cannot detect that.")]
         private class CompactFluorescent : Lighting
         {
             public int Watts { get; set; }
