@@ -2,7 +2,7 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.16.1.{build}
+version: 0.17.0.{build}
 
 os: Visual Studio 2015
 
@@ -11,9 +11,9 @@ environment:
   version_functional: 0.2.5
   version_securestring: 0.2.6
   version_securestringjsonconverter: 0.3.1
-  version_inheritedtypejsonconverter: 0.7.0
-  version_camelstrictconstructorresolver: 0.1.0
-  version_jsonconfiguration: 0.12.1
+  version_inheritedtypejsonconverter: 0.7.1
+  version_camelstrictconstructorresolver: 0.2.0
+  version_jsonconfiguration: 0.13.0
   version_formattablestring: 0.1.4
   version_progressreporter: 0.2.0
   version_base64urlextensions: 0.1.0
