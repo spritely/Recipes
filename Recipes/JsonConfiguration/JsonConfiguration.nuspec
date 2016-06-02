@@ -25,6 +25,9 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
+        <file src="CompactJsonSerializer.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration\CompactJsonSerializer.cs" />
+        <file src="DefaultJsonSerializer.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration\DefaultJsonSerializer.cs" />
         <file src="JsonConfiguration.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration\JsonConfiguration.cs" />
+        <file src="MinimalJsonSerializer.cs" target="content\net45\.Spritely.Recipes\JsonConfiguration\MinimalJsonSerializer.cs" />
     </files>
 </package>
