@@ -50,7 +50,10 @@
     <Compile Include="GoogleAuthorizer\GoogleAuthorizer.cs" />
     <Compile Include="GoogleDrive\GoogleDrive.cs" />
     <Compile Include="InheritedTypeJsonConverter\InheritedTypeJsonConverter.cs" />
+    <Compile Include="JsonConfiguration\CompactJsonSerializer.cs" />
+    <Compile Include="JsonConfiguration\DefaultJsonSerializer.cs" />
     <Compile Include="JsonConfiguration\JsonConfiguration.cs" />
+    <Compile Include="JsonConfiguration\MinimalJsonSerializer.cs" />
     <Compile Include="JsonWebToken\Delegates.cs" />
     <Compile Include="JsonWebToken\IJsonWebTokenSigner.cs" />
     <Compile Include="JsonWebToken\JsonWebToken.cs" />

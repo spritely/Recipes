@@ -55,7 +55,10 @@
   <ItemGroup>
     <Compile Include="Base64UrlExtensions\Base64UrlExtensionsTest.cs" />
     <Compile Include="Functional\FunctionalTest.cs" />
+    <Compile Include="JsonConfiguration\CompactJsonSerializerTest.cs" />
+    <Compile Include="JsonConfiguration\DefaultJsonSerializerTest.cs" />
     <Compile Include="JsonConfiguration\JsonConfigurationTest.cs" />
+    <Compile Include="JsonConfiguration\MinimalJsonSerializerTest.cs" />
     <Compile Include="JsonWebToken\JsonWebTokenAccessTokenExtensionsTest.cs" />
     <Compile Include="JsonWebToken\Sha256JsonWebTokenSignerTest.cs" />
     <Compile Include="JsonWebToken\JsonWebTokenClaimSetTest.cs" />
