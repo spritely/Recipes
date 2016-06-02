@@ -58,6 +58,8 @@
     <Compile Include="JsonConfiguration\CompactJsonSerializerTest.cs" />
     <Compile Include="JsonConfiguration\DefaultJsonSerializerTest.cs" />
     <Compile Include="JsonConfiguration\JsonConfigurationTest.cs" />
+    <Compile Include="JsonConfiguration\Animal.cs" />
+    <Compile Include="JsonConfiguration\Lighting.cs" />
     <Compile Include="JsonConfiguration\MinimalJsonSerializerTest.cs" />
     <Compile Include="JsonWebToken\JsonWebTokenAccessTokenExtensionsTest.cs" />
     <Compile Include="JsonWebToken\Sha256JsonWebTokenSignerTest.cs" />

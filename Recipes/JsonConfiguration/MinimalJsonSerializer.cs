@@ -72,17 +72,5 @@ namespace Spritely.Recipes
             var result = JsonConvert.SerializeObject(value, JsonConfiguration.MinimalSerializerSettings);
             return result;
         }
-
-        /// <summary>
-        /// Serializes the specified object to a JSON string using a type.
-        /// </summary>
-        /// <param name="value">The object to serialize.</param>
-        /// <param name="type">The type of the value being serialized. This parameter is used when TypeNameHandling is Auto to write out the type name if the type of the value does not match. Specifing the type is optional.</param>
-        /// <returns>A JSON string representation of the object.</returns>
-        public static string SerializeObject(object value, Type type)
-        {
-            var result = JsonConvert.SerializeObject(value, type, JsonConfiguration.MinimalSerializerSettings);
-            return result;
-        }
     }
 }

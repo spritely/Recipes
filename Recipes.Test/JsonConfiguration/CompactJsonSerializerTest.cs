@@ -10,8 +10,6 @@
 
 namespace Spritely.Recipes.Test
 {
-    using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Newtonsoft.Json.Linq;
 
@@ -27,21 +25,11 @@ namespace Spritely.Recipes.Test
 
             var json = CompactJsonSerializer.SerializeObject(dog);
 
-            Assert.That(json, Is.EqualTo("{\"name\":\"spud\",\"furColor\":\"brindle\",\"dogTag\":null,\"age\":5}"));
+            Assert.That(json, Is.EqualTo("{\"name\":\"spud\",\"furColor\":\"brindle\",\"dogTag\":\"my name is spud\",\"nickname\":null,\"age\":5}"));
         }
 
         [Test]
-        public void SerializeObject_with_type_serializes_to_json_using_CompactSerializerSettings()
-        {
-            var dog = new Dog(5, "spud", FurColor.Brindle);
-
-            var json = CompactJsonSerializer.SerializeObject(dog, typeof(Animal));
-
-            Assert.That(json, Is.EqualTo("{\"name\":\"spud\",\"furColor\":\"brindle\",\"dogTag\":null,\"age\":5}"));
-        }
-
-        [Test]
-        public void DeserializeObject_generic_deserializes_json_using_CompactSerializerSettings()
+        public void DeserializeObjectOfT_deserializes_json_using_CompactSerializerSettings()
         {
             var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}";
 
@@ -51,7 +39,7 @@ namespace Spritely.Recipes.Test
             Assert.That(dog.Name, Is.EqualTo("Barney"));
             Assert.That(dog.Age, Is.EqualTo(10));
             Assert.That(dog.FurColor, Is.EqualTo(FurColor.Brindle));
-            Assert.That(dog.DogTag, Is.Null);
+            Assert.That(dog.DogTag, Is.EqualTo("my name is Barney"));
         }
 
         [Test]
@@ -65,7 +53,7 @@ namespace Spritely.Recipes.Test
             Assert.That(dog.Name, Is.EqualTo("Barney"));
             Assert.That(dog.Age, Is.EqualTo(10));
             Assert.That(dog.FurColor, Is.EqualTo(FurColor.Brindle));
-            Assert.That(dog.DogTag, Is.Null);
+            Assert.That(dog.DogTag, Is.EqualTo("my name is Barney"));
         }
 
         [Test]
@@ -79,59 +67,6 @@ namespace Spritely.Recipes.Test
             Assert.That(dog["name"].ToString(), Is.EqualTo("Barney"));
             Assert.That(dog["age"].ToString(), Is.EqualTo("10"));
             Assert.That(dog["furColor"].ToString(), Is.EqualTo("brindle"));
-        }
-
-        [Bindable(true)]
-        private class Animal
-        {
-            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Called during JSON deserialization but code analysis cannot detect that.")]
-            protected Animal(int age, string name)
-            {
-                Age = age;
-                Name = name;
-            }
-
-            public string Name;
-
-            public int Age { get; }
-        }
-
-        private enum FurColor
-        {
-            Black,
-
-            Brindle,
-
-            Golden
-        }
-
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
-        private class Dog : Animal
-        {
-            public Dog(int age, string name, FurColor furColor)
-                : base(age, name)
-            {
-                FurColor = furColor;
-            }
-
-            public FurColor FurColor { get; }
-
-            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Property is used via reflection and code analysis cannot detect that.")]
-            public string DogTag { get; set; }
-        }
-
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
-        private class Cat : Animal
-        {
-            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Constructor is used via reflection and code analysis cannot detect that.")]
-            public Cat(int age, string name, int numberOfLives)
-                : base(age, name)
-            {
-                NumberOfLives = numberOfLives;
-            }
-
-            [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Field is used via reflection and code analysis cannot detect that.")]
-            public int NumberOfLives;
-        }
+        }       
     }
 }
