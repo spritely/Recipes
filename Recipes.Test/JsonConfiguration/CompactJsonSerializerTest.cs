@@ -21,6 +21,7 @@ namespace Spritely.Recipes.Test
         [Test]
         public void SerializeObject_without_type_serializes_to_json_using_CompactSerializerSettings()
         {
+            // If Compact is being used then there should be no new lines
             var dog = new Dog(5, "spud", FurColor.Brindle);
 
             var json = CompactJsonSerializer.SerializeObject(dog);
@@ -31,6 +32,7 @@ namespace Spritely.Recipes.Test
         [Test]
         public void DeserializeObjectOfT_deserializes_json_using_CompactSerializerSettings()
         {
+            // If Compact is being used then strict constructor matching will result in a Dog and not a Mouse
             var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}";
 
             var dog = CompactJsonSerializer.DeserializeObject<Animal>(dogJson) as Dog;
@@ -45,6 +47,7 @@ namespace Spritely.Recipes.Test
         [Test]
         public void DeserializeObject_with_type_deserializes_json_using_CompactSerializerSettings()
         {
+            // If Compact is being used then strict constructor matching will result in a Dog and not a Mouse
             var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}";
 
             var dog = CompactJsonSerializer.DeserializeObject(dogJson, typeof(Animal)) as Dog;

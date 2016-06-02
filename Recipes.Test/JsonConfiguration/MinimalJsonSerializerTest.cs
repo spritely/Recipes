@@ -21,6 +21,7 @@ namespace Spritely.Recipes.Test
         [Test]
         public void SerializeObject_without_type_serializes_to_json_using_MinimalSerializerSettings()
         {
+            // If Minimal is being used then the null Nickname property won't be serialized
             var dog = new Dog(5, "spud", FurColor.Brindle);
 
             var json = MinimalJsonSerializer.SerializeObject(dog);
@@ -31,6 +32,8 @@ namespace Spritely.Recipes.Test
         [Test]
         public void DeserializeObjectOfT_deserializes_json_using_MinimalSerializerSettings()
         {
+            // If Minimal is being used then empty JSON string will deserialize into NoLighting
+            // otherwise, out-of-the-box json.net will create an anonymous object
             var lightingJson = "{}";
 
             var lighting = MinimalJsonSerializer.DeserializeObject<Lighting>(lightingJson) as NoLighting;
@@ -41,6 +44,8 @@ namespace Spritely.Recipes.Test
         [Test]
         public void DeserializeObject_with_type_deserializes_json_using_MinimalSerializerSettings()
         {
+            // If Minimal is being used then empty JSON string will deserialize into NoLighting
+            // otherwise, out-of-the-box json.net will create an anonymous object
             var lightingJson = "{}";
 
             var lighting = MinimalJsonSerializer.DeserializeObject(lightingJson, typeof(Lighting)) as NoLighting;

@@ -21,6 +21,7 @@ namespace Spritely.Recipes.Test
         [Test]
         public void SerializeObject_without_type_serializes_to_json_using_DefaultSerializerSettings()
         {
+            // If Default is being used then there should be new lines
             var dog = new Dog(5, "spud", FurColor.Brindle);
 
             var json = DefaultJsonSerializer.SerializeObject(dog);
@@ -31,6 +32,8 @@ namespace Spritely.Recipes.Test
         [Test]
         public void DeserializeObjectOfT_deserializes_json_using_DefaultSerializerSettings()
         {
+            // If Minimal is being used then empty JSON string will deserialize into NoLighting
+            // otherwise, out-of-the-box json.net will create an anonymous object
             var dogJson = "{\"name\":\"Barney\",\"furColor\":\"brindle\",\"age\":10}";
 
             var dog = DefaultJsonSerializer.DeserializeObject<Animal>(dogJson) as Dog;
