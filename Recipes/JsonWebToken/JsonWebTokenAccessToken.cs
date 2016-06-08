@@ -19,6 +19,7 @@ namespace Spritely.Recipes
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
 #endif
     internal class JsonWebTokenAccessToken
     {
@@ -59,4 +60,7 @@ namespace Spritely.Recipes
             ExpiresIn = TimeSpan.FromSeconds(Convert.ToDouble(token.expires_in));
         }
     }
+#if !RecipesProject
+#pragma warning restore 0436
+#endif
 }

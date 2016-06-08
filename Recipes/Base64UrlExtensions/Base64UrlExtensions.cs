@@ -20,6 +20,7 @@ namespace Spritely.Recipes
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
 #endif
     internal static class Base64UrlExtensions
     {
@@ -89,4 +90,7 @@ namespace Spritely.Recipes
             return padded;
         }
     }
+#if !RecipesProject
+#pragma warning restore 0436
+#endif
 }

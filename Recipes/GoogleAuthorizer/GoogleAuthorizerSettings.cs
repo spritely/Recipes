@@ -12,15 +12,15 @@ namespace Spritely.Recipes
 {
     using System.Security;
 
+    /// <summary>
+    /// Provides settings for a GoogleAuthorizer.
+    /// </summary>
 #if !RecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
 #endif
-
-    /// <summary>
-    /// Provides settings for a GoogleAuthorizer.
-    /// </summary>
     public class GoogleAuthorizerSettings
     {
         /// <summary>
@@ -43,4 +43,7 @@ namespace Spritely.Recipes
         /// </value>
         public string ServiceAccount { get; set; }
     }
+#if !RecipesProject
+#pragma warning restore 0436
+#endif
 }

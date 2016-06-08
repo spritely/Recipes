@@ -15,15 +15,15 @@ namespace Spritely.Recipes
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Responsible for authorizing access to Google APIs.
+    /// </summary>
 #if !RecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
 #endif
-
-    /// <summary>
-    /// Responsible for authorizing access to Google APIs.
-    /// </summary>
     internal class GoogleAuthorizer
     {
         private readonly Uri authorizeUri = new Uri("https://www.googleapis.com/oauth2/v3/token");
@@ -70,4 +70,7 @@ namespace Spritely.Recipes
             return result;
         }
     }
+#if !RecipesProject
+#pragma warning restore 0436
+#endif
 }

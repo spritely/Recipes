@@ -15,16 +15,16 @@ namespace $rootnamespace$
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
 
-#if !RecipesProject
-    [System.Diagnostics.DebuggerStepThrough]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
-#endif
-
     /// <summary>
     /// Object to report progress status on iterations through a loop.
     /// </summary>
     /// <typeparam name="T">The type of source item to report progress on.</typeparam>
+#if !RecipesProject
+    [System.Diagnostics.DebuggerStepThrough]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
+#endif
     public class ProgressReporter<T>
     {
         private readonly Action<ProcessingStatus<T>> reportProgress;
@@ -108,4 +108,7 @@ namespace $rootnamespace$
             }
         }
     }
+#if !RecipesProject
+#pragma warning restore 0436
+#endif
 }

@@ -16,7 +16,7 @@
         <tags>Spritely Recipes JWT JSON web token Google client access</tags>
         <dependencies>
             <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.JsonWebToken" version="0.1.0" />
+                <dependency id="Spritely.Recipes.JsonWebToken" version="0.1.1" />
             </group>
         </dependencies>
         <developmentDependency>true</developmentDependency>
