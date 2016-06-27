@@ -30,7 +30,7 @@ namespace Spritely.Recipes.Test
         [Test]
         public void Algorithm_is_set_to_RS256()
         {
-            var certficateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestCertificate.pfx");
+            var certficateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Certificates\\TestCertificate.pfx");
             var certificate = new X509Certificate2(certficateFilePath, "Test", X509KeyStorageFlags.Exportable);
             var signer = new Sha256JsonWebTokenSigner(certificate);
 
@@ -44,7 +44,7 @@ namespace Spritely.Recipes.Test
             // makecert -pe TestCertificate.cer -sv TestCertificate.pvk
             // Provide password "Test" in dialogs
             // pvk2pfx -pvk TestCertificate.pvk -pi Test -spc TestCertificate.cer -pfx TestCertificate.pfx
-            var certficateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestCertificate.pfx");
+            var certficateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Certificates\\TestCertificate.pfx");
             var certificate = new X509Certificate2(certficateFilePath, "Test", X509KeyStorageFlags.Exportable);
             var signer = new Sha256JsonWebTokenSigner(certificate);
 
