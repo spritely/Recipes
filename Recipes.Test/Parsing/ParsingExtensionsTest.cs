@@ -26,14 +26,14 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToBoolean_uses_default_value_for_unparsable_values()
+        public void ToBoolean_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToBoolean(defaultValue: true).Should().BeTrue();
             "different overload".ToBoolean(defaultValue: _ => true).Should().BeTrue();
         }
 
         [Test]
-        public void ToBoolean_uses_default_defaults_for_unparsable_values()
+        public void ToBoolean_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToBoolean().Should().BeFalse();
         }
@@ -46,7 +46,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToBoolean_passes_unparsable_value_to_continuation()
+        public void ToBoolean_passes_non_parsable_value_to_continuation()
         {
             var actual = string.Empty;
             "test this".ToBoolean(defaultValue: s =>
@@ -76,7 +76,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToByte_uses_default_value_for_unparsable_values()
+        public void ToByte_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToByte(defaultValue: 18).Should().Be(18);
             "different overload".ToByte(defaultValue: _ => 55).Should().Be(55);
@@ -85,10 +85,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToByte_uses_default_defaults_for_unparsable_values()
+        public void ToByte_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToByte().Should().Be(default(byte));
-            "unparsable".ToByte(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
+            "non_parsable".ToByte(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToByte_passes_unparsable_value_to_continuation()
+        public void ToByte_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -129,16 +129,16 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToChar_uses_default_value_for_unparsable_values()
+        public void ToChar_uses_default_value_for_non_parsable_values()
         {
             "too long".ToChar(defaultValue: 'a').Should().Be('a');
             "".ToChar(defaultValue: _ => 'b').Should().Be('b');
         }
 
         [Test]
-        public void ToChar_uses_default_defaults_for_unparsable_values()
+        public void ToChar_uses_default_defaults_for_non_parsable_values()
         {
-            "unparsable".ToChar().Should().Be(default(char));
+            "non_parsable".ToChar().Should().Be(default(char));
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToChar_passes_unparsable_value_to_continuation()
+        public void ToChar_passes_non_parsable_value_to_continuation()
         {
             var actual = string.Empty;
             "wee".ToChar(s =>
@@ -182,7 +182,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDateTime_uses_default_value_for_unparsable_values()
+        public void ToDateTime_uses_default_value_for_non_parsable_values()
         {
             var expected = DateTime.UtcNow;
             "not parsable".ToDateTime(defaultValue: expected).Should().Be(expected);
@@ -192,10 +192,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDateTime_uses_default_defaults_for_unparsable_values()
+        public void ToDateTime_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToDateTime().Should().Be(default(DateTime));
-            "unparsable".ToDateTime(DateTimeStyles.None, CultureInfo.InvariantCulture).Should().Be(default(DateTime));
+            "non_parsable".ToDateTime(DateTimeStyles.None, CultureInfo.InvariantCulture).Should().Be(default(DateTime));
         }
 
         [Test]
@@ -210,7 +210,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDateTime_passes_unparsable_value_to_continuation()
+        public void ToDateTime_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -247,7 +247,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDecimal_uses_default_value_for_unparsable_values()
+        public void ToDecimal_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToDecimal(defaultValue: 18.5m).Should().Be(18.5m);
             "different overload".ToDecimal(defaultValue: _ => -500m).Should().Be(-500m);
@@ -256,10 +256,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDecimal_uses_default_defaults_for_unparsable_values()
+        public void ToDecimal_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToDecimal().Should().Be(default(decimal));
-            "unparsable".ToDecimal(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0m);
+            "non_parsable".ToDecimal(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0m);
         }
 
         [Test]
@@ -273,7 +273,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDecimal_passes_unparsable_value_to_continuation()
+        public void ToDecimal_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -310,7 +310,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDouble_uses_default_value_for_unparsable_values()
+        public void ToDouble_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToDouble(defaultValue: 18.5).Should().Be(18.5);
             "different overload".ToDouble(defaultValue: _ => -500).Should().Be(-500);
@@ -319,10 +319,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDouble_uses_default_defaults_for_unparsable_values()
+        public void ToDouble_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToDouble().Should().Be(default(double));
-            "unparsable".ToDouble(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0.0);
+            "non_parsable".ToDouble(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0.0);
         }
 
         [Test]
@@ -336,7 +336,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToDouble_passes_unparsable_value_to_continuation()
+        public void ToDouble_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -373,7 +373,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt16_uses_default_value_for_unparsable_values()
+        public void ToInt16_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToInt16(defaultValue: 18).Should().Be(18);
             "different overload".ToInt16(defaultValue: _ => -55).Should().Be(-55);
@@ -382,10 +382,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt16_uses_default_defaults_for_unparsable_values()
+        public void ToInt16_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToInt16().Should().Be(default(short));
-            "unparsable".ToInt16(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
+            "non_parsable".ToInt16(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
         }
 
         [Test]
@@ -399,7 +399,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt16_passes_unparsable_value_to_continuation()
+        public void ToInt16_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -436,7 +436,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt32_uses_default_value_for_unparsable_values()
+        public void ToInt32_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToInt32(defaultValue: 18).Should().Be(18);
             "different overload".ToInt32(defaultValue: _ => -55).Should().Be(-55);
@@ -445,10 +445,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt32_uses_default_defaults_for_unparsable_values()
+        public void ToInt32_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToInt32().Should().Be(default(int));
-            "unparsable".ToInt32(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
+            "non_parsable".ToInt32(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
         }
 
         [Test]
@@ -462,7 +462,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt32_passes_unparsable_value_to_continuation()
+        public void ToInt32_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -499,7 +499,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt64_uses_default_value_for_unparsable_values()
+        public void ToInt64_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToInt64(defaultValue: 18).Should().Be(18);
             "different overload".ToInt64(defaultValue: _ => -55).Should().Be(-55);
@@ -508,10 +508,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt64_uses_default_defaults_for_unparsable_values()
+        public void ToInt64_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToInt64().Should().Be(default(long));
-            "unparsable".ToInt64(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
+            "non_parsable".ToInt64(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
         }
 
         [Test]
@@ -525,7 +525,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToInt64_passes_unparsable_value_to_continuation()
+        public void ToInt64_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -562,7 +562,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToSByte_uses_default_value_for_unparsable_values()
+        public void ToSByte_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToSByte(defaultValue: 127).Should().Be(127);
             "255".ToSByte(defaultValue: _ => -55).Should().Be(-55);
@@ -571,10 +571,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToSByte_uses_default_defaults_for_unparsable_values()
+        public void ToSByte_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToSByte().Should().Be(default(sbyte));
-            "unparsable".ToSByte(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
+            "non_parsable".ToSByte(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
         }
 
         [Test]
@@ -588,7 +588,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToSByte_passes_unparsable_value_to_continuation()
+        public void ToSByte_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -625,7 +625,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToSingle_uses_default_value_for_unparsable_values()
+        public void ToSingle_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToSingle(defaultValue: 18.5f).Should().Be(18.5f);
             "different overload".ToSingle(defaultValue: _ => -500f).Should().Be(-500f);
@@ -634,10 +634,10 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToSingle_uses_default_defaults_for_unparsable_values()
+        public void ToSingle_uses_default_defaults_for_non_parsable_values()
         {
             "yet another".ToSingle().Should().Be(default(float));
-            "unparsable".ToSingle(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0.0f);
+            "non_parsable".ToSingle(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0.0f);
         }
 
         [Test]
@@ -651,7 +651,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToSingle_passes_unparsable_value_to_continuation()
+        public void ToSingle_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -688,7 +688,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt16_uses_default_value_for_unparsable_values()
+        public void ToUInt16_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToUInt16(defaultValue: 158).Should().Be(158);
             "-743".ToUInt16(defaultValue: _ => 554).Should().Be(554);
@@ -697,7 +697,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt16_uses_default_defaults_for_unparsable_values()
+        public void ToUInt16_uses_default_defaults_for_non_parsable_values()
         {
             "-173".ToUInt16().Should().Be(default(ushort));
             "3498705".ToUInt16(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
@@ -714,7 +714,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt16_passes_unparsable_value_to_continuation()
+        public void ToUInt16_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -751,7 +751,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt32_uses_default_value_for_unparsable_values()
+        public void ToUInt32_uses_default_value_for_non_parsable_values()
         {
             "not parsable".ToUInt32(defaultValue: 18).Should().Be(18);
             "different overload".ToUInt32(defaultValue: _ => 55).Should().Be(55);
@@ -760,7 +760,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt32_uses_default_defaults_for_unparsable_values()
+        public void ToUInt32_uses_default_defaults_for_non_parsable_values()
         {
             "-456".ToUInt32().Should().Be(default(uint));
             "23452364568541234".ToUInt32(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
@@ -777,7 +777,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt32_passes_unparsable_value_to_continuation()
+        public void ToUInt32_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;
@@ -814,7 +814,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt64_uses_default_value_for_unparsable_values()
+        public void ToUInt64_uses_default_value_for_non_parsable_values()
         {
             "-50".ToUInt64(defaultValue: 18).Should().Be(18);
             "-100".ToUInt64(defaultValue: _ => 55).Should().Be(55);
@@ -823,7 +823,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt64_uses_default_defaults_for_unparsable_values()
+        public void ToUInt64_uses_default_defaults_for_non_parsable_values()
         {
             "-234598744".ToUInt64().Should().Be(default(ulong));
             "2345234634746867843562342124234242323".ToUInt64(NumberStyles.Any, CultureInfo.InvariantCulture).Should().Be(0);
@@ -840,7 +840,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void ToUInt64_passes_unparsable_value_to_continuation()
+        public void ToUInt64_passes_non_parsable_value_to_continuation()
         {
             var actual1 = string.Empty;
             var actual2 = string.Empty;

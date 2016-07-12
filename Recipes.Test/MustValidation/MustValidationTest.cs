@@ -82,7 +82,7 @@ namespace Spritely.Recipes.Test
             {
                 new { arg1, arg2, arg3 }.Must().NotBeNull();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 ex.Message.Should().Contain("arg3");
                 ex.Message.Should().NotContain("arg1");
@@ -146,6 +146,7 @@ namespace Spritely.Recipes.Test
             new { arg1 }.Must().BeInRange(-20, 20);
         }
 
+        [Serializable]
         private class TestException : Exception
         {
             public string Name;
