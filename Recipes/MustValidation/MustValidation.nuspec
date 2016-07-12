@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Spritely.Recipes.MustValidation</id>
+        <version>$version$</version>
+        <title>Spritely.Recipes.MustValidation</title>
+        <authors>Spritely Developers</authors>
+        <owners>Spritely Developers</owners>
+        <language>en-US</language>
+        <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/spritely/Recipes</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>A lightweight argument validation recipe.</summary>
+        <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
+        <copyright>Copyright (C) 2016</copyright>
+        <tags>Spritely Recipes argument validation Must</tags>
+        <developmentDependency>true</developmentDependency>
+    </metadata>
+    <files>
+        <file src="Require.cs" target="content\net45\.Spritely.Recipes\MustValidation\Require.cs" />
+        <file src="MustExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\MustExtensions.cs" />
+        <file src="MustContext.cs" target="content\net45\.Spritely.Recipes\MustValidation\MustContext.cs" />
+    </files>
+</package>

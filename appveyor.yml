@@ -2,7 +2,7 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.18.2.{build}
+version: 0.19.0.{build}
 
 os: Visual Studio 2015
 
@@ -20,6 +20,8 @@ environment:
   version_jsonwebtoken: 0.2.0
   version_googleauthorizer: 0.2.0
   version_googledrive: 0.2.0
+  version_mustvalidation: 0.1.0
+  version_parsing: 0.1.0
 
 configuration:
   - Debug
@@ -73,6 +75,10 @@ after_test:
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.GoogleAuthorizer.%version_googleauthorizer%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\GoogleDrive\GoogleDrive.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\GoogleDrive" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_googledrive%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.GoogleDrive.%version_googledrive%.nupkg"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\MustValidation\MustValidation.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\MustValidation" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_mustvalidation%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.MustValidation.%version_mustvalidation%.nupkg"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Parsing\Parsing.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\Parsing" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_parsing%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Parsing.%version_parsing%.nupkg"
 
 deploy:
   - provider: NuGet

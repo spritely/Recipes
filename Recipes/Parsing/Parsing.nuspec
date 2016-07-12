@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>Spritely.Recipes.Parsing</id>
+        <version>$version$</version>
+        <title>Spritely.Recipes.Parsing</title>
+        <authors>Spritely Developers</authors>
+        <owners>Spritely Developers</owners>
+        <language>en-US</language>
+        <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/spritely/Recipes</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>A wrapper around TryParse so they can be written as 1-liners.</summary>
+        <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
+        <copyright>Copyright (C) 2016</copyright>
+        <tags>Spritely Recipes argument validation Must</tags>
+        <developmentDependency>true</developmentDependency>
+    </metadata>
+    <files>
+        <file src="ParsingExtensions.cs" target="content\net45\.Spritely.Recipes\Parsing\ParsingExtensions.cs" />
+    </files>
+</package>

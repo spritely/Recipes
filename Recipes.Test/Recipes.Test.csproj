@@ -65,6 +65,8 @@
     <Compile Include="JsonWebToken\Sha256JsonWebTokenSignerTest.cs" />
     <Compile Include="JsonWebToken\JsonWebTokenClaimSetTest.cs" />
     <Compile Include="JsonWebToken\JsonWebTokenAccessTokenTest.cs" />
+    <Compile Include="MustValidation\MustValidationTest.cs" />
+    <Compile Include="Parsing\ParsingExtensionsTest.cs" />
     <Compile Include="ProgressReporter\ProgressReporterTest.cs" />
     <Compile Include="SecureString\SecureStringTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

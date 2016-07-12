@@ -64,7 +64,13 @@
     <None Include="CamelStrictConstructorContractResolver\CamelStrictConstructorContractResolver.nuspec" />
     <None Include="GoogleAuthorizer\GoogleAuthorizer.nuspec" />
     <None Include="GoogleDrive\GoogleDrive.nuspec" />
+    <None Include="MustValidation\MustValidation.nuspec" />
+    <None Include="Parsing\Parsing.nuspec" />
     <None Include="ProgressReporter\ProcessingStatus.cs.pp" />
+    <Compile Include="MustValidation\Require.cs" />
+    <Compile Include="MustValidation\MustContext.cs" />
+    <Compile Include="MustValidation\MustExtensions.cs" />
+    <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="ProgressReporter\ProcessingStatus.cs" />
     <None Include="ProgressReporter\ProgressReporter.cs.pp" />
     <Compile Include="ProgressReporter\ProgressReporter.cs" />
