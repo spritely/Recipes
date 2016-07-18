@@ -12,8 +12,8 @@ environment:
   version_securestring: 1.0.0
   version_securestringjsonconverter: 0.4.0
   version_inheritedtypejsonconverter: 0.8.0
-  version_camelstrictconstructorresolver: 0.3.0
-  version_jsonconfiguration: 0.14.1
+  version_camelstrictconstructorresolver: 0.3.1
+  version_jsonconfiguration: 0.14.2
   version_formattablestring: 0.1.5
   version_progressreporter: 0.3.1
   version_base64urlextensions: 0.1.1
