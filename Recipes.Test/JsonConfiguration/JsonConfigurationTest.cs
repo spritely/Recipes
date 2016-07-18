@@ -11,8 +11,11 @@
 namespace Spritely.Recipes.Test
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Security;
     using Newtonsoft.Json;
     using NUnit.Framework;
@@ -421,6 +424,45 @@ namespace Spritely.Recipes.Test
             Assert.That(catDiet.Diet, Is.Null);
         }
 
+        [Test]
+        public void Serializer_deserializes_type_where_constructor_parameter_is_different_type_than_corresponding_property_but_is_assignable_from_that_property_type()
+        {
+            var familyJson = "{\"firstNames\": [\"joe\",\"jane\",\"jackie\"]}";
+
+            var family = JsonConvert.DeserializeObject<Family>(familyJson, JsonConfiguration.DefaultSerializerSettings);
+            var expectedFirstNames = new[] { "joe", "jane", "jackie" };
+
+            Assert.That(family, Is.Not.Null);
+            CollectionAssert.AreEqual(expectedFirstNames, family.FirstNames);
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_deserializing_type_where_constructor_parameter_is_different_type_than_corresponding_property_and_is_not_assignable_from_that_property_type()
+        {
+            var friendsJson = "{\"firstNames\": [\"betty\",\"bob\",\"bailey\"]}";
+
+            Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Friends>(friendsJson, JsonConfiguration.DefaultSerializerSettings));            
+        }
+
+        [Test]
+        public void Serializer_serializes_object_where_constructor_parameter_is_different_type_than_corresponding_property_but_is_assignable_from_that_property_type()
+        {
+            var family = new Family(new List<string> { "joe", "jane", "jackie" });
+            var expectedFamilyJson = "{\r\n  \"firstNames\": [\r\n    \"joe\",\r\n    \"jane\",\r\n    \"jackie\"\r\n  ]\r\n}";
+
+            var actualFamilyJson = JsonConvert.SerializeObject(family, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(expectedFamilyJson, Is.EqualTo(actualFamilyJson));
+        }
+
+        [Test]
+        public void Serializer_throws_JsonSerializationException_when_serializing_object_where_constructor_parameter_is_different_type_than_corresponding_property_and_is_not_assignable_from_that_property_type()
+        {
+            var friends = new Friends(new List<string> { "betty", "bob", "bailey" });
+
+            Assert.Throws<JsonSerializationException>(() => JsonConvert.SerializeObject(friends, JsonConfiguration.DefaultSerializerSettings));
+        }
+
         private class CamelCasedPropertyTest
         {
             public string TestName;
@@ -546,6 +588,38 @@ namespace Spritely.Recipes.Test
             public Cat Cat { get; }
 
             public Diet Diet { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Family
+        {
+            public Family(IEnumerable<string> firstNames)
+            {
+                if (firstNames == null)
+                {
+                    throw new ArgumentNullException(nameof(firstNames));
+                }
+
+                FirstNames = new ReadOnlyCollection<string>(firstNames.ToList());
+            }
+
+            public IReadOnlyCollection<string> FirstNames { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Friends
+        {
+            public Friends(IReadOnlyCollection<string> firstNames)
+            {
+                if (firstNames == null)
+                {
+                    throw new ArgumentNullException(nameof(firstNames));
+                }
+
+                FirstNames = firstNames;
+            }
+
+            public IEnumerable<string> FirstNames { get; }
         }
     }
 }
