@@ -54,6 +54,8 @@ namespace Spritely.Recipes
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "This method is largely a copy-paste of the method it overrides, and that method does not validate arguments.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1", Justification = "This method is largely a copy-paste of the method it overrides, and that method does not validate arguments.")]
         protected override IList<JsonProperty> CreateConstructorParameters(ConstructorInfo constructor, JsonPropertyCollection memberProperties)
         {
             var constructorParameters = constructor.GetParameters();

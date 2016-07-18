@@ -590,7 +590,6 @@ namespace Spritely.Recipes.Test
             public Diet Diet { get; }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Family
         {
             public Family(IEnumerable<string> firstNames)
@@ -606,7 +605,6 @@ namespace Spritely.Recipes.Test
             public IReadOnlyCollection<string> FirstNames { get; }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
         private class Friends
         {
             public Friends(IReadOnlyCollection<string> firstNames)
@@ -619,6 +617,7 @@ namespace Spritely.Recipes.Test
                 FirstNames = firstNames;
             }
 
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Property is used via reflection and code analysis cannot detect that ")]
             public IEnumerable<string> FirstNames { get; }
         }
     }
