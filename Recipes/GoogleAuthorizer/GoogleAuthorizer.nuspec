@@ -23,6 +23,5 @@
     </metadata>
     <files>
         <file src="GoogleAuthorizer.cs" target="content\net45\.Spritely.Recipes\GoogleAuthorizer\GoogleAuthorizer.cs" />
-        <file src="GoogleAuthorizerSettings.cs" target="content\net45\.Spritely.Recipes\GoogleAuthorizer\GoogleAuthorizerSettings.cs" />
     </files>
 </package>
