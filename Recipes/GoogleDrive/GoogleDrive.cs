@@ -12,6 +12,7 @@ namespace Spritely.Recipes
 {
     using System;
     using System.Net;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -23,38 +24,35 @@ namespace Spritely.Recipes
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #pragma warning disable 0436
 #endif
-    internal class GoogleDrive
+    internal static class GoogleDrive
     {
         private const string DriveReadOnlyScope = "https://www.googleapis.com/auth/drive.readonly";
         private const string FilesApiBaseUri = "https://www.googleapis.com/drive/v2/files/";
-        private readonly GoogleAuthorizer authorizer;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GoogleDrive" /> class.
-        /// </summary>
-        /// <param name="authorizer">The authorizer.</param>
-        public GoogleDrive(GoogleAuthorizer authorizer)
-        {
-            if (authorizer == null)
-            {
-                throw new ArgumentNullException(nameof(authorizer));
-            }
-
-            this.authorizer = authorizer;
-        }
 
         /// <summary>
         /// Downloads the specified file as CSV.
         /// </summary>
+        /// <param name="serviceAccount">The service account.</param>
+        /// <param name="certificate">The certificate.</param>
         /// <param name="fileId">The file identifier.</param>
         /// <param name="destinationFilePath">The destination file path.</param>
-        /// <returns>Task tracking asynchronous processes.</returns>
-        /// <exception cref="System.ArgumentNullException">If any arguments are null or empty.</exception>
-        /// <exception cref="System.Net.WebException">
-        /// If Unable to download file or file does not contain an export link for csv.
-        /// </exception>
-        public async Task DownloadAsCsv(string fileId, string destinationFilePath)
+        /// <returns>
+        /// Task tracking asynchronous processes.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">If any arguments are null or empty.</exception>
+        /// <exception cref="WebException">If Unable to download file or file does not contain an export link for csv.</exception>
+        public static async Task DownloadAsCsv(string serviceAccount, X509Certificate2 certificate, string fileId, string destinationFilePath)
         {
+            if (string.IsNullOrWhiteSpace(serviceAccount))
+            {
+                throw new ArgumentNullException("serviceAccount");
+            }
+
+            if (certificate == null)
+            {
+                throw new ArgumentNullException("certificate");
+            }
+
             if (string.IsNullOrWhiteSpace(fileId))
             {
                 throw new ArgumentNullException("fileId");
@@ -65,7 +63,7 @@ namespace Spritely.Recipes
                 throw new ArgumentNullException("destinationFilePath");
             }
 
-            var accessToken = await authorizer.Authorize(DriveReadOnlyScope);
+            var accessToken = await GoogleAuthorizer.Authorize(serviceAccount, certificate, DriveReadOnlyScope);
 
             var webClient = new WebClient();
             webClient.AddAuthorizationHeader(accessToken);

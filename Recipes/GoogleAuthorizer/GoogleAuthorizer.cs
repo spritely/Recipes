@@ -11,7 +11,6 @@
 namespace Spritely.Recipes
 {
     using System;
-    using System.IO;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
 
@@ -24,36 +23,35 @@ namespace Spritely.Recipes
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #pragma warning disable 0436
 #endif
-    internal class GoogleAuthorizer
+    internal static class GoogleAuthorizer
     {
-        private readonly Uri authorizeUri = new Uri("https://www.googleapis.com/oauth2/v3/token");
-        private readonly GoogleAuthorizerSettings settings;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GoogleAuthorizer" /> class.
-        /// </summary>
-        /// <param name="settings">The settings.</param>
-        public GoogleAuthorizer(GoogleAuthorizerSettings settings)
-        {
-            if (settings == null)
-            {
-                throw new ArgumentNullException("settings");
-            }
-
-            this.settings = settings;
-        }
+        private static readonly Uri authorizeUri = new Uri("https://www.googleapis.com/oauth2/v3/token");
 
         /// <summary>
         /// Authorizes the specified scopes.
         /// </summary>
+        /// <param name="serviceAccount">The service account.</param>
+        /// <param name="certificate">The certificate.</param>
         /// <param name="scopes">The scopes.</param>
-        /// <returns>An access token.</returns>
-        public async Task<JsonWebTokenAccessToken> Authorize(params string[] scopes)
+        /// <returns>
+        /// An access token.
+        /// </returns>
+        public static async Task<JsonWebTokenAccessToken> Authorize(string serviceAccount, X509Certificate2 certificate, params string[] scopes)
         {
+            if (string.IsNullOrWhiteSpace(serviceAccount))
+            {
+                throw new ArgumentNullException("serviceAccount");
+            }
+
+            if (certificate == null)
+            {
+                throw new ArgumentNullException("certificate");
+            }
+
             var claimSet = new JsonWebTokenClaimSet
             {
                 Audience = authorizeUri,
-                Issuer = settings.ServiceAccount,
+                Issuer = serviceAccount,
                 Duration = TimeSpan.FromMinutes(59)
             };
 
@@ -62,8 +60,6 @@ namespace Spritely.Recipes
                 claimSet.Scopes.Add(scope);
             }
 
-            var certficateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, settings.CertificateFile);
-            var certificate = new X509Certificate2(certficateFilePath, settings.CertificatePassword, X509KeyStorageFlags.Exportable);
             var signer = new Sha256JsonWebTokenSigner(certificate);
             var result = await JsonWebToken.Authorize(claimSet, signer);
 
