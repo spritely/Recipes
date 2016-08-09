@@ -46,7 +46,6 @@
     <Compile Include="FormattableString\FormattableString.cs" />
     <Compile Include="FormattableString\FormattableStringFactory.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="GoogleAuthorizer\GoogleAuthorizerSettings.cs" />
     <Compile Include="GoogleAuthorizer\GoogleAuthorizer.cs" />
     <Compile Include="GoogleDrive\GoogleDrive.cs" />
     <Compile Include="InheritedTypeJsonConverter\InheritedTypeJsonConverter.cs" />
