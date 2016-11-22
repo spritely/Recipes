@@ -463,6 +463,19 @@ namespace Spritely.Recipes.Test
             Assert.Throws<JsonSerializationException>(() => JsonConvert.SerializeObject(friends, JsonConfiguration.DefaultSerializerSettings));
         }
 
+        [Test]
+        public void Serializer_deserializes_type_where_constructor_does_not_throw_exception_when_another_candidate_has_constructor_that_does_throw_exception()
+        {
+            var sometimesThrowsJson = "{\"triggerNumber\":123456}";
+
+            var doesNotThrow =
+                JsonConvert.DeserializeObject<SometimesThrows>(sometimesThrowsJson,
+                    JsonConfiguration.DefaultSerializerSettings) as DoesNotThrow;
+            
+            Assert.That(doesNotThrow, Is.Not.Null);
+            Assert.That(doesNotThrow.TriggerNumber, Is.EqualTo(123456));
+        }
+
         private class CamelCasedPropertyTest
         {
             public string TestName;
@@ -619,6 +632,38 @@ namespace Spritely.Recipes.Test
 
             [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Property is used via reflection and code analysis cannot detect that ")]
             public IEnumerable<string> FirstNames { get; }
+        }
+
+        [Bindable(true)]
+        private abstract class SometimesThrows
+        {
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class DoesNotThrow : SometimesThrows
+        {
+            public DoesNotThrow(int triggerNumber)
+            {
+                TriggerNumber = triggerNumber;
+            }
+
+            public int TriggerNumber { get; set; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class DoesThrow : SometimesThrows
+        {
+            public DoesThrow(int triggerNumber)
+            {
+                if (triggerNumber == 123456)
+                {
+                    throw new ArgumentException("hit the trigger!");
+                }
+
+                TriggerNumber = triggerNumber;
+            }
+
+            public int TriggerNumber { get; set; }
         }
     }
 }
