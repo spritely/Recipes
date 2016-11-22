@@ -205,6 +205,9 @@ namespace Spritely.Recipes
                 catch (JsonException)
                 {
                 }
+                catch (ArgumentException)
+                {
+                }
 
                 if (deserializedObject != null)
                 {
