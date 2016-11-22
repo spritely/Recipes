@@ -202,7 +202,10 @@ namespace Spritely.Recipes
                 {
                     deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType.Type);                    
                 }
-                catch (Exception)
+                catch (JsonException)
+                {
+                }
+                catch (ArgumentException)
                 {
                 }
 
