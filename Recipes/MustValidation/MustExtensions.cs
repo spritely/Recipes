@@ -81,8 +81,8 @@ namespace Spritely.Recipes
         /// A function capable of obtaining a list of arguments to be validated or acting
         /// as a context to build other validations with.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">If name is null.</exception>
-        /// <exception cref="System.ArgumentException">If name is whitespace.</exception>
+        /// <exception cref="ArgumentNullException">If name is null.</exception>
+        /// <exception cref="ArgumentException">If name is whitespace.</exception>
         public static GetArguments Named<T>(this T value, string name)
         {
             const string invalidNameArgumentMessage =
@@ -95,7 +95,7 @@ namespace Spritely.Recipes
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("name", invalidNameArgumentMessage);
+                throw new ArgumentException(invalidNameArgumentMessage, "name");
             }
 
             var result = new List<Tuple<Type, string, object>>

@@ -258,7 +258,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void And_does_not_throw_on_emtpy_rule_argument()
+        public void And_does_not_throw_on_empty_rule_argument()
         {
             var arg1 = "test";
             arg1.Named(nameof(arg1)).MustBe().And();
@@ -575,6 +575,7 @@ namespace Spritely.Recipes.Test
             called.Should().BeFalse();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Test is about the type and parameter name is irrelevant here.")]
         [Test]
         public void OrThrow_calls_getException_with_expected_arguments_when_validation_fails()
         {
@@ -684,6 +685,7 @@ namespace Spritely.Recipes.Test
             Assert.Throws<TestException>(() => new { arg1 }.MustBe(false5).OrThrow());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "OrThrow", Justification = "This text refers to a valid method name.")]
         [Test]
         public void OrThrow_throws_ArgumentException_containing_all_failed_exceptions_when_multiple_validations_fail()
         {

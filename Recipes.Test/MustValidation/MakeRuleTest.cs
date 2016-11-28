@@ -345,8 +345,9 @@ namespace Spritely.Recipes.Test
             var actualException = alwaysTrue.Item3(typeof(int), new List<string> { "The reason" }, 50, "test");
 
             actualException.Should().BeOfType<ArgumentOutOfRangeException>();
-            (actualException as ArgumentOutOfRangeException).ActualValue.Should().Be(50);
-            (actualException as ArgumentOutOfRangeException).ParamName.Should().Be("test");
+            var argumentOutOfRangeException = actualException as ArgumentOutOfRangeException;
+            argumentOutOfRangeException.ActualValue.Should().Be(50);
+            argumentOutOfRangeException.ParamName.Should().Be("test");
             actualException.InnerException.Should().BeNull();
             actualException.Message.Should().Contain("The reason");
         }
@@ -360,6 +361,7 @@ namespace Spritely.Recipes.Test
             Assert.Throws<ArgumentException>(() => alwaysTrue.Because(" \t  "));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "This test is testing the argument exception explicitly.")]
         [Test]
         public void Because_uncalled_does_not_create_any_rule_messages()
         {
@@ -389,31 +391,5 @@ namespace Spritely.Recipes.Test
             actualException.Message.Should().Contain("Because_adds_message_to_rule_and_exception-1");
             actualException.Message.Should().Contain("Because_adds_message_to_rule_and_exception-2");
         }
-
-/*
-
-        [Test]
-        public void BeInRange_throws_if_value_is_greater_than_maximum()
-        {
-            var tooHighArg = -4;
-            Action act = () => tooHighArg.Named(nameof(tooHighArg)).BeInRange(int.MinValue, -5);
-            act.ShouldThrow<ArgumentOutOfRangeException>()
-                .And.Message.Should().Contain("tooHighArg")
-                .And.Contain("-5");
-        }
-
-        [Test]
-        public void BeInRange_does_not_throw_when_value_is_in_range()
-        {
-            var arg = 0;
-            arg.Named(nameof(arg)).BeInRange(-20, 20);
-        }*/
-
-        /*[Serializable]
-        private class TestException : Exception
-        {
-            public string Name;
-            public object Value;
-        }*/
     }
 }

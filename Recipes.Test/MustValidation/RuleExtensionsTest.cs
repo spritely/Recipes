@@ -103,7 +103,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotNullOrWhitespace_throws_when_an_argument_is_null()
+        public void NotNullOrWhiteSpace_throws_when_an_argument_is_null()
         {
             var arg1 = null as string;
 
@@ -112,7 +112,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotNullOrWhitespace_throws_when_an_argument_is_empty()
+        public void NotNullOrWhiteSpace_throws_when_an_argument_is_empty()
         {
             var arg1 = string.Empty;
 
@@ -121,7 +121,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotNullOrWhitespace_throws_when_an_argument_is_whitespace()
+        public void NotNullOrWhiteSpace_throws_when_an_argument_is_white_space()
         {
             var arg1 = "  \t ";
 
@@ -143,7 +143,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotNullOrWhiteSpace_does_not_throw_when_arguments_are_not_null_or_whitespace()
+        public void NotNullOrWhiteSpace_does_not_throw_when_arguments_are_not_null_or_white_space()
         {
             var arg1 = "should not throw";
 
@@ -191,7 +191,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotNullOrEmptyEnumerable_throws_when_an_argument_is_emtpy()
+        public void NotNullOrEmptyEnumerable_throws_when_an_argument_is_empty()
         {
             var arg1 = new List<string>();
 
