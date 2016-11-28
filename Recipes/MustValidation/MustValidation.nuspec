@@ -17,8 +17,9 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="Require.cs" target="content\net45\.Spritely.Recipes\MustValidation\Require.cs" />
+        <file src="MakeRule.cs" target="content\net45\.Spritely.Recipes\MustValidation\MakeRule.cs" />
         <file src="MustExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\MustExtensions.cs" />
-        <file src="MustContext.cs" target="content\net45\.Spritely.Recipes\MustValidation\MustContext.cs" />
+        <file src="RuleExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\RuleExtensions.cs" />
+        <file src="Rules.cs" target="content\net45\.Spritely.Recipes\MustValidation\Rules.cs" />
     </files>
 </package>

@@ -66,8 +66,9 @@
     <None Include="MustValidation\MustValidation.nuspec" />
     <None Include="Parsing\Parsing.nuspec" />
     <None Include="ProgressReporter\ProcessingStatus.cs.pp" />
-    <Compile Include="MustValidation\Require.cs" />
-    <Compile Include="MustValidation\MustContext.cs" />
+    <Compile Include="MustValidation\MakeRule.cs" />
+    <Compile Include="MustValidation\RuleExtensions.cs" />
+    <Compile Include="MustValidation\Rules.cs" />
     <Compile Include="MustValidation\MustExtensions.cs" />
     <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="ProgressReporter\ProcessingStatus.cs" />
