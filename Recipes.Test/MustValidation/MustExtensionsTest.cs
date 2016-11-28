@@ -317,6 +317,28 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Because_appends_message_to_all_rules()
+        {
+            var arg1 = null as object;
+
+            var alwaysFalse1 = MakeRule.That(() => false).OrCreateArgumentException().Because("false1");
+            var alwaysFalse2 = MakeRule.That(() => false).OrCreateArgumentException().Because("false2");
+
+            var initialValidationPlan = new { arg1 }.MustBe(alwaysFalse1, alwaysFalse2);
+            var newValidationPlan = initialValidationPlan.Because("Shared Message");
+            var initialRules = initialValidationPlan.Item2;
+            var newRules = newValidationPlan.Item2;
+
+            initialRules.Should().HaveCount(2);
+            initialRules.First().Item2.Should().HaveCount(1).And.Contain("false1");
+            initialRules.Skip(1).First().Item2.Should().HaveCount(1).And.Contain("false2");
+
+            newRules.Should().HaveCount(2);
+            newRules.First().Item2.Should().HaveCount(2).And.Contain("false1").And.Contain("Shared Message");
+            newRules.Skip(1).First().Item2.Should().HaveCount(2).And.Contain("false2").And.Contain("Shared Message");
+        }
+
+        [Test]
         public void Report_calls_correct_validation_functions()
         {
             var arg1 = null as object;

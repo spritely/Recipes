@@ -246,9 +246,9 @@ namespace Spritely.Recipes
         /// without directly specifying any rules if desired for an alternative syntax.
         /// </summary>
         /// <example>
-        /// new { arg1, arg2 }.MustBe(Rules.NotNull);
+        /// new { arg1, arg2 }.MustBe(Rules.NotNull).OrThrow();
         /// // or
-        /// new { arg1, arg2 }.MustBe().NotNull();
+        /// new { arg1, arg2 }.MustBe().NotNull().OrThrow();
         /// </example>
         /// <param name="objects">The objects instance containing members to be validated.</param>
         /// <param name="rules">The rules to add to the validation rule set.</param>
@@ -273,9 +273,9 @@ namespace Spritely.Recipes
         /// without directly specifying any rules if desired for an alternative syntax.
         /// </summary>
         /// <example>
-        /// new { arg1, arg2 }.MustBe(Rules.NotNull);
+        /// new { arg1, arg2 }.MustBe(Rules.NotNull).OrThrow();
         /// // or
-        /// arg1.Named(nameof(arg1)).MustBe().NotNull();
+        /// arg1.Named(nameof(arg1)).MustBe().NotNull().OrThrow();
         /// </example>
         /// <param name="getArguments">Arguments already constructed for validation by MustBe().</param>
         /// <param name="rules">The rules to add to the validation rule set.</param>
@@ -299,14 +299,14 @@ namespace Spritely.Recipes
         /// Similar to MustBe(), but works with the output of MustBe() instead of the output of Must().
         /// </summary>
         /// <example>
-        /// new { arg1 }.MustBe().NotNull().And().InRange(0, 100);
+        /// new { arg1 }.MustBe().NotNull().And().InRange(0, 100).OrThrow();
         /// // or
-        /// arg1.Named(nameof(arg1)).MustBe(Rules.NotNull).And(Rules.NotNullOrEmptyString);
+        /// arg1.Named(nameof(arg1)).MustBe(Rules.NotNull).And(Rules.NotEmptyString).OrThrow();
         /// </example>
         /// <param name="validationReportDefinition">The validation report definition.</param>
         /// <param name="rules">The rules to add to the validation rule set.</param>
         /// <returns>A revised validation report definition.</returns>
-        /// <exception cref="System.ArgumentNullException">validationReportDefinition</exception>
+        /// <exception cref="System.ArgumentNullException">If validationReportDefinition is null.</exception>
         public static Tuple<GetArguments, IEnumerable<Rule>> And(this Tuple<GetArguments, IEnumerable<Rule>> validationReportDefinition, params Rule[] rules)
         {
             if (validationReportDefinition == null)
@@ -319,6 +319,40 @@ namespace Spritely.Recipes
                 : validationReportDefinition.Item2.Concat(rules.Where(r => r != null));
 
             return Tuple.Create(validationReportDefinition.Item1, validationRules);
+        }
+
+        /// <summary>
+        /// Adds a reason (or reasons) to all failing rules on any argument being validated.
+        /// </summary>
+        /// <example>
+        /// new { arg1 }.MustBe().NotNull().And().InRange(0, 100).Because("arg1 is a percentage").OrThrow();
+        /// // or
+        /// arg1.Named(nameof(arg1)).MustBe(Rules.NotNull).And(Rules.NotEmptyString).Because("arg1 is required").OrThrow();
+        /// </example>
+        /// <param name="validationReportDefinition">The validation report definition.</param>
+        /// <param name="reasons">The reason or reasons to add.</param>
+        /// <returns>A revised validation report definition.</returns>
+        /// <exception cref="System.ArgumentNullException">If validationReportDefinition is null.</exception>
+        public static Tuple<GetArguments, IEnumerable<Rule>> Because(this Tuple<GetArguments, IEnumerable<Rule>> validationReportDefinition, params string[] reasons)
+        {
+            if (validationReportDefinition == null)
+            {
+                throw new ArgumentNullException("validationReportDefinition");
+            }
+
+            var newRules = validationReportDefinition.Item2;
+            if (reasons != null)
+            {
+                var validReasons = reasons.Where(r => !string.IsNullOrWhiteSpace(r)).ToList();
+
+                if (validReasons.Any())
+                {
+                    newRules = validationReportDefinition.Item2.Select(
+                        r => Tuple.Create(r.Item1, r.Item2.Concat(validReasons), r.Item3));
+                }
+            }
+
+            return Tuple.Create(validationReportDefinition.Item1, newRules);
         }
 
         /// <summary>
