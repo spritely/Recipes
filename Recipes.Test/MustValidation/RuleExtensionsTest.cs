@@ -494,6 +494,16 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void InRange_throws_if_minimum_or_maximum_are_null()
+        {
+            Action action1 = () => new { validArg = "Test" }.MustBe().InRange(null, "Z").OrThrow();
+            Action action2 = () => new { validArg = "Test" }.MustBe().InRange("A", null).OrThrow();
+
+            action1.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("minimum");
+            action2.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("maximum");
+        }
+
+        [Test]
         public void InRange_throws_if_value_is_less_than_minimum()
         {
             var tooLowArg = 19;
@@ -535,6 +545,14 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void LessThan_throws_if_requirement_is_null()
+        {
+            Action act = () => new { validArg = "Test" }.MustBe().LessThan(null as string).OrThrow();
+            
+            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
+        }
+
+        [Test]
         public void LessThan_throws_if_value_is_not_less_than_requirement()
         {
             var tooHighArg = 19;
@@ -557,6 +575,14 @@ namespace Spritely.Recipes.Test
 
             new { arg1 }.MustBe().LessThan(20).OrThrow();
             arg1.Named(nameof(arg1)).MustBe().LessThan(1).OrThrow();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_throws_if_requirement_is_null()
+        {
+            Action act = () => new { validArg = "Test" }.MustBe().LessThanOrEqualTo(null as string).OrThrow();
+
+            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]
@@ -585,6 +611,46 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void EqualTo_throws_if_requirement_is_null()
+        {
+            Action act = () => new { validArg = "Test" }.MustBe().EqualTo(null as string).OrThrow();
+
+            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
+        }
+
+        [Test]
+        public void EqualTo_throws_if_value_is_not_equal_to_requirement()
+        {
+            Action action1 = () => new { tooLowArg = 6.0 }.MustBe().EqualTo(6.1).OrThrow();
+            Action action2 = () => 6.2.Named("tooHighArg").MustBe().EqualTo(6.1).OrThrow();
+
+            action1.ShouldThrow<ArgumentOutOfRangeException>()
+                .And.Message.Should().Contain("tooLowArg")
+                .And.Contain("6.1");
+
+            action2.ShouldThrow<ArgumentOutOfRangeException>()
+                .And.Message.Should().Contain("tooHighArg")
+                .And.Contain("6.1");
+        }
+
+        [Test]
+        public void OrEqualTo_does_not_throw_when_value_is_equal_to_requirement()
+        {
+            var arg1 = "Test";
+
+            new { arg1 }.MustBe().EqualTo("Test").OrThrow();
+            arg1.Named(nameof(arg1)).MustBe().EqualTo("Test").OrThrow();
+        }
+
+        [Test]
+        public void GreaterThan_throws_if_requirement_is_null()
+        {
+            Action act = () => new { validArg = "Test" }.MustBe().GreaterThan(null as string).OrThrow();
+
+            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
+        }
+
+        [Test]
         public void GreaterThan_throws_if_value_is_not_greater_than_requirement()
         {
             var tooLowArg = 19.5;
@@ -607,6 +673,14 @@ namespace Spritely.Recipes.Test
 
             new { arg1 }.MustBe().GreaterThan(0.0).OrThrow();
             arg1.Named(nameof(arg1)).MustBe().GreaterThan(0.19).OrThrow();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_throws_if_requirement_is_null()
+        {
+            Action act = () => new { validArg = "Test" }.MustBe().GreaterThanOrEqualTo(null as string).OrThrow();
+
+            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]

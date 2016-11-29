@@ -149,8 +149,18 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule InRange<T>(T minimum, T maximum) where T : IComparable
+        public static Rule InRange<T>(T minimum, T maximum) where T : IComparable<T>
         {
+            if (minimum == null)
+            {
+                throw new ArgumentNullException("minimum");
+            }
+
+            if (maximum == null)
+            {
+                throw new ArgumentNullException("maximum");
+            }
+
             return MakeRule.That<T>(v => v.CompareTo(minimum) >= 0 && v.CompareTo(maximum) <= 0)
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must range from {minimum} to {maximum}.");
@@ -164,8 +174,13 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule LessThan<T>(T requirement) where T : IComparable
+        public static Rule LessThan<T>(T requirement) where T : IComparable<T>
         {
+            if (requirement == null)
+            {
+                throw new ArgumentNullException("requirement");
+            }
+
             return MakeRule.That<T>(v => v.CompareTo(requirement) < 0)
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must be less than {requirement}.");
@@ -179,11 +194,36 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule LessThanOrEqualTo<T>(T requirement) where T : IComparable
+        public static Rule LessThanOrEqualTo<T>(T requirement) where T : IComparable<T>
         {
+            if (requirement == null)
+            {
+                throw new ArgumentNullException("requirement");
+            }
+
             return MakeRule.That<T>(v => v.CompareTo(requirement) <= 0)
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must be less than or equal to {requirement}.");
+        }
+
+        /// <summary>
+        /// Makes a value must be equal to rule.
+        /// </summary>
+        /// <typeparam name="T">The type being compared.</typeparam>
+        /// <param name="requirement">The requirement value must meet.</param>
+        /// <returns>The rule.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        public static Rule EqualTo<T>(T requirement) where T : IEquatable<T>
+        {
+            if (requirement == null)
+            {
+                throw new ArgumentNullException("requirement");
+            }
+
+            return MakeRule.That<T>(v => v.Equals(requirement))
+                .OrCreateArgumentOutOfRangeException()
+                .Because($"Value must be equal to {requirement}.");
         }
 
         /// <summary>
@@ -194,8 +234,13 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule GreaterThan<T>(T requirement) where T : IComparable
+        public static Rule GreaterThan<T>(T requirement) where T : IComparable<T>
         {
+            if (requirement == null)
+            {
+                throw new ArgumentNullException("requirement");
+            }
+
             return MakeRule.That<T>(v => v.CompareTo(requirement) > 0)
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must be greater than {requirement}.");
@@ -209,8 +254,13 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule GreaterThanOrEqualTo<T>(T requirement) where T : IComparable
+        public static Rule GreaterThanOrEqualTo<T>(T requirement) where T : IComparable<T>
         {
+            if (requirement == null)
+            {
+                throw new ArgumentNullException("requirement");
+            }
+
             return MakeRule.That<T>(v => v.CompareTo(requirement) >= 0)
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must be greater than or equal to {requirement}.");

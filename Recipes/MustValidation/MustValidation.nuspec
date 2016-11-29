@@ -21,5 +21,6 @@
         <file src="MustExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\MustExtensions.cs" />
         <file src="RuleExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\RuleExtensions.cs" />
         <file src="Rules.cs" target="content\net45\.Spritely.Recipes\MustValidation\Rules.cs" />
+        <file src="ValidateNotNullAttribute.cs" target="content\net45\.Spritely.Recipes\MustValidation\ValidateNotNullAttribute.cs" />
     </files>
 </package>

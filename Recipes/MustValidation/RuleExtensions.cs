@@ -208,7 +208,7 @@ namespace Spritely.Recipes
         /// A revised validation report definition.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> InRange<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T minimum, T maximum)
-            where T : IComparable
+            where T : IComparable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.InRange(minimum, maximum));
         }
@@ -223,7 +223,7 @@ namespace Spritely.Recipes
         /// A revised validation report definition.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> LessThan<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IComparable
+            where T : IComparable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.LessThan(requirement));
         }
@@ -238,9 +238,24 @@ namespace Spritely.Recipes
         /// A revised validation report definition.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> LessThanOrEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IComparable
+            where T : IComparable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.LessThanOrEqualTo(requirement));
+        }
+
+        /// <summary>
+        /// Adds an EqualTo check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of compariable to check.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="requirement">The requirement to meet.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> EqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+            where T : IEquatable<T>
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.EqualTo(requirement));
         }
 
         /// <summary>
@@ -253,7 +268,7 @@ namespace Spritely.Recipes
         /// A revised validation report definition.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> GreaterThan<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IComparable
+            where T : IComparable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.GreaterThan(requirement));
         }
@@ -268,7 +283,7 @@ namespace Spritely.Recipes
         /// A revised validation report definition.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> GreaterThanOrEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IComparable
+            where T : IComparable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.GreaterThanOrEqualTo(requirement));
         }
