@@ -83,7 +83,7 @@ namespace Spritely.Recipes
         /// </returns>
         /// <exception cref="ArgumentNullException">If name is null.</exception>
         /// <exception cref="ArgumentException">If name is whitespace.</exception>
-        public static GetArguments Named<T>(this T value, string name)
+        public static GetArguments Named<T>([ValidatedNotNull] this T value, string name)
         {
             const string invalidNameArgumentMessage =
                 "A valid argument name be supplied when initializing a validation.";
@@ -121,7 +121,7 @@ namespace Spritely.Recipes
         /// as a context to build other validations with.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">If objects is null.</exception>
-        public static GetArguments And<TThis, TOther>(this TThis objects, TOther otherObjects)
+        public static GetArguments And<TThis, TOther>([ValidatedNotNull] this TThis objects, [ValidatedNotNull] TOther otherObjects)
             where TThis : class
             where TOther : class
         {
@@ -156,7 +156,7 @@ namespace Spritely.Recipes
         /// as a context to build other validations with.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">If objects is null.</exception>
-        public static GetArguments And<T>(this T objects, GetArguments getArguments) where T : class
+        public static GetArguments And<T>([ValidatedNotNull] this T objects, GetArguments getArguments) where T : class
         {
             if (objects == null)
             {
@@ -189,7 +189,7 @@ namespace Spritely.Recipes
         /// as a context to build other validations with.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">If objects is null.</exception>
-        public static GetArguments And<T>(this GetArguments getArguments, T objects) where T : class
+        public static GetArguments And<T>(this GetArguments getArguments, [ValidatedNotNull] T objects) where T : class
         {
             if (getArguments == null)
             {
@@ -255,7 +255,7 @@ namespace Spritely.Recipes
         /// <returns>A suite of validation rules and encapsulated argument retrieval function
         /// (aka a validation report definition).</returns>
         /// <exception cref="System.ArgumentNullException">If objects is null.</exception>
-        public static Tuple<GetArguments, IEnumerable<Rule>> MustBe<T>(this T objects, params Rule[] rules)
+        public static Tuple<GetArguments, IEnumerable<Rule>> MustBe<T>([ValidatedNotNull] this T objects, params Rule[] rules)
         {
             if (objects == null)
             {
