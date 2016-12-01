@@ -64,187 +64,170 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds a NotNull check to the validation plan rules.
+        /// Adds a NotBeNull check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotNull(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNull(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotNull);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNull);
         }
 
         /// <summary>
-        /// Adds a False check to the validation plan rules.
+        /// Adds a BeFalse check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> False(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeFalse(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.False);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeFalse);
         }
 
         /// <summary>
-        /// Adds a True check to the validation plan rules.
+        /// Adds a BeTrue check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> True(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeTrue(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.True);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeTrue);
         }
 
         /// <summary>
-        /// Adds a NotEmptyString check to the validation plan rules.
+        /// Adds a NotBeEmptyString check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotEmptyString);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEmptyString);
         }
 
         /// <summary>
-        /// Adds a NotNullOrEmptyString check to the validation plan rules.
+        /// Adds a NotBeNullOrEmptyString check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotNullOrEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotNullOrEmptyString);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrEmptyString);
         }
 
         /// <summary>
-        /// Adds a NotNullOrWhiteSpace check to the validation plan rules.
+        /// Adds a NotBeNullOrWhiteSpace check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotNullOrWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotNullOrWhiteSpace);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrWhiteSpace);
         }
 
         /// <summary>
-        /// Adds a NotWhiteSpace check to the validation plan rules.
+        /// Adds a NotBeWhiteSpace check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotWhiteSpace);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeWhiteSpace);
         }
 
         /// <summary>
-        /// Adds a NotEmtpyGuid check to the validation plan rules.
+        /// Adds a NotBeEmptyGuid check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation report definition.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotEmptyGuid(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEmptyGuid(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotEmptyGuid);
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEmptyGuid);
         }
 
         /// <summary>
-        /// Adds a NotDefault check to the validation plan rules.
+        /// Adds a NotBeDefault check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of default to check for.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
              where T : struct, IEquatable<T>
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotDefault<T>());
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeDefault<T>());
         }
 
         /// <summary>
-        /// Adds a NotNullOrDefault check to the validation plan rules.
+        /// Adds a NotBeNullOrDefault check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of default to check for.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotNullOrDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
             where T : IEquatable<T>
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotNullOrDefault<T>());
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrDefault<T>());
         }
 
         /// <summary>
-        /// Adds a NotNullOrEmptyEnumerable check to the validation plan rules.
+        /// Adds a NotBeEmptyEnumerable check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotNullOrEmptyEnumerable<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEmptyEnumerable<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotNullOrEmptyEnumerable<T>());
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEmptyEnumerable<T>());
         }
 
         /// <summary>
-        /// Adds a NotNullOrContainAnyNulls check to the validation plan rules.
+        /// Adds a NotBeNullOrEmptyEnumerable check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotNullOrContainAnyNulls<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrEmptyEnumerable<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotNullOrContainAnyNulls<T>());
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrEmptyEnumerable<T>());
         }
 
         /// <summary>
-        /// Adds an InRange check to the validation plan rules.
+        /// Adds a NotBeNullOrContainAnyNulls check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrContainAnyNulls<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrContainAnyNulls<T>());
+        }
+
+        /// <summary>
+        /// Adds an BeInRange check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of compariable to check.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <param name="minimum">The minimum value.</param>
         /// <param name="maximum">The maximum value.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> InRange<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T minimum, T maximum)
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeInRange<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T minimum, T maximum)
             where T : IComparable<T>
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.InRange(minimum, maximum));
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeInRange(minimum, maximum));
         }
 
         /// <summary>
-        /// Adds a LessThan check to the validation plan rules.
-        /// </summary>
-        /// <typeparam name="T">The type of compariable to check.</typeparam>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <param name="requirement">The requirement to meet.</param>
-        /// <returns>
-        /// A revised validation report definition.
-        /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> LessThan<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IComparable<T>
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.LessThan(requirement));
-        }
-
-        /// <summary>
-        /// Adds a LessThanOrEqualTo check to the validation plan rules.
-        /// </summary>
-        /// <typeparam name="T">The type of compariable to check.</typeparam>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <param name="requirement">The requirement to meet.</param>
-        /// <returns>
-        /// A revised validation report definition.
-        /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> LessThanOrEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IComparable<T>
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.LessThanOrEqualTo(requirement));
-        }
-
-        /// <summary>
-        /// Adds an EqualTo check to the validation plan rules.
+        /// Adds a BeLessThan check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of compariable to check.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
@@ -252,10 +235,55 @@ namespace Spritely.Recipes
         /// <returns>
         /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> EqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeLessThan<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+            where T : IComparable<T>
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeLessThan(requirement));
+        }
+
+        /// <summary>
+        /// Adds a BeLessThanOrEqualTo check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of compariable to check.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="requirement">The requirement to meet.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeLessThanOrEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+            where T : IComparable<T>
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeLessThanOrEqualTo(requirement));
+        }
+
+        /// <summary>
+        /// Adds an NotBeEqualTo check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of compariable to check.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="requirement">The requirement to meet.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
             where T : IEquatable<T>
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.EqualTo(requirement));
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEqualTo(requirement));
+        }
+
+        /// <summary>
+        /// Adds an BeEqualTo check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of compariable to check.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="requirement">The requirement to meet.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+            where T : IEquatable<T>
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeEqualTo(requirement));
         }
 
         /// <summary>
@@ -265,27 +293,27 @@ namespace Spritely.Recipes
         /// <param name="validationPlan">The validation plan.</param>
         /// <param name="requirement">The requirement to meet.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> GreaterThan<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeGreaterThan<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
             where T : IComparable<T>
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.GreaterThan(requirement));
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeGreaterThan(requirement));
         }
 
         /// <summary>
-        /// Adds a GreaterThanOrEqualTo check to the validation plan rules.
+        /// Adds a BeGreaterThanOrEqualTo check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of compariable to check.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <param name="requirement">The requirement to meet.</param>
         /// <returns>
-        /// A revised validation report definition.
+        /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> GreaterThanOrEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeGreaterThanOrEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
             where T : IComparable<T>
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.GreaterThanOrEqualTo(requirement));
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeGreaterThanOrEqualTo(requirement));
         }
     }
 #if !RecipesProject

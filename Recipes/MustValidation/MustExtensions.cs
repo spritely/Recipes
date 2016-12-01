@@ -72,7 +72,7 @@ namespace Spritely.Recipes
         /// Starts a requirement that certain objects Must meet to pass validation.
         /// </summary>
         /// <example>
-        /// arg1.Named(nameof(arg1)).MustBe().NotNull().OrThrow();
+        /// arg1.Named(nameof(arg1)).Must().NotBeNull().OrThrow();
         /// </example>
         /// <typeparam name="T">The type of value.</typeparam>
         /// <param name="value">The value to be validated - typically a method's argument.</param>
@@ -107,14 +107,14 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds additional objects to an existing set that should be validated using MustBe().
+        /// Adds additional objects to an existing set that should be validated using Must().
         /// </summary>
         /// <example>
-        /// new { arg1, arg2 }.And(new { arg3, arg4 }).MustBe().NotNull().OrThrow();
+        /// new { arg1, arg2 }.And(new { arg3, arg4 }).Must().NotBeNull().OrThrow();
         /// </example>
         /// <typeparam name="TThis">The type containing objects to be validated.</typeparam>
         /// <typeparam name="TOther">The type containing objects to be validated.</typeparam>
-        /// <param name="objects">Arguments already constructed for validation by MustBe().</param>
+        /// <param name="objects">Arguments already constructed for validation by Must().</param>
         /// <param name="otherObjects">Another objects instance containing members to be validated.</param>
         /// <returns>
         /// A function capable of obtaining a list of arguments to be validated or acting
@@ -143,14 +143,14 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds additional objects to an existing set that should be validated using MustBe().
+        /// Adds additional objects to an existing set that should be validated using Must().
         /// </summary>
         /// <example>
-        /// new { arg1, arg2 }.And(value.Named("Arg3")).MustBe().NotNull().OrThrow();
+        /// new { arg1, arg2 }.And(value.Named("Arg3")).Must().NotBeNull().OrThrow();
         /// </example>
         /// <typeparam name="T">The type containing objects to be validated.</typeparam>
         /// <param name="objects">The objects instance containing members to be validated.</param>
-        /// <param name="getArguments">Other arguments already constructed for validation by MustBe().</param>
+        /// <param name="getArguments">Other arguments already constructed for validation by Must().</param>
         /// <returns>
         /// A function capable of obtaining a list of arguments to be validated or acting
         /// as a context to build other validations with.
@@ -176,13 +176,13 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds additional objects to an existing set that should be validated using MustBe().
+        /// Adds additional objects to an existing set that should be validated using Must().
         /// </summary>
         /// <example>
-        /// value.Named("Arg1").And(new { arg1, arg2 }).MustBe().NotNull().OrThrow();
+        /// value.Named("Arg1").And(new { arg1, arg2 }).Must().NotBeNull().OrThrow();
         /// </example>
         /// <typeparam name="T">The type containing objects to be validated.</typeparam>
-        /// <param name="getArguments">Other arguments already constructed for validation by MustBe().</param>
+        /// <param name="getArguments">Other arguments already constructed for validation by Must().</param>
         /// <param name="objects">The objects instance containing members to be validated.</param>
         /// <returns>
         /// A function capable of obtaining a list of arguments to be validated or acting
@@ -209,12 +209,12 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds additional objects to an existing set that should be validated using MustBe().
+        /// Adds additional objects to an existing set that should be validated using Must().
         /// </summary>
         /// <example>
-        /// value1.Named("Arg1").And(value2.Named(nameof(value2))).MustBe().NotNull().OrThrow();
+        /// value1.Named("Arg1").And(value2.Named(nameof(value2))).Must().NotBeNull().OrThrow();
         /// </example>
-        /// <param name="getArguments">Arguments already constructed for validation by MustBe().</param>
+        /// <param name="getArguments">Arguments already constructed for validation by Must().</param>
         /// <param name="otherGetArguments">Another arguments object for validation.</param>
         /// <returns>
         /// A function capable of obtaining a list of arguments to be validated or acting
@@ -242,20 +242,20 @@ namespace Spritely.Recipes
 
         /// <summary>
         /// Combines a set of arguments with a set of validation rules and sets up instance
-        /// ready to be validated by various rules such as NotNull. It can also be called
+        /// ready to be validated by various rules such as NotBeNull. It can also be called
         /// without directly specifying any rules if desired for an alternative syntax.
         /// </summary>
         /// <example>
-        /// new { arg1, arg2 }.MustBe(Rules.NotNull).OrThrow();
+        /// new { arg1, arg2 }.Must(Rules.NotBeNull).OrThrow();
         /// // or
-        /// new { arg1, arg2 }.MustBe().NotNull().OrThrow();
+        /// new { arg1, arg2 }.Must().NotBeNull().OrThrow();
         /// </example>
         /// <param name="objects">The objects instance containing members to be validated.</param>
         /// <param name="rules">The rules to add to the validation rule set.</param>
         /// <returns>A suite of validation rules and encapsulated argument retrieval function
         /// (aka a validation report definition).</returns>
         /// <exception cref="System.ArgumentNullException">If objects is null.</exception>
-        public static Tuple<GetArguments, IEnumerable<Rule>> MustBe<T>([ValidatedNotNull] this T objects, params Rule[] rules)
+        public static Tuple<GetArguments, IEnumerable<Rule>> Must<T>([ValidatedNotNull] this T objects, params Rule[] rules)
         {
             if (objects == null)
             {
@@ -269,20 +269,20 @@ namespace Spritely.Recipes
 
         /// <summary>
         /// Combines a set of arguments with a set of validation rules and sets up instance
-        /// ready to be validated by various rules such as NotNull. It can also be called
+        /// ready to be validated by various rules such as NotBeNull. It can also be called
         /// without directly specifying any rules if desired for an alternative syntax.
         /// </summary>
         /// <example>
-        /// new { arg1, arg2 }.MustBe(Rules.NotNull).OrThrow();
+        /// new { arg1, arg2 }.Must(Rules.NotBeNull).OrThrow();
         /// // or
-        /// arg1.Named(nameof(arg1)).MustBe().NotNull().OrThrow();
+        /// arg1.Named(nameof(arg1)).Must().NotBeNull().OrThrow();
         /// </example>
-        /// <param name="getArguments">Arguments already constructed for validation by MustBe().</param>
+        /// <param name="getArguments">Arguments already constructed for validation by Must().</param>
         /// <param name="rules">The rules to add to the validation rule set.</param>
         /// <returns>A suite of validation rules and encapsulated argument retrieval function
         /// (aka a validation report definition).</returns>
         /// <exception cref="System.ArgumentNullException">If getArguments is null.</exception>
-        public static Tuple<GetArguments, IEnumerable<Rule>> MustBe(this GetArguments getArguments, params Rule[] rules)
+        public static Tuple<GetArguments, IEnumerable<Rule>> Must(this GetArguments getArguments, params Rule[] rules)
         {
             if (getArguments == null)
             {
@@ -296,82 +296,82 @@ namespace Spritely.Recipes
         /// Adds the specified rule or rules to the validation rule set. It can also be called without
         /// specifying a rule if desired for syntax.
         /// 
-        /// Similar to MustBe(), but works with the output of MustBe() instead of the output of Must().
+        /// Similar to Must(), but works with the output of Must() instead of the output of Must().
         /// </summary>
         /// <example>
-        /// new { arg1 }.MustBe().NotNull().And().InRange(0, 100).OrThrow();
+        /// new { arg1 }.Must().NotBeNull().And().BeInRange(0, 100).OrThrow();
         /// // or
-        /// arg1.Named(nameof(arg1)).MustBe(Rules.NotNull).And(Rules.NotEmptyString).OrThrow();
+        /// arg1.Named(nameof(arg1)).Must(Rules.NotBeNull).And(Rules.NotBeEmptyString).OrThrow();
         /// </example>
-        /// <param name="validationReportDefinition">The validation report definition.</param>
+        /// <param name="validationPlan">The validation plan.</param>
         /// <param name="rules">The rules to add to the validation rule set.</param>
-        /// <returns>A revised validation report definition.</returns>
-        /// <exception cref="System.ArgumentNullException">If validationReportDefinition is null.</exception>
-        public static Tuple<GetArguments, IEnumerable<Rule>> And(this Tuple<GetArguments, IEnumerable<Rule>> validationReportDefinition, params Rule[] rules)
+        /// <returns>A revised validation plan.</returns>
+        /// <exception cref="System.ArgumentNullException">If validationPlan is null.</exception>
+        public static Tuple<GetArguments, IEnumerable<Rule>> And(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, params Rule[] rules)
         {
-            if (validationReportDefinition == null)
+            if (validationPlan == null)
             {
-                throw new ArgumentNullException("validationReportDefinition");
+                throw new ArgumentNullException("validationPlan");
             }
 
             var validationRules = (rules == null)
-                ? validationReportDefinition.Item2
-                : validationReportDefinition.Item2.Concat(rules.Where(r => r != null));
+                ? validationPlan.Item2
+                : validationPlan.Item2.Concat(rules.Where(r => r != null));
 
-            return Tuple.Create(validationReportDefinition.Item1, validationRules);
+            return Tuple.Create(validationPlan.Item1, validationRules);
         }
 
         /// <summary>
         /// Adds a reason (or reasons) to all failing rules on any argument being validated.
         /// </summary>
         /// <example>
-        /// new { arg1 }.MustBe().NotNull().And().InRange(0, 100).Because("arg1 is a percentage").OrThrow();
+        /// new { arg1 }.Must().NotBeNull().And().BeInRange(0, 100).Because("arg1 is a percentage").OrThrow();
         /// // or
-        /// arg1.Named(nameof(arg1)).MustBe(Rules.NotNull).And(Rules.NotEmptyString).Because("arg1 is required").OrThrow();
+        /// arg1.Named(nameof(arg1)).Must(Rules.NotBeNull).And(Rules.NotBeEmptyString).Because("arg1 is required").OrThrow();
         /// </example>
-        /// <param name="validationReportDefinition">The validation report definition.</param>
+        /// <param name="validationPlan">The validation plan.</param>
         /// <param name="reasons">The reason or reasons to add.</param>
-        /// <returns>A revised validation report definition.</returns>
-        /// <exception cref="System.ArgumentNullException">If validationReportDefinition is null.</exception>
-        public static Tuple<GetArguments, IEnumerable<Rule>> Because(this Tuple<GetArguments, IEnumerable<Rule>> validationReportDefinition, params string[] reasons)
+        /// <returns>A revised validation plan.</returns>
+        /// <exception cref="System.ArgumentNullException">If validationPlan is null.</exception>
+        public static Tuple<GetArguments, IEnumerable<Rule>> Because(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, params string[] reasons)
         {
-            if (validationReportDefinition == null)
+            if (validationPlan == null)
             {
-                throw new ArgumentNullException("validationReportDefinition");
+                throw new ArgumentNullException("validationPlan");
             }
 
-            var newRules = validationReportDefinition.Item2;
+            var newRules = validationPlan.Item2;
             if (reasons != null)
             {
                 var validReasons = reasons.Where(r => !string.IsNullOrWhiteSpace(r)).ToList();
 
                 if (validReasons.Any())
                 {
-                    newRules = validationReportDefinition.Item2.Select(
+                    newRules = validationPlan.Item2.Select(
                         r => Tuple.Create(r.Item1, r.Item2.Concat(validReasons), r.Item3));
                 }
             }
 
-            return Tuple.Create(validationReportDefinition.Item1, newRules);
+            return Tuple.Create(validationPlan.Item1, newRules);
         }
 
         /// <summary>
-        /// Generates a report from the provided validation report definition by running all the rules against
-        /// all arguments. All combinations are reported so rules where types do not match are included but
+        /// Generates a report from the provided validation plan by running all the rules against all
+        /// arguments. All combinations are reported so rules where types do not match are included but
         /// all evaluate to true (valid).
         /// </summary>
-        /// <param name="validationReportDefinition">The validation report definition to report on.</param>
+        /// <param name="validationPlan">The validation plan to report on.</param>
         /// <returns>A validation report.</returns>
-        /// <exception cref="System.ArgumentNullException">If validationReportDefinition is null.</exception>
-        public static ValidationReport Report(this Tuple<GetArguments, IEnumerable<Rule>> validationReportDefinition)
+        /// <exception cref="System.ArgumentNullException">If validationPlan is null.</exception>
+        public static ValidationReport Report(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            if (validationReportDefinition == null)
+            if (validationPlan == null)
             {
-                throw new ArgumentNullException("validationReportDefinition");
+                throw new ArgumentNullException("validationPlan");
             }
             
-            var arguments = validationReportDefinition.Item1();
-            var rules = validationReportDefinition.Item2.ToList();
+            var arguments = validationPlan.Item1();
+            var rules = validationPlan.Item2.ToList();
 
             var report = arguments.SelectMany(
                 _ => rules,
@@ -394,10 +394,10 @@ namespace Spritely.Recipes
         /// wrapped into a single ArgumentException whose InnerException is an AggregateException whose
         /// InnerExceptions is a list of all the validation exceptions.
         /// </summary>
-        /// <param name="validationReportDefinition">The validation report definition.</param>
-        public static void OrThrow(this Tuple<GetArguments, IEnumerable<Rule>> validationReportDefinition)
+        /// <param name="validationPlan">The validation plan.</param>
+        public static void OrThrow(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            var report = validationReportDefinition.Report();
+            var report = validationPlan.Report();
 
             var exceptions = report.Where(r => !r.Item4 /* validation result */)
                 .Select(

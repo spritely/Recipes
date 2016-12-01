@@ -143,20 +143,20 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void MustBe_throws_on_null_arguments()
+        public void Must_throws_on_null_arguments()
         {
-            Assert.Throws<ArgumentNullException>(() => (null as object).MustBe());
-            Assert.Throws<ArgumentNullException>(() => (null as GetArguments).MustBe());
+            Assert.Throws<ArgumentNullException>(() => (null as object).Must());
+            Assert.Throws<ArgumentNullException>(() => (null as GetArguments).Must());
         }
 
         [Test]
-        public void MustBe1_creates_expected_set_of_arguments()
+        public void Must1_creates_expected_set_of_arguments()
         {
             var arg1 = "some string";
             var arg2 = new object();
             var arg3 = 133;
 
-            var arguments = new { arg1, arg2, arg3 }.MustBe().Item1();
+            var arguments = new { arg1, arg2, arg3 }.Must().Item1();
             arguments.Should().HaveCount(3);
             arguments.First().Item1.Should().Be(typeof(string));
             arguments.First().Item2.Should().Be("arg1");
@@ -170,12 +170,12 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void MustBe2_creates_expected_set_of_arguments()
+        public void Must2_creates_expected_set_of_arguments()
         {
             var arg1 = Guid.NewGuid();
             var arg2 = TimeSpan.FromDays(1);
 
-            var arguments = arg1.Named("one").And(arg2.Named("two")).MustBe().Item1();
+            var arguments = arg1.Named("one").And(arg2.Named("two")).Must().Item1();
             arguments.Should().HaveCount(2);
             arguments.First().Item1.Should().Be(typeof(Guid));
             arguments.First().Item2.Should().Be("one");
@@ -186,69 +186,69 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void MustBe1_adds_supplied_rule_to_rule_set()
+        public void Must1_adds_supplied_rule_to_rule_set()
         {
             var arg1 = null as object;
             var arg2 = null as object;
             var arg3 = null as object;
 
-            var intialRuleSet = new { arg1, arg2, arg3 }.MustBe();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = new { arg1, arg2, arg3 }.MustBe(alwaysTrue);
+            var intialRuleSet = new { arg1, arg2, arg3 }.Must();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = new { arg1, arg2, arg3 }.Must(alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(1);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
 
         [Test]
-        public void MustBe2_adds_supplied_rule_to_rule_set()
+        public void Must2_adds_supplied_rule_to_rule_set()
         {
             var arg1 = null as object;
             var arg2 = null as object;
 
-            var intialRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).MustBe();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).MustBe(alwaysTrue);
+            var intialRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).Must();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).Must(alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(1);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
 
         [Test]
-        public void MustBe1_adds_supplied_rules_to_rule_set()
+        public void Must1_adds_supplied_rules_to_rule_set()
         {
             var arg1 = null as object;
             var arg2 = null as object;
             var arg3 = null as object;
 
-            var intialRuleSet = new { arg1, arg2, arg3 }.MustBe();
-            var alwaysFalse = MakeRule.That(() => false).OrCreateArgumentException();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = new { arg1, arg2, arg3 }.MustBe(alwaysFalse, alwaysTrue);
+            var intialRuleSet = new { arg1, arg2, arg3 }.Must();
+            var alwaysBeFalse = MakeRule.That(() => false).OrCreateArgumentException();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = new { arg1, arg2, arg3 }.Must(alwaysBeFalse, alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(2);
-            newRuleSet.Item2.Should().Contain(alwaysFalse);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeFalse);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
 
         [Test]
-        public void MustBe2_adds_supplied_rules_to_rule_set()
+        public void Must2_adds_supplied_rules_to_rule_set()
         {
             var arg1 = null as object;
             var arg2 = null as object;
 
-            var intialRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).MustBe();
-            var alwaysFalse = MakeRule.That(() => false).OrCreateArgumentException();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).MustBe(alwaysFalse, alwaysTrue);
+            var intialRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).Must();
+            var alwaysBeFalse = MakeRule.That(() => false).OrCreateArgumentException();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = arg1.Named(nameof(arg1)).And(arg2.Named(nameof(arg2))).Must(alwaysBeFalse, alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(2);
-            newRuleSet.Item2.Should().Contain(alwaysFalse);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeFalse);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
 
         [Test]
@@ -261,7 +261,7 @@ namespace Spritely.Recipes.Test
         public void And_does_not_throw_on_empty_rule_argument()
         {
             var arg1 = "test";
-            arg1.Named(nameof(arg1)).MustBe().And();
+            arg1.Named(nameof(arg1)).Must().And();
         }
 
         [Test]
@@ -271,13 +271,13 @@ namespace Spritely.Recipes.Test
             var arg2 = null as object;
             var arg3 = null as object;
 
-            var intialRuleSet = new { arg1, arg2, arg3 }.MustBe();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = intialRuleSet.And(alwaysTrue);
+            var intialRuleSet = new { arg1, arg2, arg3 }.Must();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = intialRuleSet.And(alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(1);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
 
         [Test]
@@ -287,15 +287,15 @@ namespace Spritely.Recipes.Test
             var arg2 = null as object;
             var arg3 = null as object;
 
-            var intialRuleSet = new { arg1, arg2, arg3 }.MustBe();
-            var alwaysFalse = MakeRule.That(() => false).OrCreateArgumentException();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = intialRuleSet.And(alwaysFalse, alwaysTrue);
+            var intialRuleSet = new { arg1, arg2, arg3 }.Must();
+            var alwaysBeFalse = MakeRule.That(() => false).OrCreateArgumentException();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = intialRuleSet.And(alwaysBeFalse, alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(2);
-            newRuleSet.Item2.Should().Contain(alwaysFalse);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeFalse);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
     
         [Test]
@@ -305,15 +305,15 @@ namespace Spritely.Recipes.Test
             var arg2 = null as object;
             var arg3 = null as object;
 
-            var intialRuleSet = new { arg1, arg2, arg3 }.MustBe();
-            var alwaysFalse = MakeRule.That(() => false).OrCreateArgumentException();
-            var alwaysTrue = MakeRule.That(() => true).OrCreateArgumentException();
-            var newRuleSet = intialRuleSet.And(alwaysFalse).And(alwaysTrue);
+            var intialRuleSet = new { arg1, arg2, arg3 }.Must();
+            var alwaysBeFalse = MakeRule.That(() => false).OrCreateArgumentException();
+            var alwaysBeTrue = MakeRule.That(() => true).OrCreateArgumentException();
+            var newRuleSet = intialRuleSet.And(alwaysBeFalse).And(alwaysBeTrue);
 
             intialRuleSet.Item2.Should().BeEmpty();
             newRuleSet.Item2.Should().HaveCount(2);
-            newRuleSet.Item2.Should().Contain(alwaysFalse);
-            newRuleSet.Item2.Should().Contain(alwaysTrue);
+            newRuleSet.Item2.Should().Contain(alwaysBeFalse);
+            newRuleSet.Item2.Should().Contain(alwaysBeTrue);
         }
 
         [Test]
@@ -321,10 +321,10 @@ namespace Spritely.Recipes.Test
         {
             var arg1 = null as object;
 
-            var alwaysFalse1 = MakeRule.That(() => false).OrCreateArgumentException().Because("false1");
-            var alwaysFalse2 = MakeRule.That(() => false).OrCreateArgumentException().Because("false2");
+            var alwaysBeFalse1 = MakeRule.That(() => false).OrCreateArgumentException().Because("false1");
+            var alwaysBeFalse2 = MakeRule.That(() => false).OrCreateArgumentException().Because("false2");
 
-            var initialValidationPlan = new { arg1 }.MustBe(alwaysFalse1, alwaysFalse2);
+            var initialValidationPlan = new { arg1 }.Must(alwaysBeFalse1, alwaysBeFalse2);
             var newValidationPlan = initialValidationPlan.Because("Shared Message");
             var initialRules = initialValidationPlan.Item2;
             var newRules = newValidationPlan.Item2;
@@ -369,7 +369,7 @@ namespace Spritely.Recipes.Test
                     return true;
                 }).OrCreateArgumentException();
 
-            new { arg1, arg2, arg3 }.MustBe(testRule1, testRule2, testRule3).Report().ToList();
+            new { arg1, arg2, arg3 }.Must(testRule1, testRule2, testRule3).Report().ToList();
 
             times1.Should().Be(3);
             times2.Should().Be(1);
@@ -407,7 +407,7 @@ namespace Spritely.Recipes.Test
                     return true;
                 }).OrCreateArgumentException();
 
-            new { arg1, arg2, arg3 }.MustBe(testRule1, testRule2, testRule3).OrThrow();
+            new { arg1, arg2, arg3 }.Must(testRule1, testRule2, testRule3).OrThrow();
 
             times1.Should().Be(3);
             times2.Should().Be(0);
@@ -445,7 +445,7 @@ namespace Spritely.Recipes.Test
                     return true;
                 }).OrCreateArgumentException();
 
-            new { arg1, arg2, arg3 }.MustBe(testRule1, testRule2, testRule3).Report().ToList();
+            new { arg1, arg2, arg3 }.Must(testRule1, testRule2, testRule3).Report().ToList();
 
             actualStringValue.Should().Be("test");
             actualDoubleValue.Should().Be(1.5);
@@ -483,7 +483,7 @@ namespace Spritely.Recipes.Test
                     return true;
                 }).OrCreateArgumentException();
 
-            new { arg1, arg2, arg3 }.MustBe(testRule1, testRule2, testRule3).Report().ToList();
+            new { arg1, arg2, arg3 }.Must(testRule1, testRule2, testRule3).Report().ToList();
 
             actualIntValue.Should().Be(5);
             actualStringValue.Should().Be("test");
@@ -497,10 +497,10 @@ namespace Spritely.Recipes.Test
             var arg2 = 1.5;
             var arg3 = "test";
 
-            var alwaysTrue = MakeRule.That<object>(o => true).OrCreateArgumentException();
-            var alwaysFalse = MakeRule.That<string>(s => false).OrCreateArgumentException().Because("Test");
+            var alwaysBeTrue = MakeRule.That<object>(o => true).OrCreateArgumentException();
+            var alwaysBeFalse = MakeRule.That<string>(s => false).OrCreateArgumentException().Because("Test");
 
-            var report = new { arg1, arg2, arg3 }.MustBe(alwaysTrue, alwaysFalse).Report().ToList();
+            var report = new { arg1, arg2, arg3 }.Must(alwaysBeTrue, alwaysBeFalse).Report().ToList();
 
             report.Should().HaveCount(6); // all combinations
             report.First().Item1.Should().Be(typeof(object));
@@ -508,40 +508,40 @@ namespace Spritely.Recipes.Test
             report.First().Item3.Should().Be(arg1);
             report.First().Item4.Should().BeTrue();
             report.First().Item5.Should().BeEmpty();
-            report.First().Item6.Should().BeSameAs(alwaysTrue.Item3);
+            report.First().Item6.Should().BeSameAs(alwaysBeTrue.Item3);
             report.Skip(1).First().Item1.Should().Be(typeof(object));
             report.Skip(1).First().Item2.Should().Be("arg1");
             report.Skip(1).First().Item3.Should().Be(arg1);
             report.Skip(1).First().Item4.Should().BeTrue(); // because type is not string
             report.Skip(1).First().Item5.Should().HaveCount(1);
             report.Skip(1).First().Item5.Should().Contain("Test");
-            report.Skip(1).First().Item6.Should().BeSameAs(alwaysFalse.Item3);
+            report.Skip(1).First().Item6.Should().BeSameAs(alwaysBeFalse.Item3);
             report.Skip(2).First().Item1.Should().Be(typeof(double));
             report.Skip(2).First().Item2.Should().Be("arg2");
             report.Skip(2).First().Item3.Should().Be(arg2);
             report.Skip(2).First().Item4.Should().BeTrue();
             report.Skip(2).First().Item5.Should().BeEmpty();
-            report.Skip(2).First().Item6.Should().BeSameAs(alwaysTrue.Item3);
+            report.Skip(2).First().Item6.Should().BeSameAs(alwaysBeTrue.Item3);
             report.Skip(3).First().Item1.Should().Be(typeof(double));
             report.Skip(3).First().Item2.Should().Be("arg2");
             report.Skip(3).First().Item3.Should().Be(arg2);
             report.Skip(3).First().Item4.Should().BeTrue(); // because type is not string
             report.Skip(3).First().Item5.Should().HaveCount(1);
             report.Skip(3).First().Item5.Should().Contain("Test");
-            report.Skip(3).First().Item6.Should().BeSameAs(alwaysFalse.Item3);
+            report.Skip(3).First().Item6.Should().BeSameAs(alwaysBeFalse.Item3);
             report.Skip(4).First().Item1.Should().Be(typeof(string));
             report.Skip(4).First().Item2.Should().Be("arg3");
             report.Skip(4).First().Item3.Should().Be(arg3);
             report.Skip(4).First().Item4.Should().BeTrue();
             report.Skip(4).First().Item5.Should().BeEmpty();
-            report.Skip(4).First().Item6.Should().BeSameAs(alwaysTrue.Item3);
+            report.Skip(4).First().Item6.Should().BeSameAs(alwaysBeTrue.Item3);
             report.Skip(5).First().Item1.Should().Be(typeof(string));
             report.Skip(5).First().Item2.Should().Be("arg3");
             report.Skip(5).First().Item3.Should().Be(arg3);
             report.Skip(5).First().Item4.Should().BeFalse();
             report.Skip(5).First().Item5.Should().HaveCount(1);
             report.Skip(5).First().Item5.Should().Contain("Test");
-            report.Skip(5).First().Item6.Should().BeSameAs(alwaysFalse.Item3);
+            report.Skip(5).First().Item6.Should().BeSameAs(alwaysBeFalse.Item3);
         }
 
         [Test]
@@ -551,48 +551,48 @@ namespace Spritely.Recipes.Test
             int? arg2 = null;
 
             var called = false;
-            var alwaysTrue = MakeRule.That<object>(o => true);
+            var alwaysBeTrue = MakeRule.That<object>(o => true);
             
-            var true1 = alwaysTrue.OrCreate(
+            var beTrue1 = alwaysBeTrue.OrCreate(
                 () =>
                 {
                     called = true;
                     return new Exception();
                 });
 
-            var true2 = alwaysTrue.OrCreate(
+            var beTrue2 = alwaysBeTrue.OrCreate(
                 argumentName =>
                 {
                     called = true;
                     return new Exception();
                 });
 
-            var true3 = alwaysTrue.OrCreate(
+            var beTrue3 = alwaysBeTrue.OrCreate(
                 (argumentValue, argumentName) =>
                 {
                     called = true;
                     return new Exception();
                 });
 
-            var true4 = alwaysTrue.OrCreate(
+            var beTrue4 = alwaysBeTrue.OrCreate(
                 (messages, argumentValue, argumentName) =>
                 {
                     called = true;
                     return new Exception();
                 });
 
-            var true5 = alwaysTrue.OrCreate(
+            var beTrue5 = alwaysBeTrue.OrCreate(
                 (type, messages, argumentValue, argumentName) =>
                 {
                     called = true;
                     return new Exception();
                 });
 
-            new { arg1, arg2 }.MustBe(true1).OrThrow();
-            new { arg1, arg2 }.MustBe(true2).OrThrow();
-            new { arg1, arg2 }.MustBe(true3).OrThrow();
-            new { arg1, arg2 }.MustBe(true4).OrThrow();
-            new { arg1, arg2 }.MustBe(true5).OrThrow();
+            new { arg1, arg2 }.Must(beTrue1).OrThrow();
+            new { arg1, arg2 }.Must(beTrue2).OrThrow();
+            new { arg1, arg2 }.Must(beTrue3).OrThrow();
+            new { arg1, arg2 }.Must(beTrue4).OrThrow();
+            new { arg1, arg2 }.Must(beTrue5).OrThrow();
 
             called.Should().BeFalse();
         }
@@ -614,16 +614,16 @@ namespace Spritely.Recipes.Test
             IEnumerable<string> messages4 = null;
             Type type4 = null;
 
-            var alwaysFalse = MakeRule.That<object>(o => false);
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
 
-            var false1 = alwaysFalse.OrCreate(
+            var beFalse1 = alwaysBeFalse.OrCreate(
                 argumentName =>
                 {
                     argumentName1 = argumentName;
                     return new ArgumentException();
                 });
 
-            var false2 = alwaysFalse.OrCreate(
+            var beFalse2 = alwaysBeFalse.OrCreate(
                 (argumentValue, argumentName) =>
                 {
                     argumentName2 = argumentName;
@@ -631,7 +631,7 @@ namespace Spritely.Recipes.Test
                     return new ArgumentException();
                 });
 
-            var false3 = alwaysFalse.OrCreate(
+            var beFalse3 = alwaysBeFalse.OrCreate(
                 (messages, argumentValue, argumentName) =>
                 {
                     argumentName3 = argumentName;
@@ -640,7 +640,7 @@ namespace Spritely.Recipes.Test
                     return new ArgumentException();
                 }).Because("Test1");
 
-            var false4 = alwaysFalse.OrCreate(
+            var beFalse4 = alwaysBeFalse.OrCreate(
                 (type, messages, argumentValue, argumentName) =>
                 {
                     argumentName4 = argumentName;
@@ -650,10 +650,10 @@ namespace Spritely.Recipes.Test
                     return new ArgumentException();
                 }).Because("Test1").Because("Test2");
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe(false1).OrThrow());
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe(false2).OrThrow());
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe(false3).OrThrow());
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe(false4).OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must(beFalse1).OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must(beFalse2).OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must(beFalse3).OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must(beFalse4).OrThrow());
 
             argumentName1.Should().Be("arg1");
             argumentName2.Should().Be("arg1");
@@ -672,19 +672,19 @@ namespace Spritely.Recipes.Test
         {
             var arg1 = "Value";
 
-            var alwaysFalse = MakeRule.That<object>(o => false);
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
 
-            var false1 = alwaysFalse.OrCreate<object, ArgumentException>(() => null);
-            var false2 = alwaysFalse.OrCreate<object, ArgumentException>(_ => null);
-            var false3 = alwaysFalse.OrCreate<object, ArgumentException>((_, __) => null);
-            var false4 = alwaysFalse.OrCreate<object, ArgumentException>((_, __, ___) => null);
-            var false5 = alwaysFalse.OrCreate<object, ArgumentException>((_, __, ___, ____) => null);
+            var beFalse1 = alwaysBeFalse.OrCreate<object, ArgumentException>(() => null);
+            var beFalse2 = alwaysBeFalse.OrCreate<object, ArgumentException>(_ => null);
+            var beFalse3 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __) => null);
+            var beFalse4 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __, ___) => null);
+            var beFalse5 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __, ___, ____) => null);
 
-            Assert.DoesNotThrow(() => new { arg1 }.MustBe(false1).OrThrow());
-            Assert.DoesNotThrow(() => new { arg1 }.MustBe(false2).OrThrow());
-            Assert.DoesNotThrow(() => new { arg1 }.MustBe(false3).OrThrow());
-            Assert.DoesNotThrow(() => new { arg1 }.MustBe(false4).OrThrow());
-            Assert.DoesNotThrow(() => new { arg1 }.MustBe(false5).OrThrow());
+            Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse1).OrThrow());
+            Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse2).OrThrow());
+            Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse3).OrThrow());
+            Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse4).OrThrow());
+            Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse5).OrThrow());
         }
 
         [Test]
@@ -692,19 +692,19 @@ namespace Spritely.Recipes.Test
         {
             var arg1 = "Value";
 
-            var alwaysFalse = MakeRule.That<object>(o => false);
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
 
-            var false1 = alwaysFalse.OrCreate(() => new TestException());
-            var false2 = alwaysFalse.OrCreate(_ => new TestException());
-            var false3 = alwaysFalse.OrCreate((_, __) => new TestException());
-            var false4 = alwaysFalse.OrCreate((_, __, ___) => new TestException());
-            var false5 = alwaysFalse.OrCreate((_, __, ___, ____) => new TestException());
+            var beFalse1 = alwaysBeFalse.OrCreate(() => new TestException());
+            var beFalse2 = alwaysBeFalse.OrCreate(_ => new TestException());
+            var beFalse3 = alwaysBeFalse.OrCreate((_, __) => new TestException());
+            var beFalse4 = alwaysBeFalse.OrCreate((_, __, ___) => new TestException());
+            var beFalse5 = alwaysBeFalse.OrCreate((_, __, ___, ____) => new TestException());
 
-            Assert.Throws<TestException>(() => new { arg1 }.MustBe(false1).OrThrow());
-            Assert.Throws<TestException>(() => new { arg1 }.MustBe(false2).OrThrow());
-            Assert.Throws<TestException>(() => new { arg1 }.MustBe(false3).OrThrow());
-            Assert.Throws<TestException>(() => new { arg1 }.MustBe(false4).OrThrow());
-            Assert.Throws<TestException>(() => new { arg1 }.MustBe(false5).OrThrow());
+            Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse1).OrThrow());
+            Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse2).OrThrow());
+            Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse3).OrThrow());
+            Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse4).OrThrow());
+            Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse5).OrThrow());
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "OrThrow", Justification = "This text refers to a valid method name.")]
@@ -714,12 +714,12 @@ namespace Spritely.Recipes.Test
             var arg1 = "Value";
             int? arg2 = null;
 
-            var notNull = MakeRule.That<object>(o => o != null).OrCreateArgumentNullException();
-            var notEqualValue = MakeRule.That<string>(s => s != "Value").OrCreateArgumentException();
+            var notBeNull = MakeRule.That<object>(o => o != null).OrCreateArgumentNullException();
+            var notBeEqualToValue = MakeRule.That<string>(s => s != "Value").OrCreateArgumentException();
 
             try
             {
-                new { arg1, arg2 }.MustBe(notNull, notEqualValue).OrThrow();
+                new { arg1, arg2 }.Must(notBeNull, notBeEqualToValue).OrThrow();
             }
             catch (ArgumentException ex)
             {

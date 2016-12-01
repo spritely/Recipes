@@ -23,26 +23,26 @@ namespace Spritely.Recipes.Test
     public class RuleExtensionsTest
     {
         [Test]
-        public void NotNull_throws_when_an_argument_is_null()
+        public void NotBeNull_throws_when_an_argument_is_null()
         {
             var arg1 = "throw test";
             var arg2 = new object();
             var arg3 = 5;
             int? arg4 = null;
             
-            Assert.Throws<ArgumentNullException>(() => new { arg1, arg2, arg3, arg4 }.MustBe().NotNull().OrThrow());
-            Assert.Throws<ArgumentNullException>(() => arg4.Named("Test").MustBe().NotNull().OrThrow());
+            Assert.Throws<ArgumentNullException>(() => new { arg1, arg2, arg3, arg4 }.Must().NotBeNull().OrThrow());
+            Assert.Throws<ArgumentNullException>(() => arg4.Named("Test").Must().NotBeNull().OrThrow());
         }
 
         [Test]
-        public void NotNull_thrown_message_contains_name_of_problem_argument()
+        public void NotBeNull_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = "another test";
             var arg2 = 23;
             var arg3 = null as object;
 
-            Action action1 = () => new { arg1, arg2, arg3 }.MustBe().NotNull().OrThrow();
-            Action action2 = () => arg3.Named("The argument").MustBe().NotNull().OrThrow();
+            Action action1 = () => new { arg1, arg2, arg3 }.Must().NotBeNull().OrThrow();
+            Action action2 = () => arg3.Named("The argument").Must().NotBeNull().OrThrow();
 
             action1.ShouldThrow<ArgumentException>()
                 .And.Message.Should()
@@ -53,34 +53,34 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotNull_does_not_throw_when_no_arguments_are_null()
+        public void NotBeNull_does_not_throw_when_no_arguments_are_null()
         {
             var arg1 = "no throw test";
             var arg2 = new object();
             var arg3 = 34.4;
 
-            new { arg1, arg2, arg3 }.MustBe().NotNull().OrThrow();
-            arg1.Named("test").MustBe().NotNull().OrThrow();
+            new { arg1, arg2, arg3 }.Must().NotBeNull().OrThrow();
+            arg1.Named("test").Must().NotBeNull().OrThrow();
         }
 
         [Test]
-        public void True_throws_when_an_argument_is_false()
+        public void BeTrue_throws_when_an_argument_is_false()
         {
             var arg1 = false;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().True().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().True().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeTrue().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeTrue().OrThrow());
         }
 
         [Test]
-        public void True_thrown_message_contains_name_of_problem_argument()
+        public void BeTrue_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = "another test";
             var arg2 = 0;
             var arg3 = false;
 
-            Action action1 = () => new { arg1, arg2, arg3 }.MustBe().True().OrThrow();
-            Action action2 = () => arg3.Named("false argument").MustBe().True().OrThrow();
+            Action action1 = () => new { arg1, arg2, arg3 }.Must().BeTrue().OrThrow();
+            Action action2 = () => arg3.Named("false argument").Must().BeTrue().OrThrow();
 
             action1.ShouldThrow<ArgumentException>()
                 .And.Message.Should()
@@ -91,34 +91,34 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void True_does_not_throw_when_no_arguments_are_false()
+        public void BeTrue_does_not_throw_when_no_arguments_are_false()
         {
             var arg1 = "no throw test";
             var arg2 = true;
             var arg3 = 34.4;
 
-            new { arg1, arg2, arg3 }.MustBe().True().OrThrow();
-            arg2.Named(nameof(arg2)).MustBe().True().OrThrow();
+            new { arg1, arg2, arg3 }.Must().BeTrue().OrThrow();
+            arg2.Named(nameof(arg2)).Must().BeTrue().OrThrow();
         }
 
         [Test]
-        public void False_throws_when_an_argument_is_true()
+        public void BeFalse_throws_when_an_argument_is_true()
         {
             var arg1 = true;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().False().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().False().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeFalse().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeFalse().OrThrow());
         }
 
         [Test]
-        public void False_thrown_message_contains_name_of_problem_argument()
+        public void BeFalse_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = true;
             var arg2 = false;
             var arg3 = false;
 
-            Action action1 = () => new { arg1, arg2, arg3 }.MustBe().False().OrThrow();
-            Action action2 = () => arg1.Named(nameof(arg1)).MustBe().False().OrThrow();
+            Action action1 = () => new { arg1, arg2, arg3 }.Must().BeFalse().OrThrow();
+            Action action2 = () => arg1.Named(nameof(arg1)).Must().BeFalse().OrThrow();
 
             action1.ShouldThrow<ArgumentException>()
                 .And.Message.Should()
@@ -129,386 +129,427 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void False_does_not_throw_when_no_arguments_are_true()
+        public void BeFalse_does_not_throw_when_no_arguments_are_true()
         {
             var arg1 = false;
             var arg2 = Guid.NewGuid();
             var arg3 = DateTime.UtcNow;
 
-            new { arg1, arg2, arg3 }.MustBe().False().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().False().OrThrow();
+            new { arg1, arg2, arg3 }.Must().BeFalse().OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeFalse().OrThrow();
         }
 
         [Test]
-        public void NotEmptyString_does_not_throw_when_an_argument_is_null()
+        public void NotBeEmptyString_does_not_throw_when_an_argument_is_null()
         {
             var arg1 = null as string;
 
-            new { arg1 }.MustBe().NotEmptyString().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotEmptyString().OrThrow();
+            new { arg1 }.Must().NotBeEmptyString().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeEmptyString().OrThrow();
         }
 
         [Test]
-        public void NotEmptyString_throws_when_an_argument_is_empty()
+        public void NotBeEmptyString_throws_when_an_argument_is_empty()
         {
             var arg1 = string.Empty;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotEmptyString().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotEmptyString().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeEmptyString().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeEmptyString().OrThrow());
         }
 
         [Test]
-        public void NotEmptyString_thrown_message_contains_name_of_problem_argument()
+        public void NotBeEmptyString_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = string.Empty;
 
-            Action action1 = () => new { arg1 }.MustBe().NotEmptyString().OrThrow();
-            Action action2 = () => arg1.Named("empty argument").MustBe().NotEmptyString().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeEmptyString().OrThrow();
+            Action action2 = () => arg1.Named("empty argument").Must().NotBeEmptyString().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("empty argument");
         }
 
         [Test]
-        public void NotEmptyString_does_not_throw_when_arguments_are_not_empty()
+        public void NotBeEmptyString_does_not_throw_when_arguments_are_not_empty()
         {
             var arg1 = "should not throw";
 
-            new { arg1 }.MustBe().NotEmptyString().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotEmptyString().OrThrow();
+            new { arg1 }.Must().NotBeEmptyString().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeEmptyString().OrThrow();
         }
 
         [Test]
-        public void NotNullOrEmptyString_throws_when_an_argument_is_null()
+        public void NotBeNullOrEmptyString_throws_when_an_argument_is_null()
         {
             var arg1 = null as string;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrEmptyString().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named("Test").MustBe().NotNullOrEmptyString().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrEmptyString().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named("Test").Must().NotBeNullOrEmptyString().OrThrow());
         }
 
         [Test]
-        public void NotNullOrEmptyString_throws_when_an_argument_is_empty()
+        public void NotBeNullOrEmptyString_throws_when_an_argument_is_empty()
         {
             var arg1 = string.Empty;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrEmptyString().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrEmptyString().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrEmptyString().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrEmptyString().OrThrow());
         }
 
         [Test]
-        public void NotNullOrEmptyString_thrown_message_contains_name_of_problem_argument()
+        public void NotBeNullOrEmptyString_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = string.Empty;
 
-            Action action1 = () => new { arg1 }.MustBe().NotNullOrEmptyString().OrThrow();
-            Action action2 = () => arg1.Named("Test argument").MustBe().NotNullOrEmptyString().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeNullOrEmptyString().OrThrow();
+            Action action2 = () => arg1.Named("Test argument").Must().NotBeNullOrEmptyString().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("Test argument");
         }
 
         [Test]
-        public void NotNullOrEmptyString_does_not_throw_when_arguments_are_not_null_or_empty()
+        public void NotBeNullOrEmptyString_does_not_throw_when_arguments_are_not_null_or_empty()
         {
             var arg1 = "should not throw";
 
-            new { arg1 }.MustBe().NotNullOrEmptyString().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotNullOrEmptyString().OrThrow();
+            new { arg1 }.Must().NotBeNullOrEmptyString().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeNullOrEmptyString().OrThrow();
         }
 
         [Test]
-        public void NotWhiteSpace_does_not_throw_when_an_argument_is_null()
+        public void NotBeWhiteSpace_does_not_throw_when_an_argument_is_null()
         {
             var arg1 = null as string;
 
-            new { arg1 }.MustBe().NotWhiteSpace().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotWhiteSpace().OrThrow();
+            new { arg1 }.Must().NotBeWhiteSpace().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeWhiteSpace().OrThrow();
         }
 
         [Test]
-        public void NotWhiteSpace_throws_when_an_argument_is_empty()
+        public void NotBeWhiteSpace_throws_when_an_argument_is_empty()
         {
             var arg1 = string.Empty;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeWhiteSpace().OrThrow());
         }
 
         [Test]
-        public void NotWhiteSpace_throws_when_an_argument_is_white_space()
+        public void NotBeWhiteSpace_throws_when_an_argument_is_white_space()
         {
             var arg1 = "\t\t\r\n  ";
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeWhiteSpace().OrThrow());
         }
 
         [Test]
-        public void NotWhiteSpace_thrown_message_contains_name_of_problem_argument()
+        public void NotBeWhiteSpace_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = "   ";
 
-            Action action1 = () => new { arg1 }.MustBe().NotWhiteSpace().OrThrow();
-            Action action2 = () => arg1.Named("First arg").MustBe().NotWhiteSpace().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeWhiteSpace().OrThrow();
+            Action action2 = () => arg1.Named("First arg").Must().NotBeWhiteSpace().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("First arg");
         }
 
         [Test]
-        public void NotWhiteSpace_does_not_throw_when_arguments_are_not_null_or_white_space()
+        public void NotBeWhiteSpace_does_not_throw_when_arguments_are_not_null_or_white_space()
         {
             var arg1 = "should not throw";
 
-            new { arg1 }.MustBe().NotWhiteSpace().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotWhiteSpace().OrThrow();
+            new { arg1 }.Must().NotBeWhiteSpace().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeWhiteSpace().OrThrow();
         }
 
         [Test]
-        public void NotNullOrWhiteSpace_throws_when_an_argument_is_null()
+        public void NotBeNullOrWhiteSpace_throws_when_an_argument_is_null()
         {
             var arg1 = null as string;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrWhiteSpace().OrThrow());
         }
 
         [Test]
-        public void NotNullOrWhiteSpace_throws_when_an_argument_is_empty()
+        public void NotBeNullOrWhiteSpace_throws_when_an_argument_is_empty()
         {
             var arg1 = string.Empty;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrWhiteSpace().OrThrow());
         }
 
         [Test]
-        public void NotNullOrWhiteSpace_throws_when_an_argument_is_white_space()
+        public void NotBeNullOrWhiteSpace_throws_when_an_argument_is_white_space()
         {
             var arg1 = "  \t ";
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrWhiteSpace().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrWhiteSpace().OrThrow());
         }
 
         [Test]
-        public void NotNullOrWhiteSpace_thrown_message_contains_name_of_problem_argument()
+        public void NotBeNullOrWhiteSpace_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = "   ";
 
-            Action action1 = () => new { arg1 }.MustBe().NotNullOrWhiteSpace().OrThrow();
-            Action action2 = () => arg1.Named("First arg").MustBe().NotNullOrWhiteSpace().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeNullOrWhiteSpace().OrThrow();
+            Action action2 = () => arg1.Named("First arg").Must().NotBeNullOrWhiteSpace().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("First arg");
         }
 
         [Test]
-        public void NotNullOrWhiteSpace_does_not_throw_when_arguments_are_not_null_or_white_space()
+        public void NotBeNullOrWhiteSpace_does_not_throw_when_arguments_are_not_null_or_white_space()
         {
             var arg1 = "should not throw";
 
-            new { arg1 }.MustBe().NotNullOrWhiteSpace().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotNullOrWhiteSpace().OrThrow();
+            new { arg1 }.Must().NotBeNullOrWhiteSpace().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeNullOrWhiteSpace().OrThrow();
         }
 
         [Test]
-        public void NotEmptyGuid_throws_when_an_argument_is_empty()
+        public void NotBeEmptyGuid_throws_when_an_argument_is_empty()
         {
             var arg1 = Guid.Empty;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotEmptyGuid().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotEmptyGuid().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeEmptyGuid().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeEmptyGuid().OrThrow());
         }
 
         [Test]
-        public void NotEmptyGuid_thrown_message_contains_name_of_problem_argument()
+        public void NotBeEmptyGuid_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = Guid.Empty;
 
-            Action action1 = () => new { arg1 }.MustBe().NotEmptyGuid().OrThrow();
-            Action action2 = () => arg1.Named(nameof(arg1)).MustBe().NotEmptyGuid().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeEmptyGuid().OrThrow();
+            Action action2 = () => arg1.Named(nameof(arg1)).Must().NotBeEmptyGuid().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
         }
 
         [Test]
-        public void NotEmptyGuid_does_not_throw_when_arguments_are_not_null_or_empty()
+        public void NotBeEmptyGuid_does_not_throw_when_arguments_are_not_null_or_empty()
         {
             var arg1 = Guid.NewGuid();
 
-            new { arg1 }.MustBe().NotEmptyGuid().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotEmptyGuid().OrThrow();
+            new { arg1 }.Must().NotBeEmptyGuid().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeEmptyGuid().OrThrow();
         }
 
         [Test]
-        public void NotDefault_throws_when_an_argument_is_default()
+        public void NotBeDefault_throws_when_an_argument_is_default()
         {
             var arg1 = default(DateTime);
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotDefault<DateTime>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotDefault<DateTime>().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeDefault<DateTime>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeDefault<DateTime>().OrThrow());
         }
 
         [Test]
-        public void NotDefault_thrown_message_contains_name_of_problem_argument()
+        public void NotBeDefault_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = default(Guid);
 
-            Action action1 = () => new { arg1 }.MustBe().NotDefault<Guid>().OrThrow();
-            Action action2 = () => arg1.Named("First arg").MustBe().NotDefault<Guid>().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeDefault<Guid>().OrThrow();
+            Action action2 = () => arg1.Named("First arg").Must().NotBeDefault<Guid>().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("First arg");
         }
 
         [Test]
-        public void NotDefault_does_not_throw_when_arguments_are_not_default_values()
+        public void NotBeDefault_does_not_throw_when_arguments_are_not_default_values()
         {
             var arg1 = Guid.NewGuid();
 
-            new { arg1 }.MustBe().NotDefault<Guid>().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotDefault<Guid>().OrThrow();
+            new { arg1 }.Must().NotBeDefault<Guid>().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeDefault<Guid>().OrThrow();
         }
 
         [Test]
-        public void NotNullOrDefault_throws_when_an_argument_is_null()
+        public void NotBeNullOrDefault_throws_when_an_argument_is_null()
         {
             var arg1 = null as string;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrDefault<string>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrDefault<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrDefault<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrDefault<string>().OrThrow());
         }
 
         [Test]
-        public void NotNullOrDefault_throws_when_an_argument_is_default()
+        public void NotBeNullOrDefault_throws_when_an_argument_is_default()
         {
             var arg1 = default(string);
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrDefault<string>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrDefault<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrDefault<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrDefault<string>().OrThrow());
         }
 
         [Test]
-        public void NotNullOrDefault_thrown_message_contains_name_of_problem_argument()
+        public void NotBeNullOrDefault_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = default(string);
 
-            Action action1 = () => new { arg1 }.MustBe().NotNullOrDefault<string>().OrThrow();
-            Action action2 = () => arg1.Named("First arg").MustBe().NotNullOrDefault<string>().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeNullOrDefault<string>().OrThrow();
+            Action action2 = () => arg1.Named("First arg").Must().NotBeNullOrDefault<string>().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("First arg");
         }
 
         [Test]
-        public void NotNullOrDefault_does_not_throw_when_arguments_are_not_null_or_default()
+        public void NotBeNullOrDefault_does_not_throw_when_arguments_are_not_null_or_default()
         {
             var arg1 = Guid.NewGuid();
 
-            new { arg1 }.MustBe().NotNullOrDefault<Guid>().OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().NotNullOrDefault<Guid>().OrThrow();
+            new { arg1 }.Must().NotBeNullOrDefault<Guid>().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeNullOrDefault<Guid>().OrThrow();
         }
 
         [Test]
-        public void NotNullOrEmptyEnumerable_throws_when_an_argument_is_null()
+        public void NotBeEmptyEnumerable_does_not_throw_when_an_argument_is_null()
         {
-            var arg1 = null as IEnumerable<int>;
-            
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrEmptyEnumerable<int>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrEmptyEnumerable<int>().OrThrow());
+            var arg1 = null as IEnumerable<DateTime>;
+
+            new { arg1 }.Must().NotBeEmptyEnumerable<DateTime>().OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeEmptyEnumerable<DateTime>().OrThrow();
         }
 
         [Test]
-        public void NotNullOrEmptyEnumerable_throws_when_an_argument_is_empty()
+        public void NotBeEmptyEnumerable_throws_when_an_argument_is_empty()
         {
-            var arg1 = new List<string>();
+            var arg1 = new string[] {};
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrEmptyEnumerable<string>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrEmptyEnumerable<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeEmptyEnumerable<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeEmptyEnumerable<string>().OrThrow());
         }
 
         [Test]
-        public void NotNullOrEmptyEnumerable_thrown_message_contains_name_of_problem_argument()
+        public void NotBeEmptyEnumerable_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = null as IEnumerable<object>;
             var arg2 = new double[0];
 
-            Action action1 = () => new { arg1 }.MustBe().NotNullOrEmptyEnumerable<object>().OrThrow();
-            Action action2 = () => arg2.Named(nameof(arg2)).MustBe().NotNullOrEmptyEnumerable<double>().OrThrow();
+            Action action1 = () => new { arg1, arg2 }.Must().NotBeEmptyEnumerable<double>().OrThrow();
+            Action action2 = () => arg2.Named(nameof(arg2)).Must().NotBeEmptyEnumerable<double>().OrThrow();
+
+            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg2");
+            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg2");
+        }
+
+        [Test]
+        public void NotBeEmptyEnumerable_does_not_throw_when_arguments_are_not_empty()
+        {
+            var arg1 = new[] { true, false, true, true };
+            var arg2 = new[] { Guid.NewGuid() };
+
+            new { arg1 }.Must().NotBeEmptyEnumerable<bool>().OrThrow();
+            arg2.Named(nameof(arg2)).Must().NotBeEmptyEnumerable<Guid>().OrThrow();
+        }
+
+        [Test]
+        public void NotBeNullOrEmptyEnumerable_throws_when_an_argument_is_null()
+        {
+            var arg1 = null as IEnumerable<int>;
+            
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrEmptyEnumerable<int>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrEmptyEnumerable<int>().OrThrow());
+        }
+
+        [Test]
+        public void NotBeNullOrEmptyEnumerable_throws_when_an_argument_is_empty()
+        {
+            var arg1 = new List<string>();
+
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrEmptyEnumerable<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrEmptyEnumerable<string>().OrThrow());
+        }
+
+        [Test]
+        public void NotBeNullOrEmptyEnumerable_thrown_message_contains_name_of_problem_argument()
+        {
+            var arg1 = null as IEnumerable<object>;
+            var arg2 = new double[0];
+
+            Action action1 = () => new { arg1 }.Must().NotBeNullOrEmptyEnumerable<object>().OrThrow();
+            Action action2 = () => arg2.Named(nameof(arg2)).Must().NotBeNullOrEmptyEnumerable<double>().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg2");
         }
 
         [Test]
-        public void NotNullOrEmptyEnumerable_does_not_throw_when_arguments_are_not_null_or_empty()
+        public void NotBeNullOrEmptyEnumerable_does_not_throw_when_arguments_are_not_null_or_empty()
         {
             var arg1 = new [] { "test 1", "test 2" };
             var arg2 = new[] { 500123, -1243 };
 
-            new { arg1 }.MustBe().NotNullOrEmptyEnumerable<string>().OrThrow();
-            arg2.Named(nameof(arg2)).MustBe().NotNullOrEmptyEnumerable<int>().OrThrow();
+            new { arg1 }.Must().NotBeNullOrEmptyEnumerable<string>().OrThrow();
+            arg2.Named(nameof(arg2)).Must().NotBeNullOrEmptyEnumerable<int>().OrThrow();
         }
 
         [Test]
-        public void NotNullOrContainAnyNulls_throws_when_an_argument_is_null()
+        public void NotBeNullOrContainAnyNulls_throws_when_an_argument_is_null()
         {
             var arg1 = null as IEnumerable<int?>;
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrContainAnyNulls<int?>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrContainAnyNulls<int?>().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrContainAnyNulls<int?>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrContainAnyNulls<int?>().OrThrow());
         }
 
         [Test]
-        public void NotNullOrContainAnyNulls_throws_when_an_argument_contains_null()
+        public void NotBeNullOrContainAnyNulls_throws_when_an_argument_contains_null()
         {
             var arg1 = new List<string> { "Test1", "Test2", null, "Test3" };
 
-            Assert.Throws<ArgumentException>(() => new { arg1 }.MustBe().NotNullOrContainAnyNulls<string>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).MustBe().NotNullOrContainAnyNulls<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotBeNullOrContainAnyNulls<string>().OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotBeNullOrContainAnyNulls<string>().OrThrow());
         }
 
         [Test]
-        public void NotNullOrContainAnyNulls_thrown_message_contains_name_of_problem_argument()
+        public void NotBeNullOrContainAnyNulls_thrown_message_contains_name_of_problem_argument()
         {
             var arg1 = new List<string> { "Test1", "Test2", null, "Test3" };
 
-            Action action1 = () => new { arg1 }.MustBe().NotNullOrContainAnyNulls<string>().OrThrow();
-            Action action2 = () => arg1.Named(nameof(arg1)).MustBe().NotNullOrContainAnyNulls<string>().OrThrow();
+            Action action1 = () => new { arg1 }.Must().NotBeNullOrContainAnyNulls<string>().OrThrow();
+            Action action2 = () => arg1.Named(nameof(arg1)).Must().NotBeNullOrContainAnyNulls<string>().OrThrow();
 
             action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
             action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
         }
 
         [Test]
-        public void NotNullOrContainAnyNulls_does_not_throw_when_arguments_are_not_null_or_contain_null_items()
+        public void NotBeNullOrContainAnyNulls_does_not_throw_when_arguments_are_not_null_or_contain_null_items()
         {
             var arg1 = new[] { "test 1", "test 2" };
             var arg2 = new[] { 500123, -1243 };
-
-            new { arg1 }.MustBe().NotNullOrContainAnyNulls<string>().OrThrow();
-            arg2.Named(nameof(arg2)).MustBe().NotNullOrContainAnyNulls<int>().OrThrow();
+            
+            new { arg1 }.Must().NotBeNullOrContainAnyNulls<string>().OrThrow();
+            arg2.Named(nameof(arg2)).Must().NotBeNullOrContainAnyNulls<int>().OrThrow();
         }
 
         [Test]
-        public void InRange_throws_if_minimum_or_maximum_are_null()
+        public void BeInRange_throws_if_minimum_or_maximum_are_null()
         {
-            Action action1 = () => new { validArg = "Test" }.MustBe().InRange(null, "Z").OrThrow();
-            Action action2 = () => new { validArg = "Test" }.MustBe().InRange("A", null).OrThrow();
-
+            Action action1 = () => new { validArg = "Test" }.Must().BeInRange(null, "Z").OrThrow();
+            Action action2 = () => new { validArg = "Test" }.Must().BeInRange("A", null).OrThrow();
+            
             action1.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("minimum");
             action2.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("maximum");
         }
 
         [Test]
-        public void InRange_throws_if_value_is_less_than_minimum()
+        public void BeInRange_throws_if_value_is_less_than_minimum()
         {
             var tooLowArg = 19;
-            Action action1 = () => new { tooLowArg }.MustBe().InRange(20, int.MaxValue).OrThrow();
-            Action action2 = () => tooLowArg.Named(nameof(tooLowArg)).MustBe().InRange(50, 100).OrThrow();
+            Action action1 = () => new { tooLowArg }.Must().BeInRange(20, int.MaxValue).OrThrow();
+            Action action2 = () => tooLowArg.Named(nameof(tooLowArg)).Must().BeInRange(50, 100).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooLowArg")
@@ -520,11 +561,11 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void InRange_throws_if_value_is_greater_than_maximum()
+        public void BeInRange_throws_if_value_is_greater_than_maximum()
         {
             var tooHighArg = -4;
-            Action action1 = () => new { tooHighArg }.MustBe().InRange(int.MinValue, -5).OrThrow();
-            Action action2 = () => tooHighArg.Named(nameof(tooHighArg)).MustBe().InRange(int.MinValue, -50).OrThrow();
+            Action action1 = () => new { tooHighArg }.Must().BeInRange(int.MinValue, -5).OrThrow();
+            Action action2 = () => tooHighArg.Named(nameof(tooHighArg)).Must().BeInRange(int.MinValue, -50).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooHighArg")
@@ -536,28 +577,28 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void InRange_does_not_throw_when_value_is_in_range()
+        public void BeInRange_does_not_throw_when_value_is_in_range()
         {
             var arg1 = 0;
 
-            new { arg1 }.MustBe().InRange(0, 20).OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().InRange(-100, 0).OrThrow();
+            new { arg1 }.Must().BeInRange(0, 20).OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeInRange(-100, 0).OrThrow();
         }
 
         [Test]
-        public void LessThan_throws_if_requirement_is_null()
+        public void BeLessThan_throws_if_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.MustBe().LessThan(null as string).OrThrow();
+            Action act = () => new { validArg = "Test" }.Must().BeLessThan(null as string).OrThrow();
             
             act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]
-        public void LessThan_throws_if_value_is_not_less_than_requirement()
+        public void BeLessThan_throws_if_value_is_not_less_than_requirement()
         {
             var tooHighArg = 19;
-            Action action1 = () => new { tooHighArg }.MustBe().LessThan(19).OrThrow();
-            Action action2 = () => tooHighArg.Named(nameof(tooHighArg)).MustBe().LessThan(18).OrThrow();
+            Action action1 = () => new { tooHighArg }.Must().BeLessThan(19).OrThrow();
+            Action action2 = () => tooHighArg.Named(nameof(tooHighArg)).Must().BeLessThan(18).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooHighArg")
@@ -569,28 +610,28 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void LessThan_does_not_throw_when_value_is_less_than_requirement()
+        public void BeLessThan_does_not_throw_when_value_is_less_than_requirement()
         {
             var arg1 = 0;
 
-            new { arg1 }.MustBe().LessThan(20).OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().LessThan(1).OrThrow();
+            new { arg1 }.Must().BeLessThan(20).OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeLessThan(1).OrThrow();
         }
 
         [Test]
-        public void LessThanOrEqualTo_throws_if_requirement_is_null()
+        public void BeLessThanOrEqualTo_throws_if_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.MustBe().LessThanOrEqualTo(null as string).OrThrow();
+            Action act = () => new { validArg = "Test" }.Must().BeLessThanOrEqualTo(null as string).OrThrow();
 
             act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]
-        public void LessThanOrEqualTo_throws_if_value_is_not_less_than_or_equal_to_requirement()
+        public void BeLessThanOrEqualTo_throws_if_value_is_not_less_than_or_equal_to_requirement()
         {
             var tooHighArg = 19;
-            Action action1 = () => new { tooHighArg }.MustBe().LessThanOrEqualTo(18).OrThrow();
-            Action action2 = () => tooHighArg.Named(nameof(tooHighArg)).MustBe().LessThanOrEqualTo(0).OrThrow();
+            Action action1 = () => new { tooHighArg }.Must().BeLessThanOrEqualTo(18).OrThrow();
+            Action action2 = () => tooHighArg.Named(nameof(tooHighArg)).Must().BeLessThanOrEqualTo(0).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooHighArg")
@@ -602,27 +643,59 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void LessThanOrEqualTo_does_not_throw_when_value_is_less_than_or_equal_to_requirement()
+        public void BeLessThanOrEqualTo_does_not_throw_when_value_is_less_than_or_equal_to_requirement()
         {
             var arg1 = 0;
 
-            new { arg1 }.MustBe().LessThanOrEqualTo(1).OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().LessThanOrEqualTo(0).OrThrow();
+            new { arg1 }.Must().BeLessThanOrEqualTo(1).OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeLessThanOrEqualTo(0).OrThrow();
         }
 
         [Test]
-        public void EqualTo_throws_if_requirement_is_null()
+        public void NotBeEqualTo_throws_if_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.MustBe().EqualTo(null as string).OrThrow();
+            Action act = () => new { validArg = "Test" }.Must().NotBeEqualTo(null as string).OrThrow();
 
             act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]
-        public void EqualTo_throws_if_value_is_not_equal_to_requirement()
+        public void NotBeEqualTo_throws_if_value_is_equal_to_requirement()
         {
-            Action action1 = () => new { tooLowArg = 6.0 }.MustBe().EqualTo(6.1).OrThrow();
-            Action action2 = () => 6.2.Named("tooHighArg").MustBe().EqualTo(6.1).OrThrow();
+            Action action1 = () => new { arg = "hello" }.Must().NotBeEqualTo("hello").OrThrow();
+            Action action2 = () => "world".Named("arg").Must().NotBeEqualTo("world").OrThrow();
+
+            action1.ShouldThrow<ArgumentOutOfRangeException>()
+                .And.Message.Should().Contain("arg")
+                .And.Contain("hello");
+
+            action2.ShouldThrow<ArgumentOutOfRangeException>()
+                .And.Message.Should().Contain("arg")
+                .And.Contain("world");
+        }
+
+        [Test]
+        public void NotBeEqualTo_does_not_throw_when_value_is_not_equal_to_requirement()
+        {
+            var arg1 = 10;
+
+            new { arg1 }.Must().NotBeEqualTo(12).OrThrow();
+            arg1.Named(nameof(arg1)).Must().NotBeEqualTo(-1).OrThrow();
+        }
+
+        [Test]
+        public void BeEqualTo_throws_if_requirement_is_null()
+        {
+            Action act = () => new { validArg = "Test" }.Must().BeEqualTo(null as string).OrThrow();
+
+            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
+        }
+
+        [Test]
+        public void BeEqualTo_throws_if_value_is_not_equal_to_requirement()
+        {
+            Action action1 = () => new { tooLowArg = 6.0 }.Must().BeEqualTo(6.1).OrThrow();
+            Action action2 = () => 6.2.Named("tooHighArg").Must().BeEqualTo(6.1).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooLowArg")
@@ -634,28 +707,28 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void OrEqualTo_does_not_throw_when_value_is_equal_to_requirement()
+        public void BeEqualTo_does_not_throw_when_value_is_equal_to_requirement()
         {
             var arg1 = "Test";
 
-            new { arg1 }.MustBe().EqualTo("Test").OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().EqualTo("Test").OrThrow();
+            new { arg1 }.Must().BeEqualTo("Test").OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeEqualTo("Test").OrThrow();
         }
 
         [Test]
-        public void GreaterThan_throws_if_requirement_is_null()
+        public void BeGreaterThan_throws_if_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.MustBe().GreaterThan(null as string).OrThrow();
+            Action act = () => new { validArg = "Test" }.Must().BeGreaterThan(null as string).OrThrow();
 
             act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]
-        public void GreaterThan_throws_if_value_is_not_greater_than_requirement()
+        public void BeGreaterThan_throws_if_value_is_not_greater_than_requirement()
         {
             var tooLowArg = 19.5;
-            Action action1 = () => new { tooLowArg }.MustBe().GreaterThan(19.5).OrThrow();
-            Action action2 = () => tooLowArg.Named(nameof(tooLowArg)).MustBe().GreaterThan(20.1).OrThrow();
+            Action action1 = () => new { tooLowArg }.Must().BeGreaterThan(19.5).OrThrow();
+            Action action2 = () => tooLowArg.Named(nameof(tooLowArg)).Must().BeGreaterThan(20.1).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooLowArg")
@@ -667,28 +740,28 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void GreaterThan_does_not_throw_when_value_is_greater_than_requirement()
+        public void BeGreaterThan_does_not_throw_when_value_is_greater_than_requirement()
         {
             var arg1 = 0.2;
 
-            new { arg1 }.MustBe().GreaterThan(0.0).OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().GreaterThan(0.19).OrThrow();
+            new { arg1 }.Must().BeGreaterThan(0.0).OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeGreaterThan(0.19).OrThrow();
         }
 
         [Test]
-        public void GreaterThanOrEqualTo_throws_if_requirement_is_null()
+        public void BeGreaterThanOrEqualTo_throws_if_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.MustBe().GreaterThanOrEqualTo(null as string).OrThrow();
+            Action act = () => new { validArg = "Test" }.Must().BeGreaterThanOrEqualTo(null as string).OrThrow();
 
             act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
         }
 
         [Test]
-        public void GreaterThanOrEqualTo_throws_if_value_is_not_greater_than_or_equal_to_requirement()
+        public void BeGreaterThanOrEqualTo_throws_if_value_is_not_greater_than_or_equal_to_requirement()
         {
             var tooLowArg = 5.6;
-            Action action1 = () => new { tooLowArg }.MustBe().GreaterThanOrEqualTo(5.9).OrThrow();
-            Action action2 = () => tooLowArg.Named(nameof(tooLowArg)).MustBe().GreaterThanOrEqualTo(5.61).OrThrow();
+            Action action1 = () => new { tooLowArg }.Must().BeGreaterThanOrEqualTo(5.9).OrThrow();
+            Action action2 = () => tooLowArg.Named(nameof(tooLowArg)).Must().BeGreaterThanOrEqualTo(5.61).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooLowArg")
@@ -700,12 +773,18 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void GreaterThanOrEqualTo_does_not_throw_when_value_is_greater_than_or_equal_to_requirement()
+        public void BeGreaterThanOrEqualTo_does_not_throw_when_value_is_greater_than_or_equal_to_requirement()
         {
             var arg1 = 0.5;
 
-            new { arg1 }.MustBe().GreaterThanOrEqualTo(-1.0).OrThrow();
-            arg1.Named(nameof(arg1)).MustBe().GreaterThanOrEqualTo(0.5).OrThrow();
+            new { arg1 }.Must().BeGreaterThanOrEqualTo(-1.0).OrThrow();
+            arg1.Named(nameof(arg1)).Must().BeGreaterThanOrEqualTo(0.5).OrThrow();
+        }
+
+        private enum TestEnum
+        {
+            First = 1,
+            Second = 2
         }
     }
 }
