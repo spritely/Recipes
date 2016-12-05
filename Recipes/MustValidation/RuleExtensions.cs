@@ -94,6 +94,16 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
+        /// Adds a BeNullOrNotEmptyString check to the validation plan rules.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotEmptyString);
+        }
+
+        /// <summary>
         /// Adds a NotBeEmptyString check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
@@ -101,26 +111,6 @@ namespace Spritely.Recipes
         public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEmptyString);
-        }
-
-        /// <summary>
-        /// Adds a NotBeNullOrEmptyString check to the validation plan rules.
-        /// </summary>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation plan.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrEmptyString);
-        }
-
-        /// <summary>
-        /// Adds a NotBeNullOrWhiteSpace check to the validation plan rules.
-        /// </summary>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation plan.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrWhiteSpace);
         }
 
         /// <summary>
@@ -134,6 +124,16 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
+        /// Adds a BeNullOrNotWhiteSpace check to the validation plan rules.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <returns>A revised validation plan.</returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotWhiteSpace);
+        }
+
+        /// <summary>
         /// Adds a NotBeEmptyGuid check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
@@ -141,6 +141,20 @@ namespace Spritely.Recipes
         public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEmptyGuid(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEmptyGuid);
+        }
+
+        /// <summary>
+        /// Adds a BeNullOrNotDefault check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of default to check for.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+             where T : struct, IEquatable<T>
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotDefault<T>());
         }
 
         /// <summary>
@@ -152,23 +166,22 @@ namespace Spritely.Recipes
         /// A revised validation plan.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> NotBeDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-             where T : struct, IEquatable<T>
+            where T : IEquatable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeDefault<T>());
         }
 
         /// <summary>
-        /// Adds a NotBeNullOrDefault check to the validation plan rules.
+        /// Adds a BeNullOrNotEmptyEnumerable check to the validation plan rules.
         /// </summary>
-        /// <typeparam name="T">The type of default to check for.</typeparam>
+        /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <returns>
         /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-            where T : IEquatable<T>
+        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotEmptyEnumerable<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrDefault<T>());
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotEmptyEnumerable<T>());
         }
 
         /// <summary>
@@ -185,29 +198,16 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds a NotBeNullOrEmptyEnumerable check to the validation plan rules.
+        /// Adds a NotContainAnyNulls check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
         /// <param name="validationPlan">The validation plan.</param>
         /// <returns>
         /// A revised validation plan.
         /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrEmptyEnumerable<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotContainAnyNulls<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrEmptyEnumerable<T>());
-        }
-
-        /// <summary>
-        /// Adds a NotBeNullOrContainAnyNulls check to the validation plan rules.
-        /// </summary>
-        /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>
-        /// A revised validation plan.
-        /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> NotBeNullOrContainAnyNulls<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeNullOrContainAnyNulls<T>());
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotContainAnyNulls<T>());
         }
 
         /// <summary>
