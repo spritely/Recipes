@@ -164,6 +164,34 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
+        /// Adds a ContainElement check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="element">The element to check for.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> ContainElement<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T element)
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.ContainElement(element));
+        }
+
+        /// <summary>
+        /// Adds a NotContainElement check to the validation plan rules.
+        /// </summary>
+        /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="element">The element to check for.</param>
+        /// <returns>
+        /// A revised validation plan.
+        /// </returns>
+        public static Tuple<GetArguments, IEnumerable<Rule>> NotContainElement<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T element)
+        {
+            return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotContainElement(element));
+        }
+
+        /// <summary>
         /// Adds an BeInRange check to the validation plan rules.
         /// </summary>
         /// <typeparam name="T">The type of compariable to check.</typeparam>

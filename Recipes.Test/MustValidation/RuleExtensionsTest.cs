@@ -377,6 +377,102 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void ContainElement_does_not_throw_when_element_is_null()
+        {
+            var arg1 = new[] { "test 1", null, "test 2" };
+
+            new { arg1 }.Must().ContainElement<string>(null).OrThrow();
+        }
+
+        [Test]
+        public void ContainElement_throws_when_an_argument_is_null()
+        {
+            var arg1 = null as IEnumerable<int?>;
+
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().ContainElement<int?>(533).OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().ContainElement<int?>(0).OrThrow());
+        }
+
+        [Test]
+        public void ContainElement_throws_when_an_argument_does_not_contain_the_element()
+        {
+            var arg1 = new List<TestEnum> { TestEnum.First, TestEnum.Second };
+
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().ContainElement(TestEnum.NotInitialized).OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().ContainElement(TestEnum.NotInitialized).OrThrow());
+        }
+
+        [Test]
+        public void ContainElement_thrown_message_contains_name_of_problem_argument_and_value_to_match()
+        {
+            var arg1 = new[] { 10, 15, 20 };
+
+            Action action1 = () => new { arg1 }.Must().ContainElement(5).OrThrow();
+            Action action2 = () => arg1.Named(nameof(arg1)).Must().ContainElement(5).OrThrow();
+
+            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1").And.Contain("5");
+            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1").And.Contain("5"); ;
+        }
+
+        [Test]
+        public void ContainElement_does_not_throw_when_arguments_are_not_null_and_they_contain_the_element()
+        {
+            var arg1 = new[] { "test 1", "test 2", "valid" };
+            var arg2 = new[] { -50, 0, 422 };
+
+            new { arg1 }.Must().ContainElement("valid").OrThrow();
+            arg2.Named(nameof(arg2)).Must().ContainElement(0).OrThrow();
+        }
+
+        [Test]
+        public void NotContainElement_does_not_throw_when_element_is_null()
+        {
+            var arg1 = new[] { "test 1", "test 2" };
+
+            new { arg1 }.Must().NotContainElement<string>(null).OrThrow();
+        }
+
+        [Test]
+        public void NotContainElement_throws_when_an_argument_is_null()
+        {
+            var arg1 = null as IEnumerable<int?>;
+
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotContainElement<int?>(533).OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotContainElement<int?>(0).OrThrow());
+        }
+
+        [Test]
+        public void NotContainElement_throws_when_an_argument_contains_the_element()
+        {
+            var arg1 = new List<string> { "Good1", "Bad", "Good2", "Good3" };
+
+            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().NotContainElement("Bad").OrThrow());
+            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().NotContainElement("Bad").OrThrow());
+        }
+
+        [Test]
+        public void NotContainElement_thrown_message_contains_name_of_problem_argument_and_value_to_match()
+        {
+            var arg1 = new[] { 10, 15, -3 };
+
+            Action action1 = () => new { arg1 }.Must().NotContainElement(-3).OrThrow();
+            Action action2 = () => arg1.Named(nameof(arg1)).Must().NotContainElement(-3).OrThrow();
+
+            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1").And.Contain("-3");
+            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1").And.Contain("-3"); ;
+        }
+
+        [Test]
+        public void NotContainElement_does_not_throw_when_arguments_are_not_null_or_contain_the_element()
+        {
+            var arg1 = new[] { "test 1", "test 2" };
+            var arg2 = new[] { -50, 422 };
+
+            new { arg1 }.Must().NotContainElement("bad").OrThrow();
+            arg2.Named(nameof(arg2)).Must().NotContainElement(0).OrThrow();
+        }
+
+        [Test]
         public void BeInRange_throws_if_minimum_or_maximum_are_null()
         {
             Action action1 = () => new { validArg = "Test" }.Must().BeInRange(null, "Z").OrThrow();
@@ -625,6 +721,7 @@ namespace Spritely.Recipes.Test
 
         private enum TestEnum
         {
+            NotInitialized = 0,
             First = 1,
             Second = 2
         }

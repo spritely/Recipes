@@ -111,6 +111,34 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
+        /// Makes an enumerable must contain element rule.
+        /// </summary>
+        /// <typeparam name="T">The type contained in the enumerable.</typeparam>
+        /// <param name="element">The element to check for.</param>
+        /// <returns>The rule.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        public static Rule ContainElement<T>(T element)
+        {
+            return MakeRule.That<IEnumerable<T>>(e => e != null && e.Contains(element))
+                .OrCreateArgumentException()
+                .Because($"Enumeration cannot be null and must contain {element}.");
+        }
+
+        /// <summary>
+        /// Makes an enumerable cannot contain element rule.
+        /// </summary>
+        /// <typeparam name="T">The type contained in the enumerable.</typeparam>
+        /// <param name="element">The element to check for.</param>
+        /// <returns>The rule.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        public static Rule NotContainElement<T>(T element)
+        {
+            return MakeRule.That<IEnumerable<T>>(e => e != null && !e.Contains(element))
+                .OrCreateArgumentException()
+                .Because($"Enumeration cannot be null or contain {element}.");
+        }
+
+        /// <summary>
         /// Makes a compariable value must be in range rule.
         /// </summary>
         /// <typeparam name="T">The type being compared.</typeparam>
