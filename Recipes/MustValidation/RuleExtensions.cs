@@ -94,16 +94,6 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds a BeNullOrNotEmptyString check to the validation plan rules.
-        /// </summary>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation plan.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotEmptyString(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotEmptyString);
-        }
-
-        /// <summary>
         /// Adds a NotBeEmptyString check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
@@ -124,16 +114,6 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Adds a BeNullOrNotWhiteSpace check to the validation plan rules.
-        /// </summary>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>A revised validation plan.</returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotWhiteSpace(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotWhiteSpace);
-        }
-
-        /// <summary>
         /// Adds a NotBeEmptyGuid check to the validation plan rules.
         /// </summary>
         /// <param name="validationPlan">The validation plan.</param>
@@ -141,20 +121,6 @@ namespace Spritely.Recipes
         public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEmptyGuid(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEmptyGuid);
-        }
-
-        /// <summary>
-        /// Adds a BeNullOrNotDefault check to the validation plan rules.
-        /// </summary>
-        /// <typeparam name="T">The type of default to check for.</typeparam>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>
-        /// A revised validation plan.
-        /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotDefault<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-             where T : struct, IEquatable<T>
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotDefault<T>());
         }
 
         /// <summary>
@@ -169,19 +135,6 @@ namespace Spritely.Recipes
             where T : IEquatable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeDefault<T>());
-        }
-
-        /// <summary>
-        /// Adds a BeNullOrNotEmptyEnumerable check to the validation plan rules.
-        /// </summary>
-        /// <typeparam name="T">The type of value contained in the enumerable.</typeparam>
-        /// <param name="validationPlan">The validation plan.</param>
-        /// <returns>
-        /// A revised validation plan.
-        /// </returns>
-        public static Tuple<GetArguments, IEnumerable<Rule>> BeNullOrNotEmptyEnumerable<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
-        {
-            return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeNullOrNotEmptyEnumerable<T>());
         }
 
         /// <summary>

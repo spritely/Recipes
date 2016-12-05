@@ -140,45 +140,6 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void BeNullOrNotEmptyString_does_not_throw_when_an_argument_is_null()
-        {
-            var arg1 = null as string;
-
-            new { arg1 }.Must().BeNullOrNotEmptyString().OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeNullOrNotEmptyString().OrThrow();
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyString_throws_when_an_argument_is_empty()
-        {
-            var arg1 = string.Empty;
-
-            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeNullOrNotEmptyString().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeNullOrNotEmptyString().OrThrow());
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyString_thrown_message_contains_name_of_problem_argument()
-        {
-            var arg1 = string.Empty;
-
-            Action action1 = () => new { arg1 }.Must().BeNullOrNotEmptyString().OrThrow();
-            Action action2 = () => arg1.Named("empty argument").Must().BeNullOrNotEmptyString().OrThrow();
-
-            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
-            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("empty argument");
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyString_does_not_throw_when_arguments_are_not_empty()
-        {
-            var arg1 = "should not throw";
-
-            new { arg1 }.Must().BeNullOrNotEmptyString().OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeNullOrNotEmptyString().OrThrow();
-        }
-
-        [Test]
         public void NotBeEmptyString_throws_when_an_argument_is_null()
         {
             var arg1 = null as string;
@@ -215,54 +176,6 @@ namespace Spritely.Recipes.Test
 
             new { arg1 }.Must().NotBeEmptyString().OrThrow();
             arg1.Named(nameof(arg1)).Must().NotBeEmptyString().OrThrow();
-        }
-
-        [Test]
-        public void BeNullOrNotWhiteSpace_does_not_throw_when_an_argument_is_null()
-        {
-            var arg1 = null as string;
-
-            new { arg1 }.Must().BeNullOrNotWhiteSpace().OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeNullOrNotWhiteSpace().OrThrow();
-        }
-
-        [Test]
-        public void BeNullOrNotWhiteSpace_throws_when_an_argument_is_empty()
-        {
-            var arg1 = string.Empty;
-
-            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeNullOrNotWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeNullOrNotWhiteSpace().OrThrow());
-        }
-
-        [Test]
-        public void BeNullOrNotWhiteSpace_throws_when_an_argument_is_white_space()
-        {
-            var arg1 = "\t\t\r\n  ";
-
-            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeNullOrNotWhiteSpace().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeNullOrNotWhiteSpace().OrThrow());
-        }
-
-        [Test]
-        public void BeNullOrNotWhiteSpace_thrown_message_contains_name_of_problem_argument()
-        {
-            var arg1 = "   ";
-
-            Action action1 = () => new { arg1 }.Must().BeNullOrNotWhiteSpace().OrThrow();
-            Action action2 = () => arg1.Named("First arg").Must().BeNullOrNotWhiteSpace().OrThrow();
-
-            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
-            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("First arg");
-        }
-
-        [Test]
-        public void BeNullOrNotWhiteSpace_does_not_throw_when_arguments_are_not_null_or_white_space()
-        {
-            var arg1 = "should not throw";
-
-            new { arg1 }.Must().BeNullOrNotWhiteSpace().OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeNullOrNotWhiteSpace().OrThrow();
         }
 
         [Test]
@@ -344,36 +257,6 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void BeNullOrNotDefault_throws_when_an_argument_is_default()
-        {
-            var arg1 = default(DateTime);
-
-            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeNullOrNotDefault<DateTime>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeNullOrNotDefault<DateTime>().OrThrow());
-        }
-
-        [Test]
-        public void BeNullOrNotDefault_thrown_message_contains_name_of_problem_argument()
-        {
-            var arg1 = default(Guid);
-
-            Action action1 = () => new { arg1 }.Must().BeNullOrNotDefault<Guid>().OrThrow();
-            Action action2 = () => arg1.Named("First arg").Must().BeNullOrNotDefault<Guid>().OrThrow();
-
-            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg1");
-            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("First arg");
-        }
-
-        [Test]
-        public void BeNullOrNotDefault_does_not_throw_when_arguments_are_not_default_values()
-        {
-            var arg1 = Guid.NewGuid();
-
-            new { arg1 }.Must().BeNullOrNotDefault<Guid>().OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeNullOrNotDefault<Guid>().OrThrow();
-        }
-
-        [Test]
         public void NotBeDefault_throws_when_an_argument_is_null()
         {
             var arg1 = null as string;
@@ -410,47 +293,6 @@ namespace Spritely.Recipes.Test
 
             new { arg1 }.Must().NotBeDefault<Guid>().OrThrow();
             arg1.Named(nameof(arg1)).Must().NotBeDefault<Guid>().OrThrow();
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyEnumerable_does_not_throw_when_an_argument_is_null()
-        {
-            var arg1 = null as IEnumerable<DateTime>;
-
-            new { arg1 }.Must().BeNullOrNotEmptyEnumerable<DateTime>().OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeNullOrNotEmptyEnumerable<DateTime>().OrThrow();
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyEnumerable_throws_when_an_argument_is_empty()
-        {
-            var arg1 = new string[] {};
-
-            Assert.Throws<ArgumentException>(() => new { arg1 }.Must().BeNullOrNotEmptyEnumerable<string>().OrThrow());
-            Assert.Throws<ArgumentException>(() => arg1.Named(nameof(arg1)).Must().BeNullOrNotEmptyEnumerable<string>().OrThrow());
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyEnumerable_thrown_message_contains_name_of_problem_argument()
-        {
-            var arg1 = null as IEnumerable<object>;
-            var arg2 = new double[0];
-
-            Action action1 = () => new { arg1, arg2 }.Must().BeNullOrNotEmptyEnumerable<double>().OrThrow();
-            Action action2 = () => arg2.Named(nameof(arg2)).Must().BeNullOrNotEmptyEnumerable<double>().OrThrow();
-
-            action1.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg2");
-            action2.ShouldThrow<ArgumentException>().And.Message.Should().Contain("arg2");
-        }
-
-        [Test]
-        public void BeNullOrNotEmptyEnumerable_does_not_throw_when_arguments_are_not_empty()
-        {
-            var arg1 = new[] { true, false, true, true };
-            var arg2 = new[] { Guid.NewGuid() };
-
-            new { arg1 }.Must().BeNullOrNotEmptyEnumerable<bool>().OrThrow();
-            arg2.Named(nameof(arg2)).Must().BeNullOrNotEmptyEnumerable<Guid>().OrThrow();
         }
 
         [Test]
