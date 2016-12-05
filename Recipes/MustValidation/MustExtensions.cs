@@ -45,10 +45,10 @@ namespace Spritely.Recipes
     // Do not want to impose this restriction on downstream assemblies (since this is a Recipe)
     // So have to remove this from the compilation and inline the types and instead use the next
     // shortest equivalent: Tuple<GetArguments, IEnumerable<Rule>>
-    // A ValidationReportDefinition is the combination of Arguments to validate and Rules to run.
+    // A ValidationPlan is the combination of Arguments to validate and Rules to run.
     // Tuple<GetArguments, IEnumerable<Rule>>;
     // Tuple<Func<IEnumerable<Tuple<Type, string, object>>>, IEnumerable<Tuple<Func<Type, object, bool>, IEnumerable<string>, Func<Type, IEnumerable<string>, object, string, Exception>>>>;
-    //using ValidationReportDefinition = System.Tuple<System.Func<System.Collections.Generic.IEnumerable<System.Tuple<System.Type, string, object>>>, System.Collections.Generic.IEnumerable<System.Tuple<System.Func<System.Type, object, bool>, System.Collections.Generic.IEnumerable<string>, System.Func<System.Type, System.Collections.Generic.IEnumerable<string>, object, string, System.Exception>>>>;
+    //using ValidationPlan = System.Tuple<System.Func<System.Collections.Generic.IEnumerable<System.Tuple<System.Type, string, object>>>, System.Collections.Generic.IEnumerable<System.Tuple<System.Func<System.Type, object, bool>, System.Collections.Generic.IEnumerable<string>, System.Func<System.Type, System.Collections.Generic.IEnumerable<string>, object, string, System.Exception>>>>;
 
     // A ValidationReport is the result of running all the validations against all the arguments.
     // It is a list of results for each argument along with the function to call to convert failures into exceptions.
@@ -360,6 +360,9 @@ namespace Spritely.Recipes
         /// arguments. All combinations are reported so rules where types do not match are included but
         /// all evaluate to true (valid).
         /// </summary>
+        /// <example>
+        /// var report = new { arg1, arg2, ...}.Must()....Report();
+        /// </example>
         /// <param name="validationPlan">The validation plan to report on.</param>
         /// <returns>A validation report.</returns>
         /// <exception cref="System.ArgumentNullException">If validationPlan is null.</exception>
@@ -390,16 +393,22 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
-        /// Runs all the validation rules and generates an exception for any failures. Multiple exceptions are
-        /// wrapped into a single ArgumentException whose InnerException is an AggregateException whose
-        /// InnerExceptions is a list of all the validation exceptions.
+        /// Gets the exceptions from the validation report. There will be one exception per argument
+        /// per matching rule which failed validation.
         /// </summary>
-        /// <param name="validationPlan">The validation plan.</param>
-        public static void OrThrow(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        /// <example>
+        /// var exceptions = new { arg1, arg2, ...}.Must()....Report().GetExceptions();
+        /// </example>
+        /// <param name="validationReport">The validation report.</param>
+        /// <returns>The list of exceptions from the rule failures.</returns>
+        public static IEnumerable<Exception> GetExceptions(this ValidationReport validationReport)
         {
-            var report = validationPlan.Report();
+            if (validationReport == null)
+            {
+                throw new ArgumentNullException("validationReport");
+            }
 
-            var exceptions = report.Where(r => !r.Item4 /* validation result */)
+            var exceptions = validationReport.Where(r => !r.Item4 /* validation result */)
                 .Select(
                     r =>
                     {
@@ -412,18 +421,62 @@ namespace Spritely.Recipes
                         var exception = getException(argumentType, reasons, argumentValue, argumentName);
 
                         return exception;
-                    }).Where(ex => ex != null).ToList();
+                    }).Where(ex => ex != null);
+
+            return exceptions;
+        }
+
+        /// <summary>
+        /// Gets the single exception from the validation report when there is one or aggregates
+        /// all the exceptions under a single ArgumentException with a nested AggregateException
+        /// containing all the report's validation failure exceptions. There will be one exception
+        /// per argument per matching rule which failed validation.
+        /// </summary>
+        /// <example>
+        /// var exception = new { arg1, arg2, ...}.Must()....Report().GetSingleOrAggregateArgumentException();
+        /// </example>
+        /// <param name="validationReport">The validation report.</param>
+        /// <returns>The single thrown exception or an ArgumentException with an inner AggregateException
+        /// containing all the exceptions from rule failures OR null when no failures.</returns>
+        public static Exception GetSingleOrAggregateArgumentException(this ValidationReport validationReport)
+        {
+            if (validationReport == null)
+            {
+                throw new ArgumentNullException("validationReport");
+            }
+
+            var exceptions = validationReport.GetExceptions().ToList();
 
             if (exceptions.Count == 1)
             {
-                throw exceptions.First();
+                return exceptions.First();
             }
 
             if (exceptions.Any())
             {
-                throw new ArgumentException(
+                return new ArgumentException(
                     "There were multiple argument exceptions. Please see InnerException for details.",
                     innerException: new AggregateException(exceptions));
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Runs all the validation rules and generates an exception for any failures. Multiple exceptions are
+        /// wrapped into a single ArgumentException whose InnerException is an AggregateException whose
+        /// InnerExceptions is a list of all the validation exceptions.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        public static void OrThrow(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        {
+            var report = validationPlan.Report();
+
+            var exception = report.GetSingleOrAggregateArgumentException();
+
+            if (exception != null)
+            {
+                throw exception;
             }
         }
 

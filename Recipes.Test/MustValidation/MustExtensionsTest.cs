@@ -19,6 +19,7 @@ namespace Spritely.Recipes.Test
     // See MustExtensions.cs for comments on type definitions
     using GetArguments = System.Func<System.Collections.Generic.IEnumerable<System.Tuple<System.Type, string, object>>>;
     using Rule = System.Tuple<System.Func<System.Type, object, bool>, System.Collections.Generic.IEnumerable<string>, System.Func<System.Type, System.Collections.Generic.IEnumerable<string>, object, string, System.Exception>>;
+    using ValidationReport = System.Collections.Generic.IEnumerable<System.Tuple<System.Type, string, object, bool, System.Collections.Generic.IEnumerable<string>, System.Func<System.Type, System.Collections.Generic.IEnumerable<string>, object, string, System.Exception>>>;
 
     [TestFixture]
     public class MustExtensionsTest
@@ -147,6 +148,20 @@ namespace Spritely.Recipes.Test
         {
             Assert.Throws<ArgumentNullException>(() => (null as object).Must());
             Assert.Throws<ArgumentNullException>(() => (null as GetArguments).Must());
+        }
+
+        [Test]
+        public void Must1_does_not_throw_on_empty_rule_argument()
+        {
+            var arg1 = "test";
+            new { arg1 }.Must();
+        }
+
+        [Test]
+        public void Must2_does_not_throw_on_empty_rule_argument()
+        {
+            var arg1 = "test";
+            arg1.Named(nameof(arg1)).Must();
         }
 
         [Test]
@@ -317,6 +332,12 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Because_throws_on_null_validation_plan_argument()
+        {
+            Assert.Throws<ArgumentNullException>(() => (null as Tuple<GetArguments, IEnumerable<Rule>>).Because("Test Reason"));
+        }
+
+        [Test]
         public void Because_appends_message_to_all_rules()
         {
             var arg1 = null as object;
@@ -336,6 +357,12 @@ namespace Spritely.Recipes.Test
             newRules.Should().HaveCount(2);
             newRules.First().Item2.Should().HaveCount(2).And.Contain("false1").And.Contain("Shared Message");
             newRules.Skip(1).First().Item2.Should().HaveCount(2).And.Contain("false2").And.Contain("Shared Message");
+        }
+
+        [Test]
+        public void Report_throws_on_null_validation_plan_argument()
+        {
+            Assert.Throws<ArgumentNullException>(() => (null as Tuple<GetArguments, IEnumerable<Rule>>).Report());
         }
 
         [Test]
@@ -545,6 +572,124 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void GetExceptions_throws_on_null_validation_report_argument()
+        {
+            Assert.Throws<ArgumentNullException>(() => (null as ValidationReport).GetExceptions());
+        }
+
+        [Test]
+        public void GetSingleOrAggregateArgumentException_throws_on_null_validation_report_argument()
+        {
+            Assert.Throws<ArgumentNullException>(() => (null as ValidationReport).GetSingleOrAggregateArgumentException());
+        }
+
+        [Test]
+        public void GetExceptions_does_not_call_GetException_when_validation_succeeds()
+        {
+            var arg1 = DateTime.UtcNow;
+            float? arg2 = null;
+
+            var called = false;
+            var alwaysBeTrue = MakeRule.That<object>(o => true);
+            
+            var beTrue1 = alwaysBeTrue.OrCreate(
+                () =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue2 = alwaysBeTrue.OrCreate(
+                argumentName =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue3 = alwaysBeTrue.OrCreate(
+                (argumentValue, argumentName) =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue4 = alwaysBeTrue.OrCreate(
+                (messages, argumentValue, argumentName) =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue5 = alwaysBeTrue.OrCreate(
+                (type, messages, argumentValue, argumentName) =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            new { arg1, arg2 }.Must(beTrue1).Report().GetExceptions().ToList();
+            new { arg1, arg2 }.Must(beTrue2).Report().GetExceptions().ToList();
+            new { arg1, arg2 }.Must(beTrue3).Report().GetExceptions().ToList();
+            new { arg1, arg2 }.Must(beTrue4).Report().GetExceptions().ToList();
+            new { arg1, arg2 }.Must(beTrue5).Report().GetExceptions().ToList();
+
+            called.Should().BeFalse();
+        }
+
+        [Test]
+        public void GetSingleOrAggregateArgumentException_does_not_call_GetException_when_validation_succeeds()
+        {
+            var arg1 = TimeSpan.MaxValue;
+            decimal? arg2 = null;
+
+            var called = false;
+            var alwaysBeTrue = MakeRule.That<object>(o => true);
+
+            var beTrue1 = alwaysBeTrue.OrCreate(
+                () =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue2 = alwaysBeTrue.OrCreate(
+                argumentName =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue3 = alwaysBeTrue.OrCreate(
+                (argumentValue, argumentName) =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue4 = alwaysBeTrue.OrCreate(
+                (messages, argumentValue, argumentName) =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            var beTrue5 = alwaysBeTrue.OrCreate(
+                (type, messages, argumentValue, argumentName) =>
+                {
+                    called = true;
+                    return new Exception();
+                });
+
+            new { arg1, arg2 }.Must(beTrue1).Report().GetSingleOrAggregateArgumentException();
+            new { arg1, arg2 }.Must(beTrue2).Report().GetSingleOrAggregateArgumentException();
+            new { arg1, arg2 }.Must(beTrue3).Report().GetSingleOrAggregateArgumentException();
+            new { arg1, arg2 }.Must(beTrue4).Report().GetSingleOrAggregateArgumentException();
+            new { arg1, arg2 }.Must(beTrue5).Report().GetSingleOrAggregateArgumentException();
+
+            called.Should().BeFalse();
+        }
+
+        [Test]
         public void OrThrow_does_not_call_GetException_when_validation_succeeds()
         {
             var arg1 = Guid.NewGuid();
@@ -552,7 +697,7 @@ namespace Spritely.Recipes.Test
 
             var called = false;
             var alwaysBeTrue = MakeRule.That<object>(o => true);
-            
+
             var beTrue1 = alwaysBeTrue.OrCreate(
                 () =>
                 {
@@ -595,6 +740,146 @@ namespace Spritely.Recipes.Test
             new { arg1, arg2 }.Must(beTrue5).OrThrow();
 
             called.Should().BeFalse();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Test is about the type and parameter name is irrelevant here.")]
+        [Test]
+        public void GetExceptions_calls_getException_with_expected_arguments_when_validation_fails()
+        {
+            var arg1 = "Value";
+
+            string argumentName1 = null;
+            string argumentName2 = null;
+            string argumentName3 = null;
+            string argumentName4 = null;
+            object argumentValue2 = null;
+            object argumentValue3 = null;
+            object argumentValue4 = null;
+            IEnumerable<string> messages3 = null;
+            IEnumerable<string> messages4 = null;
+            Type type4 = null;
+
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
+
+            var beFalse1 = alwaysBeFalse.OrCreate(
+                argumentName =>
+                {
+                    argumentName1 = argumentName;
+                    return new ArgumentException();
+                });
+
+            var beFalse2 = alwaysBeFalse.OrCreate(
+                (argumentValue, argumentName) =>
+                {
+                    argumentName2 = argumentName;
+                    argumentValue2 = argumentValue;
+                    return new ArgumentException();
+                });
+
+            var beFalse3 = alwaysBeFalse.OrCreate(
+                (messages, argumentValue, argumentName) =>
+                {
+                    argumentName3 = argumentName;
+                    argumentValue3 = argumentValue;
+                    messages3 = messages;
+                    return new ArgumentException();
+                }).Because("Test1");
+
+            var beFalse4 = alwaysBeFalse.OrCreate(
+                (type, messages, argumentValue, argumentName) =>
+                {
+                    argumentName4 = argumentName;
+                    argumentValue4 = argumentValue;
+                    messages4 = messages;
+                    type4 = type;
+                    return new ArgumentException();
+                }).Because("Test1").Because("Test2");
+
+            new { arg1 }.Must(beFalse1).Report().GetExceptions().ToList();
+            new { arg1 }.Must(beFalse2).Report().GetExceptions().ToList();
+            new { arg1 }.Must(beFalse3).Report().GetExceptions().ToList();
+            new { arg1 }.Must(beFalse4).Report().GetExceptions().ToList();
+
+            argumentName1.Should().Be("arg1");
+            argumentName2.Should().Be("arg1");
+            argumentName3.Should().Be("arg1");
+            argumentName4.Should().Be("arg1");
+            argumentValue2.Should().Be("Value");
+            argumentValue3.Should().Be("Value");
+            argumentValue4.Should().Be("Value");
+            messages3.Should().HaveCount(1).And.Contain("Test1");
+            messages4.Should().HaveCount(2).And.ContainInOrder("Test1", "Test2");
+            type4.Should().Be<string>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Test is about the type and parameter name is irrelevant here.")]
+        [Test]
+        public void GetSingleOrAggregateArgumentException_calls_getException_with_expected_arguments_when_validation_fails()
+        {
+            var arg1 = "Value";
+
+            string argumentName1 = null;
+            string argumentName2 = null;
+            string argumentName3 = null;
+            string argumentName4 = null;
+            object argumentValue2 = null;
+            object argumentValue3 = null;
+            object argumentValue4 = null;
+            IEnumerable<string> messages3 = null;
+            IEnumerable<string> messages4 = null;
+            Type type4 = null;
+
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
+
+            var beFalse1 = alwaysBeFalse.OrCreate(
+                argumentName =>
+                {
+                    argumentName1 = argumentName;
+                    return new ArgumentException();
+                });
+
+            var beFalse2 = alwaysBeFalse.OrCreate(
+                (argumentValue, argumentName) =>
+                {
+                    argumentName2 = argumentName;
+                    argumentValue2 = argumentValue;
+                    return new ArgumentException();
+                });
+
+            var beFalse3 = alwaysBeFalse.OrCreate(
+                (messages, argumentValue, argumentName) =>
+                {
+                    argumentName3 = argumentName;
+                    argumentValue3 = argumentValue;
+                    messages3 = messages;
+                    return new ArgumentException();
+                }).Because("Test1");
+
+            var beFalse4 = alwaysBeFalse.OrCreate(
+                (type, messages, argumentValue, argumentName) =>
+                {
+                    argumentName4 = argumentName;
+                    argumentValue4 = argumentValue;
+                    messages4 = messages;
+                    type4 = type;
+                    return new ArgumentException();
+                }).Because("Test1").Because("Test2");
+
+            new { arg1 }.Must(beFalse1).Report().GetSingleOrAggregateArgumentException();
+            new { arg1 }.Must(beFalse2).Report().GetSingleOrAggregateArgumentException();
+            new { arg1 }.Must(beFalse3).Report().GetSingleOrAggregateArgumentException();
+            new { arg1 }.Must(beFalse4).Report().GetSingleOrAggregateArgumentException();
+
+            argumentName1.Should().Be("arg1");
+            argumentName2.Should().Be("arg1");
+            argumentName3.Should().Be("arg1");
+            argumentName4.Should().Be("arg1");
+            argumentValue2.Should().Be("Value");
+            argumentValue3.Should().Be("Value");
+            argumentValue4.Should().Be("Value");
+            messages3.Should().HaveCount(1).And.Contain("Test1");
+            messages4.Should().HaveCount(2).And.ContainInOrder("Test1", "Test2");
+            type4.Should().Be<string>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Test is about the type and parameter name is irrelevant here.")]
@@ -668,6 +953,46 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void GetExceptions_is_empty_when_getException_returns_null()
+        {
+            var arg1 = "Value";
+
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
+
+            var beFalse1 = alwaysBeFalse.OrCreate<object, ArgumentException>(() => null);
+            var beFalse2 = alwaysBeFalse.OrCreate<object, ArgumentException>(_ => null);
+            var beFalse3 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __) => null);
+            var beFalse4 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __, ___) => null);
+            var beFalse5 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __, ___, ____) => null);
+
+            new { arg1 }.Must(beFalse1).Report().GetExceptions().Should().BeEmpty();
+            new { arg1 }.Must(beFalse2).Report().GetExceptions().Should().BeEmpty();
+            new { arg1 }.Must(beFalse3).Report().GetExceptions().Should().BeEmpty();
+            new { arg1 }.Must(beFalse4).Report().GetExceptions().Should().BeEmpty();
+            new { arg1 }.Must(beFalse5).Report().GetExceptions().Should().BeEmpty();
+        }
+
+        [Test]
+        public void GetSingleOrAggregateArgumentException_is_null_when_getException_returns_null()
+        {
+            var arg1 = "Value";
+
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
+
+            var beFalse1 = alwaysBeFalse.OrCreate<object, ArgumentException>(() => null);
+            var beFalse2 = alwaysBeFalse.OrCreate<object, ArgumentException>(_ => null);
+            var beFalse3 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __) => null);
+            var beFalse4 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __, ___) => null);
+            var beFalse5 = alwaysBeFalse.OrCreate<object, ArgumentException>((_, __, ___, ____) => null);
+
+            new { arg1 }.Must(beFalse1).Report().GetSingleOrAggregateArgumentException().Should().BeNull();
+            new { arg1 }.Must(beFalse2).Report().GetSingleOrAggregateArgumentException().Should().BeNull();
+            new { arg1 }.Must(beFalse3).Report().GetSingleOrAggregateArgumentException().Should().BeNull();
+            new { arg1 }.Must(beFalse4).Report().GetSingleOrAggregateArgumentException().Should().BeNull();
+            new { arg1 }.Must(beFalse5).Report().GetSingleOrAggregateArgumentException().Should().BeNull();
+        }
+
+        [Test]
         public void OrThrow_does_not_throw_when_getException_returns_null()
         {
             var arg1 = "Value";
@@ -685,6 +1010,58 @@ namespace Spritely.Recipes.Test
             Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse3).OrThrow());
             Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse4).OrThrow());
             Assert.DoesNotThrow(() => new { arg1 }.Must(beFalse5).OrThrow());
+        }
+
+        [Test]
+        public void GetExceptions_returns_exception_returned_from_getException_if_only_validation_exception()
+        {
+            var arg1 = "Value";
+
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
+
+            var beFalse1 = alwaysBeFalse.OrCreate(() => new TestException());
+            var beFalse2 = alwaysBeFalse.OrCreate(_ => new TestException());
+            var beFalse3 = alwaysBeFalse.OrCreate((_, __) => new TestException());
+            var beFalse4 = alwaysBeFalse.OrCreate((_, __, ___) => new TestException());
+            var beFalse5 = alwaysBeFalse.OrCreate((_, __, ___, ____) => new TestException());
+
+            var exceptions1 = new { arg1 }.Must(beFalse1).Report().GetExceptions();
+            var exceptions2 = new { arg1 }.Must(beFalse2).Report().GetExceptions();
+            var exceptions3 = new { arg1 }.Must(beFalse3).Report().GetExceptions();
+            var exceptions4 = new { arg1 }.Must(beFalse4).Report().GetExceptions();
+            var exceptions5 = new { arg1 }.Must(beFalse5).Report().GetExceptions();
+
+            exceptions1.Should().HaveCount(1).And.Subject.First().Should().BeOfType<TestException>();
+            exceptions2.Should().HaveCount(1).And.Subject.First().Should().BeOfType<TestException>();
+            exceptions3.Should().HaveCount(1).And.Subject.First().Should().BeOfType<TestException>();
+            exceptions4.Should().HaveCount(1).And.Subject.First().Should().BeOfType<TestException>();
+            exceptions5.Should().HaveCount(1).And.Subject.First().Should().BeOfType<TestException>();
+        }
+
+        [Test]
+        public void GetSingleOrAggregateArgumentException_returns_exception_returned_from_getException_if_only_validation_exception()
+        {
+            var arg1 = "Value";
+
+            var alwaysBeFalse = MakeRule.That<object>(o => false);
+
+            var beFalse1 = alwaysBeFalse.OrCreate(() => new TestException());
+            var beFalse2 = alwaysBeFalse.OrCreate(_ => new TestException());
+            var beFalse3 = alwaysBeFalse.OrCreate((_, __) => new TestException());
+            var beFalse4 = alwaysBeFalse.OrCreate((_, __, ___) => new TestException());
+            var beFalse5 = alwaysBeFalse.OrCreate((_, __, ___, ____) => new TestException());
+
+            var exception1 = new { arg1 }.Must(beFalse1).Report().GetSingleOrAggregateArgumentException();
+            var exception2 = new { arg1 }.Must(beFalse2).Report().GetSingleOrAggregateArgumentException();
+            var exception3 = new { arg1 }.Must(beFalse3).Report().GetSingleOrAggregateArgumentException();
+            var exception4 = new { arg1 }.Must(beFalse4).Report().GetSingleOrAggregateArgumentException();
+            var exception5 = new { arg1 }.Must(beFalse5).Report().GetSingleOrAggregateArgumentException();
+
+            exception1.Should().BeOfType<TestException>();
+            exception2.Should().BeOfType<TestException>();
+            exception3.Should().BeOfType<TestException>();
+            exception4.Should().BeOfType<TestException>();
+            exception5.Should().BeOfType<TestException>();
         }
 
         [Test]
@@ -706,6 +1083,53 @@ namespace Spritely.Recipes.Test
             Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse4).OrThrow());
             Assert.Throws<TestException>(() => new { arg1 }.Must(beFalse5).OrThrow());
         }
+
+        [Test]
+        public void GetExceptions_returns_all_failed_exceptions_when_multiple_validations_fail()
+        {
+            var arg1 = "Value";
+            int? arg2 = null;
+
+            var notBeNull = MakeRule.That<object>(o => o != null).OrCreateArgumentNullException();
+            var notBeEqualToValue = MakeRule.That<string>(s => s != "Value").OrCreateArgumentException();
+
+            var exceptions = new { arg1, arg2 }.Must(notBeNull, notBeEqualToValue).Report().GetExceptions().ToList();
+
+            exceptions.Should().NotBeNull();
+            exceptions.Should().HaveCount(2);
+            exceptions.First().Should().BeOfType<ArgumentException>();
+            exceptions.First().GetType().Should().NotBe<ArgumentNullException>();
+            exceptions.Skip(1).First().Should().BeOfType<ArgumentNullException>();
+        }
+
+        [Test]
+        public void GetSingleOrAggregateArgumentException_returns_ArgumentException_containing_all_failed_exceptions_when_multiple_validations_fail()
+        {
+            var arg1 = "Value";
+            int? arg2 = null;
+
+            var notBeNull = MakeRule.That<object>(o => o != null).OrCreateArgumentNullException();
+            var notBeEqualToValue = MakeRule.That<string>(s => s != "Value").OrCreateArgumentException();
+
+            var exception =
+                new { arg1, arg2 }.Must(notBeNull, notBeEqualToValue).Report().GetSingleOrAggregateArgumentException();
+
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType<ArgumentException>();
+            exception.GetType().Should().NotBe<ArgumentNullException>();
+            exception.InnerException.Should().NotBeNull();
+            exception.InnerException.Should().BeOfType<AggregateException>();
+            (exception.InnerException as AggregateException).InnerExceptions.Should().HaveCount(2);
+            (exception.InnerException as AggregateException).InnerExceptions.First()
+                .Should().BeOfType<ArgumentException>();
+            (exception.InnerException as AggregateException).InnerExceptions.First()
+                .GetType()
+                .Should()
+                .NotBe<ArgumentNullException>();
+            (exception.InnerException as AggregateException).InnerExceptions.Skip(1).First()
+                .Should().BeOfType<ArgumentNullException>();
+        }
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "OrThrow", Justification = "This text refers to a valid method name.")]
         [Test]
