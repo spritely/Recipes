@@ -117,6 +117,7 @@ namespace Spritely.Recipes
         /// <param name="element">The element to check for.</param>
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         public static Rule ContainElement<T>(T element)
         {
             return MakeRule.That<IEnumerable<T>>(e => e != null && e.Contains(element))
@@ -131,6 +132,7 @@ namespace Spritely.Recipes
         /// <param name="element">The element to check for.</param>
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         public static Rule NotContainElement<T>(T element)
         {
             return MakeRule.That<IEnumerable<T>>(e => e != null && !e.Contains(element))
@@ -212,14 +214,9 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule NotBeEqualTo<T>(T requirement) where T : IEquatable<T>
+        public static Rule NotBeEqualTo<T>(T requirement)
         {
-            if (requirement == null)
-            {
-                throw new ArgumentNullException("requirement");
-            }
-
-            return MakeRule.That<T>(v => !v.Equals(requirement))
+            return MakeRule.That<T>(v => !EqualityComparer<T>.Default.Equals(v, requirement))
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must not be equal to {requirement}.");
         }
@@ -232,14 +229,9 @@ namespace Spritely.Recipes
         /// <returns>The rule.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MakeRule.Because(System.Tuple<System.Func<System.Type,System.Object,System.Boolean>,System.Collections.Generic.IEnumerable<System.String>,System.Func<System.Type,System.Collections.Generic.IEnumerable<System.String>,System.Object,System.String,System.Exception>>,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
-        public static Rule BeEqualTo<T>(T requirement) where T : IEquatable<T>
+        public static Rule BeEqualTo<T>(T requirement)
         {
-            if (requirement == null)
-            {
-                throw new ArgumentNullException("requirement");
-            }
-
-            return MakeRule.That<T>(v => v.Equals(requirement))
+            return MakeRule.That<T>(v => EqualityComparer<T>.Default.Equals(v, requirement))
                 .OrCreateArgumentOutOfRangeException()
                 .Because($"Value must be equal to {requirement}.");
         }

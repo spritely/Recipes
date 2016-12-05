@@ -247,7 +247,6 @@ namespace Spritely.Recipes
         /// A revised validation plan.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> NotBeEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IEquatable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.NotBeEqualTo(requirement));
         }
@@ -262,7 +261,6 @@ namespace Spritely.Recipes
         /// A revised validation plan.
         /// </returns>
         public static Tuple<GetArguments, IEnumerable<Rule>> BeEqualTo<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, T requirement)
-            where T : IEquatable<T>
         {
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeEqualTo(requirement));
         }

@@ -590,18 +590,16 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void NotBeEqualTo_throws_if_requirement_is_null()
+        public void NotBeEqualTo_does_not_throw_when_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.Must().NotBeEqualTo(null as string).OrThrow();
-
-            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
+            "test".Named("validArg").Must().NotBeEqualTo(null as string).OrThrow();
         }
 
         [Test]
         public void NotBeEqualTo_throws_if_value_is_equal_to_requirement()
         {
             Action action1 = () => new { arg = "hello" }.Must().NotBeEqualTo("hello").OrThrow();
-            Action action2 = () => "world".Named("arg").Must().NotBeEqualTo("world").OrThrow();
+            Action action2 = () => TestEnum.NotInitialized.Named("arg").Must().NotBeEqualTo(TestEnum.NotInitialized).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("arg")
@@ -609,7 +607,7 @@ namespace Spritely.Recipes.Test
 
             action2.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("arg")
-                .And.Contain("world");
+                .And.Contain("NotInitialized");
         }
 
         [Test]
@@ -618,30 +616,28 @@ namespace Spritely.Recipes.Test
             var arg1 = 10;
 
             new { arg1 }.Must().NotBeEqualTo(12).OrThrow();
-            arg1.Named(nameof(arg1)).Must().NotBeEqualTo(-1).OrThrow();
+            TestEnum.First.Named("arg2").Must().NotBeEqualTo(TestEnum.NotInitialized).OrThrow();
         }
 
         [Test]
-        public void BeEqualTo_throws_if_requirement_is_null()
+        public void BeEqualTo_does_not_throw_when_requirement_is_null()
         {
-            Action act = () => new { validArg = "Test" }.Must().BeEqualTo(null as string).OrThrow();
-
-            act.ShouldThrow<ArgumentNullException>().And.Message.Should().Contain("requirement");
+            (null as string).Named("validArg").Must().BeEqualTo(null as string).OrThrow();
         }
 
         [Test]
         public void BeEqualTo_throws_if_value_is_not_equal_to_requirement()
         {
             Action action1 = () => new { tooLowArg = 6.0 }.Must().BeEqualTo(6.1).OrThrow();
-            Action action2 = () => 6.2.Named("tooHighArg").Must().BeEqualTo(6.1).OrThrow();
+            Action action2 = () => TestEnum.NotInitialized.Named("arg").Must().BeEqualTo(TestEnum.First).OrThrow();
 
             action1.ShouldThrow<ArgumentOutOfRangeException>()
                 .And.Message.Should().Contain("tooLowArg")
                 .And.Contain("6.1");
 
             action2.ShouldThrow<ArgumentOutOfRangeException>()
-                .And.Message.Should().Contain("tooHighArg")
-                .And.Contain("6.1");
+                .And.Message.Should().Contain("arg")
+                .And.Contain("First");
         }
 
         [Test]
@@ -650,7 +646,7 @@ namespace Spritely.Recipes.Test
             var arg1 = "Test";
 
             new { arg1 }.Must().BeEqualTo("Test").OrThrow();
-            arg1.Named(nameof(arg1)).Must().BeEqualTo("Test").OrThrow();
+            TestEnum.First.Named(nameof(arg1)).Must().BeEqualTo(TestEnum.First).OrThrow();
         }
 
         [Test]
