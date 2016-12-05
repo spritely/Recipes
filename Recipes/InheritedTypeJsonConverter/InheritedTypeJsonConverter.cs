@@ -33,10 +33,69 @@ namespace Spritely.Recipes
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
 #pragma warning disable 0436
 #endif
-    internal partial class InheritedTypeJsonConverter : JsonConverter
+    internal abstract class InheritedTypeJsonConverter : JsonConverter
     {
         private readonly ConcurrentDictionary<Type, IReadOnlyCollection<Type>> allChildTypes =
             new ConcurrentDictionary<Type, IReadOnlyCollection<Type>>();
+
+        protected IEnumerable<Type> GetChildTypes(Type type)
+        {
+            if (!allChildTypes.ContainsKey(type))
+            {
+                var childTypes = AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(a => !a.FullName.Contains("Microsoft.GeneratedCode"))
+                    .SelectMany(
+                        a =>
+                        {
+                            try
+                            {
+                                return a.GetTypes();
+                            }
+                            catch (ReflectionTypeLoadException)
+                            {
+                                return new Type[] { };
+                            }
+                        })
+                    .Where(
+                        t =>
+                            t != null && t.IsClass && !t.IsAbstract && !t.IsGenericTypeDefinition && t != type && type.IsAssignableFrom(t))
+                    .ToList();
+
+                allChildTypes.AddOrUpdate(type, t => childTypes, (t, cts) => childTypes);
+            }
+
+            return allChildTypes[type];
+        }
+    }
+
+    /// <summary>
+    /// An <see cref="InheritedTypeJsonConverter"/> that handles reads/deserialization.
+    /// </summary>
+#if !RecipesProject
+    [System.Diagnostics.DebuggerStepThrough]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
+#endif
+    internal class InheritedTypeReaderJsonConverter : InheritedTypeJsonConverter
+    {
+        /// <inheritdoc />
+        public override bool CanRead
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool CanWrite
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         /// <inheritdoc />
         public override bool CanConvert(Type objectType)
@@ -143,8 +202,7 @@ namespace Spritely.Recipes
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var jsonObject = JObject.FromObject(value, serializer);
-            jsonObject.WriteTo(writer);
+            throw new NotSupportedException("This is a read-only converter.");
         }
 
         private class CandidateChildType
@@ -200,7 +258,7 @@ namespace Spritely.Recipes
 
                 try
                 {
-                    deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType.Type);                    
+                    deserializedObject = serializer.Deserialize(jsonObject.CreateReader(), candidateChildType.Type);
                 }
                 catch (JsonException)
                 {
@@ -216,7 +274,7 @@ namespace Spritely.Recipes
                         {
                             Type = candidateChildType.Type,
                             PropertiesAndFields = candidateChildType.PropertiesAndFields,
-                            DeserializedObject = deserializedObject                            
+                            DeserializedObject = deserializedObject
                         };
                 }
             }
@@ -241,34 +299,53 @@ namespace Spritely.Recipes
 
             return strictCandidates.Single();
         }
+    }
 
-        private IEnumerable<Type> GetChildTypes(Type type)
+    /// <summary>
+    /// An <see cref="InheritedTypeJsonConverter"/> that handles writes/serialization.
+    /// </summary>
+#if !RecipesProject
+    [System.Diagnostics.DebuggerStepThrough]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
+#pragma warning disable 0436
+#endif
+    internal class InheritedTypeWriterJsonConverter : InheritedTypeJsonConverter
+    {
+        /// <inheritdoc />
+        public override bool CanRead
         {
-            if (!allChildTypes.ContainsKey(type))
+            get
             {
-                var childTypes = AppDomain.CurrentDomain.GetAssemblies()
-                    .Where(a => !a.FullName.Contains("Microsoft.GeneratedCode"))
-                    .SelectMany(
-                        a =>
-                        {
-                            try
-                            {
-                                return a.GetTypes();
-                            }
-                            catch (ReflectionTypeLoadException)
-                            {
-                                return new Type[] { };
-                            }
-                        })
-                    .Where(
-                        t =>
-                            t != null && t.IsClass && !t.IsAbstract && !t.IsGenericTypeDefinition && t != type && type.IsAssignableFrom(t))
-                    .ToList();
-
-                allChildTypes.AddOrUpdate(type, t => childTypes, (t, cts) => childTypes);
+                return false;
             }
+        }
 
-            return allChildTypes[type];
+        /// <inheritdoc />
+        public override bool CanWrite
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool CanConvert(Type objectType)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotSupportedException("This is a write-only converter");
+        }
+
+        /// <inheritdoc />
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException("not yet implemented");
         }
     }
 #if !RecipesProject
