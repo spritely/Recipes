@@ -106,8 +106,10 @@ namespace Spritely.Recipes
                 return false;
             }
 
+            // When de-serializing, objectType will be whatever type the caller wants to de-serialize into.
+            // If the type has children, then we want to use our implementation of ReadJson to pick the
+            // right child, otherwise there is no ambiguity about which type to create and json.net can just handle it.
             var childTypes = GetChildTypes(objectType);
-
             return childTypes.Any();
         }
 
