@@ -476,6 +476,97 @@ namespace Spritely.Recipes.Test
             Assert.That(doesNotThrow.TriggerNumber, Is.EqualTo(123456));
         }
 
+        [Test]
+        public void Serializer_serializes_concrete_type_whose_abstract_parent_is_TwoWay_bindable_with_type_information_written_into_the_json()
+        {
+            var starfish = new Starfish();
+            var crab = new Crab(SeaCreatureSize.Large);
+            var salmon = new Salmon(SeaCreatureSize.Medium, "brown");
+
+            var expectedStarfishJson = "{\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Starfish, Spritely.Recipes.Test\"\r\n}";
+            var expectedCrabJson = "{\r\n  \"size\": \"large\",\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Crab, Spritely.Recipes.Test\"\r\n}";
+            var expectedSalmonJson = "{\r\n  \"color\": \"brown\",\r\n  \"size\": \"medium\",\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Salmon, Spritely.Recipes.Test\"\r\n}";
+
+            var actualStarfishJson = JsonConvert.SerializeObject(starfish, JsonConfiguration.DefaultSerializerSettings);
+            var actualCrabJson = JsonConvert.SerializeObject(crab, JsonConfiguration.DefaultSerializerSettings);
+            var actualSalmonJson = JsonConvert.SerializeObject(salmon, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(expectedStarfishJson, Is.EqualTo(actualStarfishJson));
+            Assert.That(expectedCrabJson, Is.EqualTo(actualCrabJson));
+            Assert.That(expectedSalmonJson, Is.EqualTo(actualSalmonJson));
+        }
+
+        [Test]
+        public void Serializer_deserializes_into_abstract_type_where_multiple_inherited_types_have_the_same_properties_using_type_information_written_into_json()
+        {
+            var salmonJson = "{\r\n  \"color\": \"brown\",\r\n  \"size\": \"medium\",\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Salmon, Spritely.Recipes.Test\"\r\n}";
+
+            var salmon1 = JsonConvert.DeserializeObject<SeaCreature>(salmonJson, JsonConfiguration.DefaultSerializerSettings) as Salmon;
+            var salmon2 = JsonConvert.DeserializeObject<Fish>(salmonJson, JsonConfiguration.DefaultSerializerSettings) as Salmon;
+
+            Assert.That(salmon1, Is.Not.Null);
+            Assert.That(salmon1.Color, Is.EqualTo("brown"));
+            Assert.That(salmon1.Size, Is.EqualTo(SeaCreatureSize.Medium));
+
+            Assert.That(salmon2, Is.Not.Null);
+            Assert.That(salmon2.Color, Is.EqualTo("brown"));
+            Assert.That(salmon2.Size, Is.EqualTo(SeaCreatureSize.Medium));
+        }
+
+        [Test]
+        public void Serializer_serializes_TwoWay_bindable_type_that_contains_a_OneWay_bindable_type_using_specified_serializer()
+        {
+            var whale = new Whale("willy", new LowCalorie(50000));
+            
+            var expectedWhaleJson = "{\r\n  \"name\": \"willy\",\r\n  \"diet\": {\r\n    \"maxCalories\": 50000\r\n  },\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Whale, Spritely.Recipes.Test\"\r\n}";
+            
+            var actualWhaleJson = JsonConvert.SerializeObject(whale, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(expectedWhaleJson, Is.EqualTo(actualWhaleJson));
+        }
+
+        [Test]
+        public void Serializer_deserializes_TwoWay_bindable_type_into_abstract_type_when_concrete_type_contains_a_OneWay_bindable_type_using_specified_serializer()
+        {
+            var whaleJson = "{\r\n  \"name\": \"willy\",\r\n  \"diet\": {\r\n    \"maxCalories\": 50000\r\n  },\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Whale, Spritely.Recipes.Test\"\r\n}";
+
+            var whale = JsonConvert.DeserializeObject<SeaCreature>(whaleJson, JsonConfiguration.DefaultSerializerSettings) as Whale;
+
+            Assert.That(whale, Is.Not.Null);
+            Assert.That(whale.Name, Is.EqualTo("willy"));
+            Assert.That(whale.Diet, Is.Not.Null);
+            Assert.That(whale.Diet, Is.TypeOf<LowCalorie>());
+            Assert.That(((LowCalorie)whale.Diet).MaxCalories, Is.EqualTo(50000));
+        }
+
+        [Test]
+        public void Serializer_serializes_TwoWay_bindable_type_that_contains_a_TwoWay_bindable_type_using_specified_serializer()
+        {
+            var tuna = new Tuna(SeaCreatureSize.Medium, "black");
+            var shark = new Shark("sammy", tuna);
+
+            var expectedSharkJson = "{\r\n  \"name\": \"sammy\",\r\n  \"likesToEat\": {\r\n    \"color\": \"black\",\r\n    \"size\": \"medium\",\r\n    \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Tuna, Spritely.Recipes.Test\"\r\n  },\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Shark, Spritely.Recipes.Test\"\r\n}";
+
+            var actualSharkJson = JsonConvert.SerializeObject(shark, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(expectedSharkJson, Is.EqualTo(actualSharkJson));
+        }
+
+        [Test]
+        public void Serializer_deserializes_TwoWay_bindable_type_into_abstract_type_when_concrete_type_contains_a_TwoWay_bindable_type_using_specified_serializer()
+        {
+            var sharkJson = "{\r\n  \"name\": \"sammy\",\r\n  \"likesToEat\": {\r\n    \"color\": \"black\",\r\n    \"size\": \"medium\",\r\n    \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Tuna, Spritely.Recipes.Test\"\r\n  },\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Shark, Spritely.Recipes.Test\"\r\n}";
+
+            var shark = JsonConvert.DeserializeObject<SeaCreature>(sharkJson, JsonConfiguration.DefaultSerializerSettings) as Shark;
+
+            Assert.That(shark, Is.Not.Null);
+            Assert.That(shark.Name, Is.EqualTo("sammy"));
+            Assert.That(shark.LikesToEat, Is.Not.Null);
+            Assert.That(shark.LikesToEat, Is.TypeOf<Tuna>());
+            Assert.That(((Tuna)shark.LikesToEat).Size, Is.EqualTo(SeaCreatureSize.Medium));
+            Assert.That(((Tuna)shark.LikesToEat).Color, Is.EqualTo("black"));            
+        }
+
         private class CamelCasedPropertyTest
         {
             public string TestName;
@@ -664,6 +755,93 @@ namespace Spritely.Recipes.Test
             }
 
             public int TriggerNumber { get; set; }
+        }
+        
+        [Bindable(true, BindingDirection.TwoWay)]
+        private class SeaCreature
+        {
+        }
+
+        private class Starfish : SeaCreature
+        {
+        }
+
+        private enum SeaCreatureSize
+        {
+            Small,
+
+            Medium,
+
+            Large
+        }
+
+        private class Crab : SeaCreature
+        {
+            public Crab(SeaCreatureSize size)
+            {
+                Size = size;
+            }
+
+            public SeaCreatureSize Size { get; }
+        }
+
+        private abstract class Fish : SeaCreature
+        {
+            public Fish(SeaCreatureSize size)
+            {
+                Size = size;
+            }
+
+            public SeaCreatureSize Size { get; }
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
+        private class Tuna : Fish
+        {
+            public Tuna(SeaCreatureSize size, string color)
+                : base(size)
+            {
+                Color = color;
+            }
+
+            public string Color { get; }
+        }
+
+        private class Salmon : Fish
+        {
+            public Salmon(SeaCreatureSize size, string color)
+                : base(size)
+            {
+                Color = color;
+            }
+
+            public string Color { get; }
+        }
+
+        private class Whale : SeaCreature
+        {
+            public Whale(string name, Diet diet)
+            {
+                Name = name;
+                Diet = diet;
+            }
+
+            public string Name { get; }
+
+            public Diet Diet { get; }
+        }
+
+        private class Shark : SeaCreature
+        {
+            public Shark(string name, SeaCreature likesToEat)
+            {
+                Name = name;
+                LikesToEat = likesToEat;
+            }
+
+            public string Name { get; }
+
+            public SeaCreature LikesToEat { get; }
         }
     }
 }
