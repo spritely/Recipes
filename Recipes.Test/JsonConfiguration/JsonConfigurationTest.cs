@@ -477,6 +477,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "parentis", Justification = "this is not a compound word")]
         public void Serializer_serializes_concrete_type_whose_abstract_parent_is_TwoWay_bindable_with_type_information_written_into_the_json()
         {
             var starfish = new Starfish();
@@ -782,6 +783,7 @@ namespace Spritely.Recipes.Test
                 Size = size;
             }
 
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Class is used but is constructed via reflection and code analysis cannot detect that.")]
             public SeaCreatureSize Size { get; }
         }
 

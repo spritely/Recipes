@@ -70,7 +70,7 @@ namespace Spritely.Recipes
             return allChildTypes[type];
         }
 
-        protected BindableAttribute GetBindableAttribute(Type objectType)
+        protected static BindableAttribute GetBindableAttribute(Type objectType)
         {
             // If multiple types in the hierarchy have a Bindable attribute, only one is returned.
             // If the type is Bindable then that attribute it returned.  Otherwise, the attribute on
@@ -80,7 +80,7 @@ namespace Spritely.Recipes
             return attribute;
         }
 
-        protected bool IsTwoWayBindable(BindableAttribute bindableAttribute)
+        protected static bool IsTwoWayBindable(BindableAttribute bindableAttribute)
         {
             var bindingDirectionIsTwoWay = bindableAttribute.Direction == BindingDirection.TwoWay;
             return bindingDirectionIsTwoWay;
@@ -414,6 +414,11 @@ namespace Spritely.Recipes
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+
             string typeName = value.GetType().FullName + ", " + value.GetType().Assembly.GetName().Name;
             WriteJsonCalled.Value = true;
             var jo = JObject.FromObject(value, serializer);
