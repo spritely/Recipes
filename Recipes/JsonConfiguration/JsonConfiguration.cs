@@ -69,6 +69,7 @@ namespace Spritely.Recipes
                     Converters = new List<JsonConverter>
                     {
                         new StringEnumConverter { CamelCaseText = true },
+                        new SecureStringJsonConverter(),
                         new InheritedTypeReaderJsonConverter(),
                         new InheritedTypeWriterJsonConverter()
                     }
@@ -94,6 +95,7 @@ namespace Spritely.Recipes
                     Converters = new List<JsonConverter>
                     {
                         new StringEnumConverter { CamelCaseText = true },
+                        new SecureStringJsonConverter(),
                         new InheritedTypeReaderJsonConverter(),
                         new InheritedTypeWriterJsonConverter()
                     }
