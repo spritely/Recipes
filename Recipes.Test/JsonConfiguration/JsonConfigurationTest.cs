@@ -498,6 +498,18 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void Serializer_deserializes_into_concrete_type_where_multiple_inherited_types_have_the_same_properties_and_abstract_type_is_marked_TwoWay_bindable()
+        {
+            var salmonJson = "{\r\n  \"color\": \"brown\",\r\n  \"size\": \"medium\",\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Salmon, Spritely.Recipes.Test\"\r\n}";
+
+            var salmon = JsonConvert.DeserializeObject<Salmon>(salmonJson, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(salmon, Is.Not.Null);
+            Assert.That(salmon.Color, Is.EqualTo("brown"));
+            Assert.That(salmon.Size, Is.EqualTo(SeaCreatureSize.Medium));
+        }
+
+        [Test]
         public void Serializer_deserializes_into_abstract_type_where_multiple_inherited_types_have_the_same_properties_using_type_information_written_into_json()
         {
             var salmonJson = "{\r\n  \"color\": \"brown\",\r\n  \"size\": \"medium\",\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Salmon, Spritely.Recipes.Test\"\r\n}";
@@ -515,7 +527,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_serializes_TwoWay_bindable_type_that_contains_a_OneWay_bindable_type_using_specified_serializer()
+        public void Serializer_serializes_TwoWay_bindable_type_that_embeds_a_OneWay_bindable_type_using_specified_serializer()
         {
             var whale = new Whale("willy", new LowCalorie(50000));
             
@@ -527,7 +539,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_deserializes_TwoWay_bindable_type_into_abstract_type_when_concrete_type_contains_a_OneWay_bindable_type_using_specified_serializer()
+        public void Serializer_deserializes_TwoWay_bindable_type_into_abstract_type_when_concrete_type_embeds_a_OneWay_bindable_type_using_specified_serializer()
         {
             var whaleJson = "{\r\n  \"name\": \"willy\",\r\n  \"diet\": {\r\n    \"maxCalories\": 50000\r\n  },\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Whale, Spritely.Recipes.Test\"\r\n}";
 
@@ -541,7 +553,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_serializes_TwoWay_bindable_type_that_contains_a_TwoWay_bindable_type_using_specified_serializer()
+        public void Serializer_serializes_TwoWay_bindable_type_that_embeds_a_TwoWay_bindable_type_using_specified_serializer()
         {
             var tuna = new Tuna(SeaCreatureSize.Medium, "black");
             var shark = new Shark("sammy", tuna);
@@ -554,7 +566,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_deserializes_TwoWay_bindable_type_into_abstract_type_when_concrete_type_contains_a_TwoWay_bindable_type_using_specified_serializer()
+        public void Serializer_deserializes_TwoWay_bindable_type_into_abstract_type_when_concrete_type_embeds_a_TwoWay_bindable_type_using_specified_serializer()
         {
             var sharkJson = "{\r\n  \"name\": \"sammy\",\r\n  \"likesToEat\": {\r\n    \"color\": \"black\",\r\n    \"size\": \"medium\",\r\n    \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Tuna, Spritely.Recipes.Test\"\r\n  },\r\n  \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Shark, Spritely.Recipes.Test\"\r\n}";
 
@@ -566,6 +578,33 @@ namespace Spritely.Recipes.Test
             Assert.That(shark.LikesToEat, Is.TypeOf<Tuna>());
             Assert.That(((Tuna)shark.LikesToEat).Size, Is.EqualTo(SeaCreatureSize.Medium));
             Assert.That(((Tuna)shark.LikesToEat).Color, Is.EqualTo("black"));            
+        }
+
+        [Test]
+        public void Serializer_serializes_OneWay_bindable_type_that_embeds_a_TwoWay_bindable_type_using_specified_serializer()
+        {
+            var seafoodDiet = new SeafoodDiet(new Salmon(SeaCreatureSize.Medium, "red"), 345);
+            
+            var expectedSeafoodDietJson = "{\r\n  \"seaCreature\": {\r\n    \"color\": \"red\",\r\n    \"size\": \"medium\",\r\n    \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Salmon, Spritely.Recipes.Test\"\r\n  },\r\n  \"amount\": 345\r\n}";
+
+            var actualSeafoodDietJson = JsonConvert.SerializeObject(seafoodDiet, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(expectedSeafoodDietJson, Is.EqualTo(actualSeafoodDietJson));
+        }
+
+        [Test]
+        public void Serializer_deserializes_OneWay_bindable_type_into_abstract_type_when_concrete_type_embeds_a_TwoWay_bindable_type_using_specified_serializer()
+        {
+            var seafoodDietJson = "{\r\n  \"seaCreature\": {\r\n    \"color\": \"red\",\r\n    \"size\": \"medium\",\r\n    \"$concreteType\": \"Spritely.Recipes.Test.JsonConfigurationTest+Salmon, Spritely.Recipes.Test\"\r\n  },\r\n  \"amount\": 345\r\n}";
+
+            var seafoodDiet = JsonConvert.DeserializeObject<Diet>(seafoodDietJson, JsonConfiguration.DefaultSerializerSettings) as SeafoodDiet;
+
+            Assert.That(seafoodDiet, Is.Not.Null);
+            Assert.That(seafoodDiet.Amount, Is.EqualTo(345));
+            Assert.That(seafoodDiet.SeaCreature, Is.Not.Null);
+            Assert.That(seafoodDiet.SeaCreature, Is.TypeOf<Salmon>());
+            Assert.That(((Salmon)seafoodDiet.SeaCreature).Color, Is.EqualTo("red"));
+            Assert.That(((Salmon)seafoodDiet.SeaCreature).Size, Is.EqualTo(SeaCreatureSize.Medium));
         }
 
         private class CamelCasedPropertyTest
@@ -844,6 +883,19 @@ namespace Spritely.Recipes.Test
             public string Name { get; }
 
             public SeaCreature LikesToEat { get; }
+        }
+
+        private class SeafoodDiet : Diet
+        {
+            public SeafoodDiet(SeaCreature seaCreature, int amount)
+            {
+                SeaCreature = seaCreature;
+                Amount = amount;
+            }
+
+            public SeaCreature SeaCreature { get; }
+
+            public int Amount { get; }
         }
     }
 }
