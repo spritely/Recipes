@@ -66,8 +66,9 @@
     <Compile Include="JsonWebToken\JsonWebTokenClaimSetTest.cs" />
     <Compile Include="JsonWebToken\JsonWebTokenAccessTokenTest.cs" />
     <Compile Include="MustValidation\MakeRuleTest.cs" />
+    <Compile Include="MustValidation\MustValidationPlanBuilderTest.cs" />
     <Compile Include="MustValidation\RuleExtensionsTest.cs" />
-    <Compile Include="MustValidation\MustExtensionsTest.cs" />
+    <Compile Include="MustValidation\MustValidationPlanExecutorTest.cs" />
     <Compile Include="Parsing\ParsingExtensionsTest.cs" />
     <Compile Include="ProgressReporter\ProgressReporterTest.cs" />
     <Compile Include="SecureString\SecureStringTest.cs" />

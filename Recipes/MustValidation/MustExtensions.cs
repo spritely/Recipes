@@ -13,6 +13,7 @@ namespace Spritely.Recipes
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     // Starts the monad with the function to return the list of arguments to validate
     // Call: new { arg1, arg2 }.Must()
@@ -68,6 +69,19 @@ namespace Spritely.Recipes
 #endif
     internal static partial class MustExtensions
     {
+        private static readonly FieldInfo InnerExceptionField = typeof(Exception).GetField("_innerException", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo MessageField = typeof(Exception).GetField("_message", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        private static void SetInnerException(this Exception exception, Exception innerException)
+        {
+            InnerExceptionField.SetValue(exception, innerException);
+        }
+
+        private static void SetMessage(this Exception exception, string message)
+        {
+            MessageField.SetValue(exception, message);
+        }
+
         /// <summary>
         /// Starts a requirement that certain objects Must meet to pass validation.
         /// </summary>
@@ -463,6 +477,298 @@ namespace Spritely.Recipes
         }
 
         /// <summary>
+        /// Excecutes the provided action method if there are any validation failures supplying the list
+        /// of all validation exceptions.
+        /// </summary>
+        /// <typeparam name="T">The type of value to return.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        /// <returns>The result of calling the action method or default(T) if there are no failures.</returns>
+        public static T OrRunWithAll<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Func<IEnumerable<Exception>, T> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exceptions = validationPlan.Report().GetExceptions().ToList();
+            var result = default(T);
+
+            if (exceptions.Any())
+            {
+                result = action(exceptions);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures supplying a single
+        /// exception which contains information on all the failures.
+        /// </summary>
+        /// <typeparam name="T">The type of value to return.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        /// <returns>The result of calling the action method or default(T) if there are no failures.</returns>
+        public static T OrRunWith<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Func<Exception, T> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exception = validationPlan.Report().GetSingleOrAggregateArgumentException();
+            var result = default(T);
+
+            if (exception != null)
+            {
+                result = action(exception);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures.
+        /// </summary>
+        /// <typeparam name="T">The type of value to return.</typeparam>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        /// <returns>The result of calling the action method or default(T) if there are no failures.</returns>
+        public static T OrRun<T>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Func<T> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exceptions = validationPlan.Report().GetExceptions();
+            var result = default(T);
+
+            if (exceptions.Any())
+            {
+                result = action();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures supplying the list
+        /// of all validation exceptions.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        public static void OrRunWithAll(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Action<IEnumerable<Exception>> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exceptions = validationPlan.Report().GetExceptions().ToList();
+
+            if (exceptions.Any())
+            {
+                action(exceptions);
+            }
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures supplying a single
+        /// exception which contains information on all the failures.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        public static void OrRunWith(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Action<Exception> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exception = validationPlan.Report().GetSingleOrAggregateArgumentException();
+
+            if (exception != null)
+            {
+                action(exception);
+            }
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        public static void OrRun(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Action action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exceptions = validationPlan.Report().GetExceptions();
+
+            if (exceptions.Any())
+            {
+                action();
+            }
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures supplying the list
+        /// of all validation exceptions and throws the result of calling the action if it is not null.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        public static void OrThrowWithAll(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Func<IEnumerable<Exception>, Exception> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exceptions = validationPlan.Report().GetExceptions().ToList();
+
+            if (exceptions.Any())
+            {
+                var result = action(exceptions);
+
+                if (result != null)
+                {
+                    throw result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures supplying a single
+        /// exception which contains information on all the failures and throws the result of calling
+        /// the action if it is not null.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        public static void OrThrowWith(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Func<Exception, Exception> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exception = validationPlan.Report().GetSingleOrAggregateArgumentException();
+
+            if (exception != null)
+            {
+                var result = action(exception);
+
+                if (result != null)
+                {
+                    throw result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Excecutes the provided action method if there are any validation failures and
+        /// throws the result of calling the action if result is not null.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        /// <param name="action">The action to run.</param>
+        public static void OrThrow(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan, Func<Exception> action)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var exceptions = validationPlan.Report().GetExceptions();
+
+            if (exceptions.Any())
+            {
+                var result = action();
+
+                if (result != null)
+                {
+                    throw result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Throws the provided exception type if the validation report has any failures.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "Spritely.Recipes.MustExtensions.SetMessage(System.Exception,System.String)", Justification = "These messages should only ever be displayed to developers and do not want to complicate recipes with resources.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "InnerException", Justification = "Text refers to an identifier in code.")]
+        public static void OrThrow<TException>(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan) where TException : Exception, new()
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            var allExceptions = validationPlan.Report().GetExceptions().ToList();
+
+            if (allExceptions.Any())
+            {
+                var exception = new TException();
+                exception.SetMessage("There were multiple exceptions. Please see InnerException for details.");
+
+                var innerException = allExceptions.Count == 1
+                    ? allExceptions.First()
+                    : new AggregateException(allExceptions);
+                exception.SetInnerException(innerException);
+
+                throw exception;
+            }
+        }
+
+        /// <summary>
         /// Runs all the validation rules and generates an exception for any failures. Multiple exceptions are
         /// wrapped into a single ArgumentException whose InnerException is an AggregateException whose
         /// InnerExceptions is a list of all the validation exceptions.
@@ -470,9 +776,34 @@ namespace Spritely.Recipes
         /// <param name="validationPlan">The validation plan.</param>
         public static void OrThrow(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
         {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
             var report = validationPlan.Report();
 
             var exception = report.GetSingleOrAggregateArgumentException();
+
+            if (exception != null)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Runs the validation rules and immediately throws the first failure without evaluating
+        /// any further results.
+        /// </summary>
+        /// <param name="validationPlan">The validation plan.</param>
+        public static void OrThrowFirstFailure(this Tuple<GetArguments, IEnumerable<Rule>> validationPlan)
+        {
+            if (validationPlan == null)
+            {
+                throw new ArgumentNullException("validationPlan");
+            }
+
+            var exception = validationPlan.Report().GetExceptions().FirstOrDefault();
 
             if (exception != null)
             {
