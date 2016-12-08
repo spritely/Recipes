@@ -601,11 +601,11 @@ namespace Spritely.Recipes.Test
             Action action1 = () => new { arg = "hello" }.Must().NotBeEqualTo("hello").OrThrow();
             Action action2 = () => TestEnum.NotInitialized.Named("arg").Must().NotBeEqualTo(TestEnum.NotInitialized).OrThrow();
 
-            action1.ShouldThrow<ArgumentOutOfRangeException>()
+            action1.ShouldThrow<ArgumentException>()
                 .And.Message.Should().Contain("arg")
                 .And.Contain("hello");
 
-            action2.ShouldThrow<ArgumentOutOfRangeException>()
+            action2.ShouldThrow<ArgumentException>()
                 .And.Message.Should().Contain("arg")
                 .And.Contain("NotInitialized");
         }
@@ -631,11 +631,11 @@ namespace Spritely.Recipes.Test
             Action action1 = () => new { tooLowArg = 6.0 }.Must().BeEqualTo(6.1).OrThrow();
             Action action2 = () => TestEnum.NotInitialized.Named("arg").Must().BeEqualTo(TestEnum.First).OrThrow();
 
-            action1.ShouldThrow<ArgumentOutOfRangeException>()
+            action1.ShouldThrow<ArgumentException>()
                 .And.Message.Should().Contain("tooLowArg")
                 .And.Contain("6.1");
 
-            action2.ShouldThrow<ArgumentOutOfRangeException>()
+            action2.ShouldThrow<ArgumentException>()
                 .And.Message.Should().Contain("arg")
                 .And.Contain("First");
         }
