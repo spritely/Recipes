@@ -13,6 +13,7 @@ namespace Spritely.Recipes.Test
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Threading.Tasks;
     using FluentAssertions;
     using NUnit.Framework;
 
@@ -41,6 +42,19 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public void ForEachAsync_throws_on_null_arguments()
+        {
+            var progressReporter = new ProgressReporter<int>(processingStatus => { });
+            var items = Enumerable.Range(1, 4).ToList();
+
+            Func<Task> action = () => progressReporter.ForEachAsync(null, item => Task.FromResult(true));
+            action.ShouldThrow<ArgumentNullException>();
+
+            action = () => progressReporter.ForEachAsync(items, null);
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
         public void ForEach_iterates_each_item()
         {
             var sum = 0;
@@ -59,6 +73,24 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public async Task ForEachAsync_iterates_each_item()
+        {
+            var sum = 0;
+            var progressReporter = new ProgressReporter<int>(processingStatus => { });
+            var items = Enumerable.Range(1, 5).ToList();
+
+            await progressReporter.ForEachAsync(
+                items,
+                item =>
+                {
+                    sum += item;
+                    return Task.FromResult(true);
+                });
+
+            sum.Should().Be(15);
+        }
+
+        [Test]
         public void ForEach_reports_status_with_each_iteration()
         {
             var sum = 0;
@@ -68,6 +100,18 @@ namespace Spritely.Recipes.Test
             progressReporter.ForEach(items, item => true);
 
             sum.Should().Be(10);
+        }
+
+        [Test]
+        public async Task ForEachAsync_reports_status_with_each_iteration()
+        {
+            var sum = 0;
+            var progressReporter = new ProgressReporter<int>(processingStatus => { sum += processingStatus.SourceItem; });
+            var items = Enumerable.Range(1, 5).ToList();
+
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(true));
+
+            sum.Should().Be(15);
         }
 
         [Test]
@@ -81,12 +125,31 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public async Task ForEachAsync_reports_status_with_expected_source_item()
+        {
+            var last = 0;
+            var progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.ItemsProcessed.Should().Be(++last); });
+
+            var items = Enumerable.Range(1, 5).ToList();
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(true));
+        }
+
+        [Test]
         public void ForEach_reports_status_with_expected_ItemCount()
         {
             var items = Enumerable.Range(1, 4).ToList();
             var progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.ItemCount.Should().Be(items.Count); });
 
             progressReporter.ForEach(items, item => true);
+        }
+
+        [Test]
+        public async Task ForEachAsync_reports_status_with_expected_ItemCount()
+        {
+            var items = Enumerable.Range(1, 5).ToList();
+            var progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.ItemCount.Should().Be(items.Count); });
+
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(true));
         }
 
         [Test]
@@ -105,6 +168,21 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
+        public async Task ForEachAsync_reports_status_with_expected_PercentageComplete()
+        {
+            var items = Enumerable.Range(1, 5).ToList();
+            var progressReporter =
+                new ProgressReporter<int>(
+                    processingStatus =>
+                    {
+                        processingStatus.PercentageComplete.Should()
+                            .Be(Convert.ToDouble(processingStatus.ItemsProcessed) / processingStatus.ItemCount);
+                    });
+
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(true));
+        }
+
+        [Test]
         public void ForEach_reports_status_with_expected_Success()
         {
             var items = Enumerable.Range(1, 1).ToList();
@@ -113,6 +191,17 @@ namespace Spritely.Recipes.Test
 
             progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.Success.Should().Be(false); });
             progressReporter.ForEach(items, item => false);
+        }
+
+        [Test]
+        public async Task ForEachAsync_reports_status_with_expected_Success()
+        {
+            var items = Enumerable.Range(1, 1).ToList();
+            var progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.Success.Should().Be(true); });
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(true));
+
+            progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.Success.Should().Be(false); });
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(false));
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes",
@@ -131,6 +220,21 @@ namespace Spritely.Recipes.Test
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes",
+    Justification = "Testing that system can handle any type of exception.")]
+        [Test]
+        public async Task ForEachAsync_continues_after_an_exception()
+        {
+            var last = 0;
+            var items = Enumerable.Range(1, 5).ToList();
+            var progressReporter = new ProgressReporter<int>(processingStatus => { last = processingStatus.SourceItem; });
+            await progressReporter.ForEachAsync(
+                items,
+                item => { throw new Exception("Test"); });
+
+            last.Should().Be(5);
+        }
+
+        [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes",
             Justification = "Testing that system can handle any type of exception.")]
         [Test]
         public void ForEach_reports_status_with_expected_Exception()
@@ -143,6 +247,21 @@ namespace Spritely.Recipes.Test
             progressReporter =
                 new ProgressReporter<int>(processingStatus => { processingStatus.Exception.Should().BeSameAs(expectedException); });
             progressReporter.ForEach(items, item => { throw expectedException; });
+        }
+
+        [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes",
+            Justification = "Testing that system can handle any type of exception.")]
+        [Test]
+        public async Task ForEachAsync_reports_status_with_expected_Exception()
+        {
+            var items = Enumerable.Range(1, 1).ToList();
+            var progressReporter = new ProgressReporter<int>(processingStatus => { processingStatus.Exception.Should().BeNull(); });
+            await progressReporter.ForEachAsync(items, item => Task.FromResult(true));
+
+            var expectedException = new Exception("Test");
+            progressReporter =
+                new ProgressReporter<int>(processingStatus => { processingStatus.Exception.Should().BeSameAs(expectedException); });
+            await progressReporter.ForEachAsync(items, item => { throw expectedException; });
         }
     }
 }

@@ -14,6 +14,7 @@ namespace $rootnamespace$
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Object to report progress status on iterations through a loop.
@@ -82,6 +83,71 @@ namespace $rootnamespace$
                 try
                 {
                     processingStatus.Success = action(item);
+                }
+                catch (Exception ex)
+                {
+                    processingStatus.Exception = ex;
+                }
+
+                stopWatch.Stop();
+
+                itemsProcessed++;
+                totalElapsed += stopWatch.Elapsed;
+
+                processingStatus.ItemsProcessed = itemsProcessed;
+                processingStatus.ProcessingTime = stopWatch.Elapsed;
+                processingStatus.TotalProcessingTime = totalElapsed;
+                processingStatus.PercentageComplete = Convert.ToDouble(itemsProcessed) / itemCount;
+
+                var averageTimePerItem = new TimeSpan(totalElapsed.Ticks / itemsProcessed);
+                var estimatedTimeRemaining = new TimeSpan(averageTimePerItem.Ticks * (itemCount - itemsProcessed));
+
+                processingStatus.AverageTimePerItem = averageTimePerItem;
+                processingStatus.EstimatedTimeRemaining = estimatedTimeRemaining;
+
+                reportProgress(processingStatus);
+            }
+        }
+
+        /// <summary>
+        /// Processes each item in source by calling action on each item one at a time. Progress is
+        /// reported after each step.
+        /// </summary>
+        /// <param name="source">The source to iterate.</param>
+        /// <param name="action">The action to perform on each iteration.</param>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "This code is designed to catch and report exceptions, skip errant code, and continue processing the batch.")]
+        public async Task ForEachAsync(ICollection<T> source, Func<T, Task<bool>> action)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            var itemCount = source.Count;
+            var itemsProcessed = 0;
+            var stopWatch = new Stopwatch();
+            var totalElapsed = new TimeSpan(0);
+
+            foreach (var item in source)
+            {
+                stopWatch.Reset();
+                stopWatch.Start();
+
+                var processingStatus = new ProcessingStatus<T>
+                {
+                    SourceItem = item,
+                    ItemCount = itemCount
+                };
+
+                try
+                {
+                    processingStatus.Success = await action(item);
                 }
                 catch (Exception ex)
                 {
