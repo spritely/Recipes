@@ -16,7 +16,7 @@ namespace Spritely.Recipes
     /// <summary>
     ///     Contains extension methods for parsing strings to particular types (and avoid the .TryParse pattern).
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -966,7 +966,7 @@ namespace Spritely.Recipes
             return finalResult;
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

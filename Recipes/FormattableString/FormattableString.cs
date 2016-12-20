@@ -34,7 +34,7 @@ namespace System
     ///     A composite format string along with the arguments to be formatted. An instance of this type
     ///     may result from the use of the C# or VB language primitive "interpolated string".
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -100,7 +100,7 @@ namespace System
             return ToString(formatProvider);
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

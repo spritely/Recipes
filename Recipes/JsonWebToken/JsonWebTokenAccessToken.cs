@@ -15,7 +15,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// The access token response object for a JSON web token request.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -60,7 +60,7 @@ namespace Spritely.Recipes
             ExpiresIn = TimeSpan.FromSeconds(Convert.ToDouble(token.expires_in));
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

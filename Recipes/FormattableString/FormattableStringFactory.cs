@@ -31,7 +31,7 @@ namespace System.Runtime.CompilerServices
     /// <summary>
     ///     A factory type used by compilers to create instances of the type <see cref="FormattableString" />.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -95,7 +95,7 @@ namespace System.Runtime.CompilerServices
             }
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;RecipesProject</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -69,6 +69,7 @@
     <Compile Include="MustValidation\MustValidationPlanBuilderTest.cs" />
     <Compile Include="MustValidation\RuleExtensionsTest.cs" />
     <Compile Include="MustValidation\MustValidationPlanExecutorTest.cs" />
+    <Compile Include="OrderedNumbersCompression\OrderedNumbersCompressionTest.cs" />
     <Compile Include="Parsing\ParsingExtensionsTest.cs" />
     <Compile Include="ProgressReporter\ProgressReporterTest.cs" />
     <Compile Include="SecureString\SecureStringTest.cs" />

@@ -17,7 +17,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// Responsible for authorizing access to Google APIs.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -66,7 +66,7 @@ namespace Spritely.Recipes
             return result;
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

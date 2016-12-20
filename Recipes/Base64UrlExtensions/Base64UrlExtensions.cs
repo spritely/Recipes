@@ -16,7 +16,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// Responsible for encoding or decoding Base64Url encoded values.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -90,7 +90,7 @@ namespace Spritely.Recipes
             return padded;
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

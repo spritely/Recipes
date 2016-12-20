@@ -16,7 +16,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// Set of extensions related to JsonWebTokenAccessToken.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -44,7 +44,7 @@ namespace Spritely.Recipes
             webClient.Headers.Add(HttpRequestHeader.Authorization, accessToken.TokenType + " " + accessToken.AccessToken);
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

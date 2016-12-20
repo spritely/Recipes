@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;RecipesProject</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SpritelyRecipesProject</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Spritely.Recipes.XML</DocumentationFile>
@@ -64,6 +64,7 @@
     <None Include="GoogleAuthorizer\GoogleAuthorizer.nuspec" />
     <None Include="GoogleDrive\GoogleDrive.nuspec" />
     <None Include="MustValidation\MustValidation.nuspec" />
+    <None Include="OrderedNumbersCompression\OrderedNumbersCompression.nuspec" />
     <None Include="Parsing\Parsing.nuspec" />
     <None Include="ProgressReporter\ProcessingStatus.cs.pp" />
     <Compile Include="MustValidation\MakeRule.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="MustValidation\Rules.cs" />
     <Compile Include="MustValidation\MustExtensions.cs" />
     <Compile Include="MustValidation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="OrderedNumbersCompression\OrderedNumbersCompression.cs" />
     <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="ProgressReporter\ProcessingStatus.cs" />
     <None Include="ProgressReporter\ProgressReporter.cs.pp" />

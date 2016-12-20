@@ -16,7 +16,7 @@ namespace $rootnamespace$
     /// A processing status indicator.
     /// </summary>
     /// <typeparam name="T">The type of source item to report progress on.</typeparam>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -84,7 +84,7 @@ namespace $rootnamespace$
         /// <value>The estimated time remaining.</value>
         public TimeSpan EstimatedTimeRemaining { get; set; }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

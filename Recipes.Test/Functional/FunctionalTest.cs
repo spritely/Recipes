@@ -12,6 +12,7 @@ namespace Spritely.Recipes.Test
 {
     using System;
     using System.Collections.Generic;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -31,11 +32,11 @@ namespace Spritely.Recipes.Test
             Action<string> myAction = x => { value = x; };
             var myFunc = myAction.AsFunc();
 
-            Assert.That(value, Is.EqualTo("Original value"));
+            value.Should().Be("Original value");
 
             myFunc("New value");
 
-            Assert.That(value, Is.EqualTo("New value"));
+            value.Should().Be("New value");
         }
 
         [Test]
@@ -55,7 +56,7 @@ namespace Spritely.Recipes.Test
 
             list.ForEach(_ => { called = true; });
 
-            Assert.IsFalse(called);
+            called.Should().BeFalse();
         }
 
         [Test]
@@ -67,6 +68,21 @@ namespace Spritely.Recipes.Test
             list.ForEach(value => { sum += value; });
 
             Assert.That(sum, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void Sort_throws_on_null_arguments()
+        {
+            Assert.Throws<ArgumentNullException>(() => (null as IEnumerable<int>).Sort());
+        }
+
+        [Test]
+        public void Sort_sorts_the_provided_enumeration()
+        {
+            IEnumerable<int> source = new List<int> { 580, 12, 204, -4, 4, -90 };
+            var result = source.Sort();
+
+            result.Should().ContainInOrder(-90, -4, 4, 12, 204, 580);
         }
     }
 }

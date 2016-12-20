@@ -21,7 +21,7 @@ namespace Spritely.Recipes
     /// see: https://developers.google.com/identity/protocols/OAuth2ServiceAccount
     /// and: http://stackoverflow.com/questions/26478694/how-to-produce-jwt-with-google-oauth2-compatible-algorithm-rsa-sha-256-using-sys
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -119,7 +119,7 @@ namespace Spritely.Recipes
             return encoded;
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

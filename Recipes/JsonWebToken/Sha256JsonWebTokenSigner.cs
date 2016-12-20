@@ -17,7 +17,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// An IJsonWebTokenSigner that signs with the Sha256 algorithm.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -58,7 +58,7 @@ namespace Spritely.Recipes
             }
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

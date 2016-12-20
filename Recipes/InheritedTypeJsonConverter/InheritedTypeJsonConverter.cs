@@ -28,7 +28,7 @@ namespace Spritely.Recipes
     /// Use Bindable Attribute to match a derived class based on the class given to the serializer
     /// Selected class will be the first class to match all properties in the json object.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -90,7 +90,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// An <see cref="InheritedTypeJsonConverter"/> that handles reads/deserialization.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -345,7 +345,7 @@ namespace Spritely.Recipes
     /// <summary>
     /// An <see cref="InheritedTypeJsonConverter"/> that handles writes/serialization.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -426,7 +426,7 @@ namespace Spritely.Recipes
             jo.WriteTo(writer);
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

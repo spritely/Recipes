@@ -2,26 +2,27 @@
 # It is a continuously incrementing number so when used it violates the reset
 # smaller build parts rule of semantic versioning. Therefore we introduce a
 # second environment variable semantic_version.
-version: 0.24.2.{build}
+version: 0.25.0.{build}
 
 os: Visual Studio 2015
 
 environment:
   RunCodeAnalysis: true
-  version_functional: 0.2.6
-  version_securestring: 1.0.0
-  version_securestringjsonconverter: 0.4.0
-  version_inheritedtypejsonconverter: 0.9.0
-  version_camelstrictconstructorresolver: 0.3.1
-  version_jsonconfiguration: 0.15.0
-  version_formattablestring: 0.1.5
-  version_progressreporter: 0.4.0
-  version_base64urlextensions: 0.1.1
-  version_jsonwebtoken: 0.2.0
-  version_googleauthorizer: 0.3.0
-  version_googledrive: 0.3.0
-  version_mustvalidation: 0.6.1
-  version_parsing: 0.1.0
+  version_functional: 0.3.0
+  version_securestring: 1.0.1
+  version_securestringjsonconverter: 0.4.1
+  version_inheritedtypejsonconverter: 0.9.1
+  version_camelstrictconstructorresolver: 0.3.2
+  version_jsonconfiguration: 0.15.1
+  version_formattablestring: 0.1.6
+  version_progressreporter: 0.4.1
+  version_base64urlextensions: 0.1.2
+  version_jsonwebtoken: 0.2.1
+  version_googleauthorizer: 0.3.1
+  version_googledrive: 0.3.1
+  version_mustvalidation: 0.6.2
+  version_parsing: 0.1.1
+  version_orderednumberscompression: 0.1.0
 
 configuration:
   - Debug
@@ -79,6 +80,8 @@ after_test:
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.MustValidation.%version_mustvalidation%.nupkg"
   - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\Parsing\Parsing.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\Parsing" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_parsing%" -OutputDirectory "%TEMP%"
   - appveyor PushArtifact "%TEMP%\Spritely.Recipes.Parsing.%version_parsing%.nupkg"
+  - nuget pack "%APPVEYOR_BUILD_FOLDER%\Recipes\OrderedNumbersCompression\OrderedNumbersCompression.nuspec" -BasePath "%APPVEYOR_BUILD_FOLDER%\Recipes\OrderedNumbersCompression" -Properties "Configuration=%configuration%;Platform=%platform%;Version=%version_orderednumberscompression%" -OutputDirectory "%TEMP%"
+  - appveyor PushArtifact "%TEMP%\Spritely.Recipes.OrderedNumbersCompression.%version_orderednumberscompression%.nupkg"
 
 deploy:
   - provider: NuGet

@@ -1,27 +1,22 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-        <id>Spritely.Recipes.GoogleAuthorizer</id>
+        <id>Spritely.Recipes.OrderedNumbersCompression</id>
         <version>$version$</version>
-        <title>Spritely.Recipes.GoogleAuthorizer</title>
+        <title>Spritely.Recipes.OrderedNumbersCompression</title>
         <authors>Spritely Developers</authors>
         <owners>Spritely Developers</owners>
         <language>en-US</language>
         <licenseUrl>https://github.com/spritely/Recipes/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/spritely/Recipes</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>GoogleAuthorizer will sign into Google's Authorization service and return a JWT access token for further Google queries.</summary>
+        <summary>A recipe for compressing and decompressing a sorted list of numbers very efficiently.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
         <copyright>Copyright (C) 2016</copyright>
-        <tags>Spritely Recipes JWT JSON web token Google client access</tags>
-        <dependencies>
-            <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.JsonWebToken" version="0.2.1" />
-            </group>
-        </dependencies>
+        <tags>Spritely Recipes compress decompress</tags>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="GoogleAuthorizer.cs" target="content\net45\.Spritely.Recipes\GoogleAuthorizer\GoogleAuthorizer.cs" />
+        <file src="OrderedNumbersCompression.cs" target="content\net45\.Spritely.Recipes\OrderedNumbersCompression\OrderedNumbersCompression.cs" />
     </files>
 </package>
