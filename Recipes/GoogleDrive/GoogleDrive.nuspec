@@ -12,7 +12,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>GoogleDrive provides functionality to download csv files from spreadsheets to the local file system.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
-        <copyright>Copyright (C) 2016</copyright>
+        <copyright>Copyright (C) 2017</copyright>
         <tags>Spritely Recipes Google Drive client CSV downloader</tags>
         <dependencies>
             <group targetFramework="net450">

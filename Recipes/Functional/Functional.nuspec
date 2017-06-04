@@ -12,7 +12,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>AsFunc and ForEach recipes.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
-        <copyright>Copyright (C) 2016</copyright>
+        <copyright>Copyright (C) 2017</copyright>
         <tags>Spritely Recipes ForEach functional</tags>
         <developmentDependency>true</developmentDependency>
     </metadata>

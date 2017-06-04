@@ -12,7 +12,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>GoogleAuthorizer will sign into Google's Authorization service and return a JWT access token for further Google queries.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
-        <copyright>Copyright (C) 2016</copyright>
+        <copyright>Copyright (C) 2017</copyright>
         <tags>Spritely Recipes JWT JSON web token Google client access</tags>
         <dependencies>
             <group targetFramework="net450">

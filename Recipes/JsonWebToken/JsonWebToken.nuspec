@@ -12,7 +12,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>JsonWebToken will create and sign a JWT, POST a request to authorize it to a JWT server, and return the response's access token.</summary>
         <description>Collection of simple pieces of reusable code designed such that dependencies aren't forced upon consumers of its packages. Package is shipped as source code.</description>
-        <copyright>Copyright (C) 2016</copyright>
+        <copyright>Copyright (C) 2017</copyright>
         <tags>Spritely Recipes JWT Json web token client access</tags>
         <dependencies>
             <group targetFramework="net450">
