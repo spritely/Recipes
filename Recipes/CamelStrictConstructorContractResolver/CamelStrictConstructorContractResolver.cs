@@ -76,7 +76,7 @@ namespace Spritely.Recipes
 
                 if (matchingMemberProperty != null || parameterInfo.Name != null)
                 {
-                    JsonProperty property = CreatePropertyFromConstructorParameter(matchingMemberProperty, parameterInfo);
+                    JsonProperty property = CreatePropertyFromConstructorParameterWithConstructorInfo(matchingMemberProperty, parameterInfo, constructor);
 
                     if (property != null)
                     {
@@ -91,14 +91,31 @@ namespace Spritely.Recipes
         /// <inheritdoc />
         protected override JsonProperty CreatePropertyFromConstructorParameter(JsonProperty matchingMemberProperty, ParameterInfo parameterInfo)
         {
+            return CreatePropertyFromConstructorParameterWithConstructorInfo(matchingMemberProperty, parameterInfo);
+        }
+
+        private JsonProperty CreatePropertyFromConstructorParameterWithConstructorInfo(JsonProperty matchingMemberProperty, ParameterInfo parameterInfo, ConstructorInfo constructor = null)
+        {
             if (matchingMemberProperty == null)
             {
+                var constructorMessage = constructor == null
+                    ? string.Empty
+                    : string.Format(
+                        CultureInfo.InvariantCulture,
+                        "DeclaringType: {0}",
+                        constructor.DeclaringType.FullName);
+
                 string message = parameterInfo == null
-                                     ? "All constructor parameters are required; found one that is not specified in json"
-                                     : string.Format(
-                                         CultureInfo.InvariantCulture,
-                                         "This constructor parameter is required, but not specified in json: {0}",
-                                         parameterInfo.Name);
+                    ? string.Format(
+                        CultureInfo.InvariantCulture,
+                        "All constructor parameters are required; found one that is not specified in json. Constructor: {0}",
+                        constructorMessage)
+                    : string.Format(
+                        CultureInfo.InvariantCulture,
+                        "This constructor parameter is required, but not specified in json: {0}.  Constructor: {1}",
+                        parameterInfo.Name,
+                        constructorMessage);
+
                 throw new JsonSerializationException(message);
             }
 
