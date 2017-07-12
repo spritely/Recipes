@@ -102,7 +102,7 @@ namespace Spritely.Recipes
                     ? string.Empty
                     : string.Format(
                         CultureInfo.InvariantCulture,
-                        "DeclaringType: {0}",
+                        "Declaring Type: {0}",
                         constructor.DeclaringType.FullName);
 
                 string message = parameterInfo == null
