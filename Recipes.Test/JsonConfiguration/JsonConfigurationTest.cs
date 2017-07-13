@@ -607,6 +607,33 @@ namespace Spritely.Recipes.Test
             Assert.That(((Salmon)seafoodDiet.SeaCreature).Size, Is.EqualTo(SeaCreatureSize.Medium));
         }
 
+        [Test]
+        public void Serializer_roundtrips_type_with_dictionary_properties_whose_keys_are_strings_without_manipulating_case_of_first_letter_in_string_key()
+        {
+            var expected = new DictionaryPropertiesTest
+            {
+                Names = new Dictionary<string, string>
+                {
+                    { "Joe", "Locks" },
+                    { "sally", "fields" }
+                },
+                ReadOnlyNames = new ReadOnlyDictionary<string, string>(
+                    new Dictionary<string, string>
+                    {
+                        { "billy", "Bob" },
+                        { "Harry", "wright" }
+                    })
+            };
+
+            var json = JsonConvert.SerializeObject(expected, JsonConfiguration.DefaultSerializerSettings);
+
+            var actual = JsonConvert.DeserializeObject<DictionaryPropertiesTest>(json, JsonConfiguration.DefaultSerializerSettings);
+
+            Assert.That(actual, Is.Not.Null);
+            CollectionAssert.AreEquivalent(expected.Names, actual.Names);
+            CollectionAssert.AreEquivalent(expected.ReadOnlyNames, actual.ReadOnlyNames);
+        }
+
         private class CamelCasedPropertyTest
         {
             public string TestName;
@@ -896,6 +923,13 @@ namespace Spritely.Recipes.Test
             public SeaCreature SeaCreature { get; }
 
             public int Amount { get; }
+        }
+
+        private class DictionaryPropertiesTest
+        {
+            public Dictionary<string, string> Names { get; set; }
+
+            public IReadOnlyDictionary<string, string> ReadOnlyNames { get; set; }
         }
     }
 }
