@@ -91,7 +91,7 @@ namespace Spritely.Recipes
                 {
                     Formatting = Formatting.None,
                     NullValueHandling = NullValueHandling.Ignore,
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    ContractResolver = CamelStrictConstructorContractResolver.Instance,
                     Converters = new List<JsonConverter>
                     {
                         new StringEnumConverter { CamelCaseText = true },
