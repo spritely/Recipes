@@ -608,7 +608,7 @@ namespace Spritely.Recipes.Test
         }
 
         [Test]
-        public void Serializer_roundtrips_type_with_dictionary_properties_whose_keys_are_strings_without_manipulating_case_of_first_letter_in_string_key()
+        public void Serializer_roundtrips_type_with_dictionary_properties_whose_keys_are_strings_or_enums_without_manipulating_case_of_first_letter_in_string_key()
         {
             var expected = new DictionaryPropertiesTest
             {
@@ -622,7 +622,12 @@ namespace Spritely.Recipes.Test
                     {
                         { "billy", "Bob" },
                         { "Harry", "wright" }
-                    })
+                    }),
+                NamesByColor = new Dictionary<Color, string>
+                {
+                    { Color.Green, "Billy" },
+                    { Color.White, "jean" }
+                }
             };
 
             var json = JsonConvert.SerializeObject(expected, JsonConfiguration.DefaultSerializerSettings);
@@ -925,11 +930,24 @@ namespace Spritely.Recipes.Test
             public int Amount { get; }
         }
 
+        private enum Color
+        {
+            Brown,
+
+            Blue,
+
+            Green,
+
+            White
+        }
+
         private class DictionaryPropertiesTest
         {
             public Dictionary<string, string> Names { get; set; }
 
             public IReadOnlyDictionary<string, string> ReadOnlyNames { get; set; }
+
+            public Dictionary<Color, string> NamesByColor { get; set; }
         }
     }
 }
