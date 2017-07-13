@@ -637,6 +637,7 @@ namespace Spritely.Recipes.Test
             Assert.That(actual, Is.Not.Null);
             CollectionAssert.AreEquivalent(expected.Names, actual.Names);
             CollectionAssert.AreEquivalent(expected.ReadOnlyNames, actual.ReadOnlyNames);
+            CollectionAssert.AreEquivalent(expected.NamesByColor, actual.NamesByColor);
         }
 
         private class CamelCasedPropertyTest
