@@ -111,21 +111,17 @@ namespace Spritely.Recipes
             {
                 var constructorMessage = constructor == null
                     ? string.Empty
-                    : string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Declaring Type: {0}",
-                        constructor.DeclaringType.FullName);
+                    : constructor.DeclaringType.FullName;
 
-                string message = parameterInfo == null
-                    ? string.Format(
-                        CultureInfo.InvariantCulture,
-                        "All constructor parameters are required; found one that is not specified in json. Constructor: {0}",
-                        constructorMessage)
-                    : string.Format(
-                        CultureInfo.InvariantCulture,
-                        "This constructor parameter is required, but not specified in json: {0}.  Constructor: {1}",
-                        parameterInfo.Name,
-                        constructorMessage);
+                var parameterMessage = parameterInfo == null
+                    ? "all parameters"
+                    : string.Format(CultureInfo.InvariantCulture, "parameter '{0}'", parameterInfo.Name);
+
+                string message = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Constructor for '{0}' requires {1}; but it was not found in the json",
+                    constructorMessage,
+                    parameterMessage);                    
 
                 throw new JsonSerializationException(message);
             }
