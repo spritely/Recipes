@@ -17,6 +17,6 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="ParsingExtensions.cs" target="content\net45\.Spritely.Recipes\Parsing\ParsingExtensions.cs" />
+        <file src="ParsingExtensions.cs" target="content\net45\.recipes\Spritely.Parsing\ParsingExtensions.cs" />
     </files>
 </package>

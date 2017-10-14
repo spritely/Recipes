@@ -17,6 +17,6 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="SecureString.cs" target="content\net45\.Spritely.Recipes\SecureString\SecureString.cs" />
+        <file src="SecureString.cs" target="content\net45\.recipes\Spritely.SecureString\SecureString.cs" />
     </files>
 </package>

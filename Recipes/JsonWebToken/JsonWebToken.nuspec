@@ -16,19 +16,19 @@
         <tags>Spritely Recipes JWT Json web token client access</tags>
         <dependencies>
             <group targetFramework="net450">
-                <dependency id="Spritely.Recipes.Base64UrlExtensions" version="0.1.2" />
+                <dependency id="Spritely.Recipes.Base64UrlExtensions" version="0.1.3" />
                 <dependency id="Newtonsoft.Json" version="9.0.1" />
             </group>
         </dependencies>
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="Delegates.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\Delegates.cs" />
-        <file src="IJsonWebTokenSigner.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\IJsonWebTokenSigner.cs" />
-        <file src="JsonWebToken.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\JsonWebToken.cs" />
-        <file src="JsonWebTokenAccessToken.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\JsonWebTokenAccessToken.cs" />
-        <file src="JsonWebTokenAccessTokenExtensions.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\JsonWebTokenAccessTokenExtensions.cs" />
-        <file src="JsonWebTokenClaimSet.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\JsonWebTokenClaimSet.cs" />
-        <file src="Sha256JsonWebTokenSigner.cs" target="content\net45\.Spritely.Recipes\JsonWebToken\Sha256JsonWebTokenSigner.cs" />
+        <file src="Delegates.cs" target="content\net45\.recipes\Spritely.JsonWebToken\Delegates.cs" />
+        <file src="IJsonWebTokenSigner.cs" target="content\net45\.recipes\Spritely.JsonWebToken\IJsonWebTokenSigner.cs" />
+        <file src="JsonWebToken.cs" target="content\net45\.recipes\Spritely.JsonWebToken\JsonWebToken.cs" />
+        <file src="JsonWebTokenAccessToken.cs" target="content\net45\.recipes\Spritely.JsonWebToken\JsonWebTokenAccessToken.cs" />
+        <file src="JsonWebTokenAccessTokenExtensions.cs" target="content\net45\.recipes\Spritely.JsonWebToken\JsonWebTokenAccessTokenExtensions.cs" />
+        <file src="JsonWebTokenClaimSet.cs" target="content\net45\.recipes\Spritely.JsonWebToken\JsonWebTokenClaimSet.cs" />
+        <file src="Sha256JsonWebTokenSigner.cs" target="content\net45\.recipes\Spritely.JsonWebToken\Sha256JsonWebTokenSigner.cs" />
     </files>
 </package>

@@ -17,7 +17,7 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="FormattableString.cs" target="content\net45\.Spritely.Recipes\FromattableString\FormattableString.cs" />
-        <file src="FormattableStringFactory.cs" target="content\net45\.Spritely.Recipes\FromattableString\FormattableStringFactory.cs" />
+        <file src="FormattableString.cs" target="content\net45\.recipes\Spritely.FromattableString\FormattableString.cs" />
+        <file src="FormattableStringFactory.cs" target="content\net45\.recipes\Spritely.FromattableString\FormattableStringFactory.cs" />
     </files>
 </package>

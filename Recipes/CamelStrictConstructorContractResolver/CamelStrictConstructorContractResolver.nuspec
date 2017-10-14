@@ -22,6 +22,6 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="CamelStrictConstructorContractResolver.cs" target="content\net45\.Spritely.Recipes\CamelStrictConstructorContractResolver\CamelStrictConstructorContractResolver.cs" />
+        <file src="CamelStrictConstructorContractResolver.cs" target="content\net45\.recipes\Spritely.CamelStrictConstructorContractResolver\CamelStrictConstructorContractResolver.cs" />
     </files>
 </package>

@@ -17,6 +17,6 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="OrderedNumbersCompression.cs" target="content\net45\.Spritely.Recipes\OrderedNumbersCompression\OrderedNumbersCompression.cs" />
+        <file src="OrderedNumbersCompression.cs" target="content\net45\.recipes\Spritely.OrderedNumbersCompression\OrderedNumbersCompression.cs" />
     </files>
 </package>

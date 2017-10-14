@@ -17,10 +17,10 @@
         <developmentDependency>true</developmentDependency>
     </metadata>
     <files>
-        <file src="MakeRule.cs" target="content\net45\.Spritely.Recipes\MustValidation\MakeRule.cs" />
-        <file src="MustExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\MustExtensions.cs" />
-        <file src="RuleExtensions.cs" target="content\net45\.Spritely.Recipes\MustValidation\RuleExtensions.cs" />
-        <file src="Rules.cs" target="content\net45\.Spritely.Recipes\MustValidation\Rules.cs" />
-        <file src="ValidatedNotNullAttribute.cs" target="content\net45\.Spritely.Recipes\MustValidation\ValidatedNotNullAttribute.cs" />
+        <file src="MakeRule.cs" target="content\net45\.recipes\Spritely.MustValidation\MakeRule.cs" />
+        <file src="MustExtensions.cs" target="content\net45\.recipes\Spritely.MustValidation\MustExtensions.cs" />
+        <file src="RuleExtensions.cs" target="content\net45\.recipes\Spritely.MustValidation\RuleExtensions.cs" />
+        <file src="Rules.cs" target="content\net45\.recipes\Spritely.MustValidation\Rules.cs" />
+        <file src="ValidatedNotNullAttribute.cs" target="content\net45\.recipes\Spritely.MustValidation\ValidatedNotNullAttribute.cs" />
     </files>
 </package>
